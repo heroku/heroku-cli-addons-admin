@@ -1,9 +1,9 @@
 // packages
-import {Command, flags} from '@oclif/command'
+import {Command, flags} from '@heroku-cli/command'
 import { writeFile } from 'fs'
 
 // other
-import manifest from './../utils/test_manifest'
+import manifest from '../../../utils/test_manifest'
 
 export default class CreateManifest extends Command {
   static description = 'generate a manifest template'

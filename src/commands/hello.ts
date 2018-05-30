@@ -4,7 +4,7 @@ export default class Hello extends Command {
   static description = 'describe the command here'
 
   static examples = [
-    `$ addons-admin hello
+    `$ oclif-example hello
 hello world from ./src/hello.ts!
 `,
   ]

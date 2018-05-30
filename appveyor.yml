@@ -8,7 +8,6 @@ install:
   - ps: Install-Product node $env:nodejs_version x64
   - yarn
 test_script:
-  - .\bin\run --version
   - .\bin\run --help
   - yarn test
 after_test:

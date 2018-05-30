@@ -1,20 +1,20 @@
 {
   "name": "@heroku-cli/addons-admin",
-  "description": "Heroku CLI plugin to help Heroku add-on providers integrate their services.",
+  "description": "Heroku CLI plugin to help Heroku add-on providers integrate their services with Heroku.",
   "version": "0.0.1",
   "author": "Aman Ibrahim @amanmibra",
-  "bin": {
-    "addons-admin": "./bin/run"
-  },
   "bugs": "https://github.com/heroku/heroku-cli-addons-admin/issues",
   "dependencies": {
-    "@oclif/command": "^1",
+    "@heroku-cli/command": "^8.1.20",
+    "@heroku-cli/schema": "^1.0.3",
+    "@oclif/command": "^1.4.30",
     "@oclif/config": "^1",
-    "@oclif/plugin-help": "^1",
+    "fs": "^0.0.1-security",
     "tslib": "^1"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1",
+    "@oclif/plugin-help": "^1",
     "@oclif/test": "^1",
     "@oclif/tslint": "^1",
     "@types/chai": "^4",
@@ -32,20 +32,19 @@
     "node": ">=8.0.0"
   },
   "files": [
-    "/bin",
     "/lib",
-    "/oclif.manifest.json"
+    "/oclif.manifest.json",
+    "/yarn.lock"
   ],
   "homepage": "https://github.com/heroku/heroku-cli-addons-admin",
   "keywords": [
-    "oclif"
+    "oclif-plugin"
   ],
   "license": "MIT",
-  "main": "lib/index.js",
   "oclif": {
     "commands": "./lib/commands",
-    "bin": "addons-admin",
-    "plugins": [
+    "bin": "oclif-example",
+    "devPlugins": [
       "@oclif/plugin-help"
     ]
   },
@@ -56,6 +55,5 @@
     "prepack": "rm -rf lib && tsc && oclif-dev manifest && oclif-dev readme",
     "test": "nyc mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md"
-  },
-  "types": "lib/index.d.ts"
+  }
 }

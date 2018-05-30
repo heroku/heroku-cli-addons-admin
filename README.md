@@ -1,7 +1,7 @@
 @heroku-cli/addons-admin
 ========================
 
-Heroku CLI plugin to help Heroku add-on providers integrate their services.
+Heroku CLI plugin to help Heroku add-on providers integrate their services with Heroku.
 
 [![Version](https://img.shields.io/npm/v/@heroku-cli/addons-admin.svg)](https://npmjs.org/package/@heroku-cli/addons-admin)
 [![CircleCI](https://circleci.com/gh/heroku/heroku-cli-addons-admin/tree/master.svg?style=shield)](https://circleci.com/gh/heroku/heroku-cli-addons-admin/tree/master)
@@ -18,28 +18,39 @@ Heroku CLI plugin to help Heroku add-on providers integrate their services.
 <!-- usage -->
 ```sh-session
 $ npm install -g @heroku-cli/addons-admin
-$ addons-admin COMMAND
+$ oclif-example COMMAND
 running command...
-$ addons-admin (-v|--version|version)
+$ oclif-example (-v|--version|version)
 @heroku-cli/addons-admin/0.0.1 darwin-x64 node-v10.3.0
-$ addons-admin --help [COMMAND]
+$ oclif-example --help [COMMAND]
 USAGE
-  $ addons-admin COMMAND
+  $ oclif-example COMMAND
 ...
 ```
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`addons-admin hello [FILE]`](#addons-admin-hello-file)
-* [`addons-admin help [COMMAND]`](#addons-admin-help-command)
+* [`oclif-example addons:admin:create_manifest`](#oclif-example-addonsadmincreate-manifest)
+* [`oclif-example hello [FILE]`](#oclif-example-hello-file)
 
-## `addons-admin hello [FILE]`
+## `oclif-example addons:admin:create_manifest`
+
+generate a manifest template
+
+```
+USAGE
+  $ oclif-example addons:admin:create_manifest
+```
+
+_See code: [src/commands/addons/admin/create_manifest.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/create_manifest.ts)_
+
+## `oclif-example hello [FILE]`
 
 describe the command here
 
 ```
 USAGE
-  $ addons-admin hello [FILE]
+  $ oclif-example hello [FILE]
 
 OPTIONS
   -f, --force
@@ -47,26 +58,9 @@ OPTIONS
   -n, --name=name  name to print
 
 EXAMPLE
-  $ addons-admin hello
+  $ oclif-example hello
   hello world from ./src/hello.ts!
 ```
 
 _See code: [src/commands/hello.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/hello.ts)_
-
-## `addons-admin help [COMMAND]`
-
-display help for addons-admin
-
-```
-USAGE
-  $ addons-admin help [COMMAND]
-
-ARGUMENTS
-  COMMAND  command to show help for
-
-OPTIONS
-  --all  see all commands in CLI
-```
-
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v1.2.11/src/commands/help.ts)_
 <!-- commandsstop -->

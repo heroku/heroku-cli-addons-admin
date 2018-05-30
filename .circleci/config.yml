@@ -14,7 +14,6 @@ jobs:
       - run:
           name: Install dependencies
           command: .circleci/greenkeeper
-      - run: ./bin/run --version
       - run: ./bin/run --help
       - run:
           name: Testing
