@@ -1,8 +1,13 @@
-// packages
+// heroku-cli
 import {Command, flags} from '@heroku-cli/command'
+import * as Heroku from '@heroku-cli/schema'
+import color from '@heroku-cli/color'
+
+// other packages
+import cli from 'cli-ux'
 import { writeFile } from 'fs'
 
-// other
+// utils
 import generateManifest from '../../../../utils/manifest'
 
 export default class Generate extends Command {
@@ -12,10 +17,17 @@ export default class Generate extends Command {
 The file has been saved!`, ]
 
   async run() {
-    const manifest = generateManifest();
+    const {body: account} = await this.heroku.get<Heroku.Account>('/account', {retryAuth: false})
+    if (!account) {
+      this.error(color.red('Please login with Heroku creditials using `heroku login`.'))
+    }
+
+    const manifest = generateManifest({}); // this function takes in an object see utils/manifest
     const manifestObj = JSON.stringify(manifest, null, 2)
+    cli.action.start('Generating addon_manifest')
     writeFile('addon_manifest.json', manifestObj , (err) => {
-      console.log('Generating addon_manifest.json...')
+      // console.log('Generating addon_manifest.json...')
+      cli.action.stop()
       if (err) {
         console.log('The file has not been saved: \n', err);
         return;

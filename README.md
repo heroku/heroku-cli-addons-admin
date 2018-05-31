@@ -30,37 +30,20 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`oclif-example addons:admin:create_manifest`](#oclif-example-addonsadmincreate-manifest)
-* [`oclif-example hello [FILE]`](#oclif-example-hello-file)
+* [`oclif-example addons:admin:manifest:generate`](#oclif-example-addonsadminmanifestgenerate)
 
-## `oclif-example addons:admin:create_manifest`
+## `oclif-example addons:admin:manifest:generate`
 
 generate a manifest template
 
 ```
 USAGE
-  $ oclif-example addons:admin:create_manifest
-```
-
-_See code: [src/commands/addons/admin/create_manifest.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/create_manifest.ts)_
-
-## `oclif-example hello [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ oclif-example hello [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  $ oclif-example addons:admin:manifest:generate
 
 EXAMPLE
-  $ oclif-example hello
-  hello world from ./src/hello.ts!
+  $ oclif-example addons:admin:create_manifest
+  The file has been saved!
 ```
 
-_See code: [src/commands/hello.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/hello.ts)_
+_See code: [src/commands/addons/admin/manifest/generate.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/manifest/generate.ts)_
 <!-- commandsstop -->
