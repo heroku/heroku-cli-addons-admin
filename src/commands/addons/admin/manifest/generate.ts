@@ -13,13 +13,13 @@ import generateManifest from '../../../../utils/manifest'
 export default class Generate extends Command {
   static description = 'generate a manifest template'
 
-  static examples = [ `$ oclif-example addons:admin:create_manifest
+  static examples = [ `$ oclif-example addons:admin:generate
 The file has been saved!`, ]
 
   async run() {
     const {body: account} = await this.heroku.get<Heroku.Account>('/account', {retryAuth: false})
     if (!account) {
-      this.error(color.red('Please login with Heroku creditials using `heroku login`.'))
+      this.error(color.red('Please login with Heroku credentials using `heroku login`.'))
     }
 
     const manifest = generateManifest({}); // this function takes in an object see utils/manifest
