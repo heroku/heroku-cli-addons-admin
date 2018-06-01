@@ -35,9 +35,10 @@ export default class Fetch extends Command {
     const slug = args.slug
     const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com'
 
-    cli.action.start(`Fetching add-on manifest for ${slug}`)
+    cli.action.start(`Fetching add-on manifest for ${color.addon(slug)}`)
 
     const {body} = await this.heroku.get<any>(`${host}/provider/addons/${slug}`, defaultOptions)
-    this.log(body)
+    // this.log(body)
+    console.log(color.bold(JSON.stringify(body, null, 1)))
   }
 }

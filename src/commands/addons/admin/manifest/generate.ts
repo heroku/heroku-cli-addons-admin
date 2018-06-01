@@ -17,11 +17,12 @@ export default class Generate extends Command {
 The file has been saved!`, ]
 
   async run() {
-    const {body: account} = await this.heroku.get<Heroku.Account>('/account', {retryAuth: false})
-    if (!account) {
-      this.error(color.red('Please login with Heroku credentials using `heroku login`.'))
-    }
+    const {body: account} = await this.heroku.get<Heroku.Account>('/account', {retryAuth: false});
 
+    // checks if user is logged in, in case default user checking measures do not work
+    if (!account) {
+      this.error(color.red('Please login with Heroku credentials using `heroku login`.'));
+    }
     const manifest = generateManifest({}); // this function takes in an object see utils/manifest
     const manifestObj = JSON.stringify(manifest, null, 2)
     cli.action.start('Generating addon_manifest')
