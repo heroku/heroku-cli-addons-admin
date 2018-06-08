@@ -1,3 +1,5 @@
+// CommandExtension
+import CommandExtension from '../../../../CommandExtension'
 // heroku-cli
 import {Command, flags} from '@heroku-cli/command'
 import * as Heroku from '@heroku-cli/schema'
@@ -7,7 +9,7 @@ import color from '@heroku-cli/color'
 import cli from 'cli-ux'
 
 
-export default class Push extends Command {
+export default class Push extends CommandExtension {
   static description = 'push created manifest'
 
   static flags = {

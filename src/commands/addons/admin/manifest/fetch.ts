@@ -1,3 +1,5 @@
+// CommandExtension
+import CommandExtension from '../../../../CommandExtension'
 // heroku-cli
 import {Command, flags} from '@heroku-cli/command'
 import * as Heroku from '@heroku-cli/schema'
@@ -6,7 +8,7 @@ import color from '@heroku-cli/color'
 // other packages
 import cli from 'cli-ux'
 
-export default class Fetch extends Command {
+export default class Fetch extends CommandExtension {
   static description = 'fetch a manifest for a given slug'
 
   static examples = [ `$ heroku addons:admin:fetch slowdb

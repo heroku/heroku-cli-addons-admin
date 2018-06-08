@@ -1,3 +1,5 @@
+// CommandExtension
+import CommandExtension from '../../../../CommandExtension'
 // heroku-cli
 import {Command, flags} from '@heroku-cli/command'
 import * as Heroku from '@heroku-cli/schema'
@@ -10,7 +12,7 @@ import { writeFile } from 'fs'
 // utils
 import generateManifest from '../../../../utils/manifest'
 
-export default class Generate extends Command {
+export default class Generate extends CommandExtension {
   static description = 'generate a manifest template'
 
   static examples = [ `$ oclif-example addons:admin:generate
