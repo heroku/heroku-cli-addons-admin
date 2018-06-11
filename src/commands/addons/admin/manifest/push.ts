@@ -1,5 +1,6 @@
 // CommandExtension
 import CommandExtension from '../../../../CommandExtension'
+
 // heroku-cli
 import {Command, flags} from '@heroku-cli/command'
 import * as Heroku from '@heroku-cli/schema'
@@ -7,9 +8,7 @@ import color from '@heroku-cli/color'
 
 // other packages
 import cli from 'cli-ux'
-
-// other files
-import * as manifest from '../../../../../addon_manifest.json'
+import * as fs from 'fs';
 
 export default class Push extends CommandExtension {
   static description = 'push created manifest'
@@ -28,6 +27,11 @@ export default class Push extends CommandExtension {
 
     const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com'
 
+    const manifest = fs.readFileSync('addon_manifest.json', 'utf8')
+    if (!manifest) {
+      this.error('No manifest found. Please generate a manifest before pushing.')
+    }
+
     let defaultOptions = {
       headers: {
         authorization: `Basic ${Buffer.from(email + ':' + this.heroku.auth).toString('base64')}`,
@@ -42,5 +46,10 @@ export default class Push extends CommandExtension {
 
     const {body} = await this.heroku.post<any>(`${host}/provider/addons`, defaultOptions)
     console.log(body)
+
+    fs.writeFileSync('addon_manifest.json', JSON.stringify(body, null, 2), (err) => {
+      if(err) throw err;
+      console.log('Updated addon_manifest.json!')
+    })
   }
 }
