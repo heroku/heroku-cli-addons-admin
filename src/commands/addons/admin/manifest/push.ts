@@ -8,6 +8,8 @@ import color from '@heroku-cli/color'
 // other packages
 import cli from 'cli-ux'
 
+// other files
+import * as manifest from '../../../../../addon_manifest.json'
 
 export default class Push extends CommandExtension {
   static description = 'push created manifest'
@@ -33,9 +35,7 @@ export default class Push extends CommandExtension {
         'Accept': 'application/json',
         'User-Agent': 'kensa future'
       },
-      body: {
-        "contents": "test"
-      }
+      body: manifest
     }
 
     cli.action.start(`Pushing manifest`)
