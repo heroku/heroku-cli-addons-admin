@@ -39,17 +39,17 @@ export default class Push extends CommandExtension {
         'Accept': 'application/json',
         'User-Agent': 'kensa future'
       },
-      body: manifest
+      body: JSON.parse(manifest)
     }
 
     cli.action.start(`Pushing manifest`)
 
     const {body} = await this.heroku.post<any>(`${host}/provider/addons`, defaultOptions)
     console.log(body)
+    cli.action.stop();
 
-    fs.writeFileSync('addon_manifest.json', JSON.stringify(body, null, 2), (err) => {
-      if(err) throw err;
-      console.log('Updated addon_manifest.json!')
-    })
+    cli.action.start('Updating addon_manifest.json')
+    fs.writeFileSync('addon_manifest.json', JSON.stringify(body, null, 2));
+    cli.action.stop();
   }
 }
