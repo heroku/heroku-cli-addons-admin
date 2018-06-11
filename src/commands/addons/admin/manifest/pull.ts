@@ -11,10 +11,13 @@ import cli from 'cli-ux';
 import { writeFileSync } from 'fs';
 
 export default class Pull extends CommandExtension {
-  static description = 'fetch a manifest for a given slug';
+  static description = 'pull a manifest for a given slug';
 
-  static examples = [ `$ heroku addons:admin:fetch slowdb
-{...`, ];
+  static examples = [
+    `$ heroku addons:admin:manifest:pull testing-123
+ ...
+ Fetching add-on manifest for testing-123... done
+ Updating addon_manifest.json... done`, ];
 
   static flags = {
     help: flags.help({char: 'h'}),

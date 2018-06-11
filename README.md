@@ -32,8 +32,8 @@ USAGE
 <!-- commands -->
 * [`oclif-example addons:admin:manifest:fetch [SLUG]`](#oclif-example-addonsadminmanifestfetch-slug)
 * [`oclif-example addons:admin:manifest:generate`](#oclif-example-addonsadminmanifestgenerate)
-* [`oclif-example addons:admin:manifest:pull [FILE]`](#oclif-example-addonsadminmanifestpull-file)
-* [`oclif-example addons:admin:manifest:push [FILE]`](#oclif-example-addonsadminmanifestpush-file)
+* [`oclif-example addons:admin:manifest:pull [SLUG]`](#oclif-example-addonsadminmanifestpull-slug)
+* [`oclif-example addons:admin:manifest:push`](#oclif-example-addonsadminmanifestpush)
 
 ## `oclif-example addons:admin:manifest:fetch [SLUG]`
 
@@ -68,32 +68,42 @@ EXAMPLE
 
 _See code: [src/commands/addons/admin/manifest/generate.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/manifest/generate.ts)_
 
-## `oclif-example addons:admin:manifest:pull [FILE]`
+## `oclif-example addons:admin:manifest:pull [SLUG]`
 
-describe the command here
+pull a manifest for a given slug
 
 ```
 USAGE
-  $ oclif-example addons:admin:manifest:pull [FILE]
+  $ oclif-example addons:admin:manifest:pull [SLUG]
 
 OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  -h, --help  show CLI help
+
+EXAMPLE
+  $ heroku addons:admin:manifest:pull testing-123
+    ...
+    Fetching add-on manifest for testing-123... done
+    Updating addon_manifest.json... done
 ```
 
 _See code: [src/commands/addons/admin/manifest/pull.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/manifest/pull.ts)_
 
-## `oclif-example addons:admin:manifest:push [FILE]`
+## `oclif-example addons:admin:manifest:push`
 
 push created manifest
 
 ```
 USAGE
-  $ oclif-example addons:admin:manifest:push [FILE]
+  $ oclif-example addons:admin:manifest:push
 
 OPTIONS
   -h, --help  show CLI help
+
+EXAMPLE
+  $ heroku addons:admin:manifest:push
+    ...
+    Pushing manifest... done
+    Updating addon_manifest.json... done
 ```
 
 _See code: [src/commands/addons/admin/manifest/push.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/manifest/push.ts)_

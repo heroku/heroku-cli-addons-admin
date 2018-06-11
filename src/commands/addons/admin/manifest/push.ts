@@ -17,7 +17,12 @@ export default class Push extends CommandExtension {
     help: flags.help({char: 'h'}),
   };
 
-  static args = [{name: 'file'}];
+  static examples = [
+    `$ heroku addons:admin:manifest:push
+ ...
+ Pushing manifest... done
+ Updating addon_manifest.json... done`, ];
+
 
   async run() {
     const {args, flags} = this.parse(Push);
