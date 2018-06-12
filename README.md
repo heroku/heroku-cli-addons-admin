@@ -30,7 +30,28 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`oclif-example addons:admin:manifest:fetch [SLUG]`](#oclif-example-addonsadminmanifestfetch-slug)
 * [`oclif-example addons:admin:manifest:generate`](#oclif-example-addonsadminmanifestgenerate)
+* [`oclif-example addons:admin:manifest:pull [SLUG]`](#oclif-example-addonsadminmanifestpull-slug)
+* [`oclif-example addons:admin:manifest:push`](#oclif-example-addonsadminmanifestpush)
+
+## `oclif-example addons:admin:manifest:fetch [SLUG]`
+
+fetch a manifest for a given slug
+
+```
+USAGE
+  $ oclif-example addons:admin:manifest:fetch [SLUG]
+
+OPTIONS
+  -h, --help  show CLI help
+
+EXAMPLE
+  $ heroku addons:admin:fetch slowdb
+  {...
+```
+
+_See code: [src/commands/addons/admin/manifest/fetch.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/manifest/fetch.ts)_
 
 ## `oclif-example addons:admin:manifest:generate`
 
@@ -41,9 +62,49 @@ USAGE
   $ oclif-example addons:admin:manifest:generate
 
 EXAMPLE
-  $ oclif-example addons:admin:create_manifest
+  $ oclif-example addons:admin:generate
   The file has been saved!
 ```
 
 _See code: [src/commands/addons/admin/manifest/generate.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/manifest/generate.ts)_
+
+## `oclif-example addons:admin:manifest:pull [SLUG]`
+
+pull a manifest for a given slug
+
+```
+USAGE
+  $ oclif-example addons:admin:manifest:pull [SLUG]
+
+OPTIONS
+  -h, --help  show CLI help
+
+EXAMPLE
+  $ heroku addons:admin:manifest:pull testing-123
+    ...
+    Fetching add-on manifest for testing-123... done
+    Updating addon_manifest.json... done
+```
+
+_See code: [src/commands/addons/admin/manifest/pull.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/manifest/pull.ts)_
+
+## `oclif-example addons:admin:manifest:push`
+
+push created manifest
+
+```
+USAGE
+  $ oclif-example addons:admin:manifest:push
+
+OPTIONS
+  -h, --help  show CLI help
+
+EXAMPLE
+  $ heroku addons:admin:manifest:push
+    ...
+    Pushing manifest... done
+    Updating addon_manifest.json... done
+```
+
+_See code: [src/commands/addons/admin/manifest/push.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/manifest/push.ts)_
 <!-- commandsstop -->

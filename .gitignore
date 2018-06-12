@@ -7,3 +7,4 @@
 /tmp
 /yarn.lock
 node_modules
+addon_manifest.json

@@ -11,6 +11,7 @@
     "@oclif/config": "^1",
     "cli-ux": "^4.5.1",
     "fs": "^0.0.1-security",
+    "qqjs": "^0.3.10",
     "tslib": "^1"
   },
   "devDependencies": {
