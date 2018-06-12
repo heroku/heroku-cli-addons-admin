@@ -28,6 +28,11 @@ export default class Pull extends CommandExtension {
   async run() {
     const {args, flags} = this.parse(Pull);
 
+    // don't continue without args
+    if (!args.slug) {
+      this.error('Please include slug argument.')
+    }
+
     // getting Heroku user data
     let {body: account} = await this.heroku.get<Heroku.Account>('/account', {retryAuth: false});
     let email = account.email;
@@ -56,9 +61,10 @@ export default class Pull extends CommandExtension {
       name: body.name,
       ...body
     };
-    console.log(color.bold(JSON.stringify(newManifest, null, 1)));
     cli.action.start(`Updating ${color.blue('addon_manifest.json')}`);
     writeFileSync('addon_manifest.json', JSON.stringify(newManifest, null, 2));
     cli.action.stop();
+
+    console.log(color.bold(JSON.stringify(newManifest, null, 1)));
   }
 }
