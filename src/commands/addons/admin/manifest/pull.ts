@@ -48,12 +48,17 @@ export default class Pull extends CommandExtension {
     cli.action.start(`Fetching add-on manifest for ${color.addon(slug)}`);
 
     const {body} = await this.heroku.get<any>(`${host}/provider/addons/${slug}`, defaultOptions);
-    console.log(color.bold(JSON.stringify(body, null, 1)));
     cli.action.stop();
 
     // writing addon_manifest.json
+    const newManifest: object = {
+      id: body.id,
+      name: body.name,
+      ...body
+    };
+    console.log(color.bold(JSON.stringify(newManifest, null, 1)));
     cli.action.start(`Updating ${color.blue('addon_manifest.json')}`);
-    writeFileSync('addon_manifest.json', JSON.stringify(body, null, 2));
+    writeFileSync('addon_manifest.json', JSON.stringify(newManifest, null, 2));
     cli.action.stop();
   }
 }
