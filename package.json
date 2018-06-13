@@ -9,8 +9,10 @@
     "@heroku-cli/schema": "^1.0.3",
     "@oclif/command": "^1.4.30",
     "@oclif/config": "^1",
+    "@types/inquirer": "^0.0.41",
     "cli-ux": "^4.5.1",
     "fs": "^0.0.1-security",
+    "inquirer": "^6.0.0",
     "qqjs": "^0.3.10",
     "tslib": "^1"
   },

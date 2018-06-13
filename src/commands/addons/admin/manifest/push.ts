@@ -12,6 +12,7 @@ import { ManifestInterface } from '../../../../utils/manifest';
 // other packages
 import cli from 'cli-ux';
 import { readFileSync, writeFileSync } from 'fs';
+import { prompt } from 'inquirer';
 
 export default class Push extends CommandExtension {
   static description = 'push created manifest';
@@ -65,7 +66,18 @@ export default class Push extends CommandExtension {
     const fetchBody: ManifestInterface = fetchRequest.body;
 
     // incorrect $base caught here
+    await prompt({
+     type: 'list',
+     message: 'Incorrect $base caught. Press OK to continue.',
+     name: 'data',
+     choices: ['OK', 'Cancel']
+   }).then(answers => {
+     if (answers.data === 'Cancel') {
+       this.exit(1);
+     }
+   })
     if (manifestJSON.$base !== fetchBody.$base) {
+
       this.log(`${color.yellow('Warning:')} incorrect $base caught. Fetching $base...`)
 
       // writing addon_manifest.json when $base is incorrect
@@ -112,7 +124,7 @@ export default class Push extends CommandExtension {
     };
     cli.action.start(`Updating ${color.blue('addon_manifest.json')}`);
     writeFileSync('addon_manifest.json', JSON.stringify(newManifest, null, 2));
-    cli.action.stop(); // start @ line 113 
+    cli.action.stop(); // start @ line 113
 
     console.log(color.bold(JSON.stringify(newManifest, null, 1)));
   }
