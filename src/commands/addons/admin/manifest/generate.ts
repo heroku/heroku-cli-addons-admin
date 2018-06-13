@@ -9,6 +9,8 @@ import color from '@heroku-cli/color';
 // other packages
 import cli from 'cli-ux';
 import { writeFile } from 'fs';
+import { prompt } from 'inquirer';
+import { generate as generateString } from 'randomstring';
 
 // utils
 import generateManifest from '../../../../utils/manifest';
