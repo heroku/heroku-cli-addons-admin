@@ -1,4 +1,29 @@
-let manifest: any
+interface ManifestInterface {
+    id: string;
+    name: string;
+    api: ManifestAPIInterface;
+    $base?: string;
+}
+
+interface ManifestAPIInterface {
+    config_vars_prefix: string;
+    config_vars: string[];
+    password: string;
+    sso_salt: string;
+    regions: string[];
+    requires: string[];
+    production: {
+      base_url: string;
+      sso_url: string;
+    };
+    test: {
+      base_url: string;
+      sso_url: string;
+    };
+    version: string;
+}
+
+let manifest: ManifestInterface
  = {
   id: "myaddon",
   name: "MyAddon",
@@ -26,11 +51,15 @@ let manifest: any
 const generateManifest = (data: any = {}) => {
   manifest.id = data.id || manifest.id;
   manifest.name = data.name || manifest.name;
-  manifest.password = data.password || manifest.password;
-  manifest.sso_salt = data.sso_salt || manifest.sso_salt;
+  manifest.api.password = data.password || manifest.api.password;
+  manifest.api.sso_salt = data.sso_salt || manifest.api.sso_salt;
 
   return manifest;
 }
 
 
 export default generateManifest;
+export {
+  ManifestInterface,
+  ManifestAPIInterface
+}
