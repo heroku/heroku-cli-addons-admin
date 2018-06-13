@@ -33,11 +33,6 @@ export default class Push extends CommandExtension {
   async run() {
     const {args, flags} = this.parse(Push);
 
-    // don't continue without args
-    if (!args.slug) {
-      this.error('Please include slug argument.')
-    }
-
     // getting Heroku user data
     let {body: account} = await this.heroku.get<Heroku.Account>('/account', {retryAuth: false});
     let email = account.email;
@@ -61,14 +56,18 @@ export default class Push extends CommandExtension {
       }
     };
     let manifestJSON: ManifestInterface = JSON.parse(manifest);
-    const slug = args.slug;
+    const slug = args.slug || manifestJSON.id;
+    if (slug === 'myaddon' || !slug) {
+      // this means generate was just called or there is no slug in the manifest
+      this.error('Please include slug argument.')
+    }
     const fetchRequest = await this.heroku.get<any>(`${host}/provider/addons/${slug}`, fetchOptions);
     const fetchBody: ManifestInterface = fetchRequest.body;
     cli.action.stop(color.green('done ✓')); // start @ line 54
 
     // incorrect $base caught here
     if (manifestJSON.$base !== fetchBody.$base) {
-      this.log(`${color.yellow('Warning:')} Incorrect $base caught. Will need to fetch $base.`)
+      this.log(`${color.yellow('Warning:')} Incorrect $base or manifest caught. Will need to fetch $base.`)
       await prompt({
        type: 'list',
        message: 'Press OK to continue.',
@@ -125,6 +124,7 @@ export default class Push extends CommandExtension {
     writeFileSync('addon_manifest.json', JSON.stringify(newManifest, null, 2));
     cli.action.stop(color.green('done ✓')); // start @ line 113
 
-    console.log(color.bold(JSON.stringify(newManifest, null, 1)));
+    // Prints current manifest
+    // console.log(color.bold(JSON.stringify(newManifest, null, 1)));
   }
 }
