@@ -64,21 +64,21 @@ export default class Push extends CommandExtension {
     const slug = args.slug;
     const fetchRequest = await this.heroku.get<any>(`${host}/provider/addons/${slug}`, fetchOptions);
     const fetchBody: ManifestInterface = fetchRequest.body;
+    cli.action.stop(color.green('done ✓')); // start @ line 54
 
     // incorrect $base caught here
-    await prompt({
-     type: 'list',
-     message: 'Incorrect $base caught. Press OK to continue.',
-     name: 'data',
-     choices: ['OK', 'Cancel']
-   }).then(answers => {
-     if (answers.data === 'Cancel') {
-       this.exit(1);
-     }
-   })
     if (manifestJSON.$base !== fetchBody.$base) {
-
-      this.log(`${color.yellow('Warning:')} incorrect $base caught. Fetching $base...`)
+      this.log(`${color.yellow('Warning:')} Incorrect $base caught. Will need to fetch $base.`)
+      await prompt({
+       type: 'list',
+       message: 'Press OK to continue.',
+       name: 'data',
+       choices: ['OK', 'Cancel']
+     }).then(answers => {
+       if (answers.data === 'Cancel') {
+         this.exit(1);
+       }
+     })
 
       // writing addon_manifest.json when $base is incorrect
       const newManifest: object = {
@@ -95,9 +95,8 @@ export default class Push extends CommandExtension {
         this.error('No manifest found. Please generate a manifest before pushing.');
       }
       manifestJSON = JSON.parse(manifest)
-      cli.action.stop(); // start @ line 77
+      cli.action.stop(color.green('done ✓')); // start @ line 89
     }
-    cli.action.stop(); // start @ line 53
 
 
     // headers and data to sent addons API via http request
@@ -114,7 +113,7 @@ export default class Push extends CommandExtension {
     // POST request
     cli.action.start(`Pushing manifest`);
     const {body} = await this.heroku.post<any>(`${host}/provider/addons`, defaultOptions);
-    cli.action.stop(); // start @ line 103
+    cli.action.stop(color.green('done ✓')); // start @ line 103
 
     // writing addon_manifest.json
     const newManifest: ManifestInterface = {
@@ -124,7 +123,7 @@ export default class Push extends CommandExtension {
     };
     cli.action.start(`Updating ${color.blue('addon_manifest.json')}`);
     writeFileSync('addon_manifest.json', JSON.stringify(newManifest, null, 2));
-    cli.action.stop(); // start @ line 113
+    cli.action.stop(color.green('done ✓')); // start @ line 113
 
     console.log(color.bold(JSON.stringify(newManifest, null, 1)));
   }

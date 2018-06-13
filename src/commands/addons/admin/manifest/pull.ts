@@ -53,7 +53,7 @@ export default class Pull extends CommandExtension {
     cli.action.start(`Fetching add-on manifest for ${color.addon(slug)}`);
 
     const {body} = await this.heroku.get<any>(`${host}/provider/addons/${slug}`, defaultOptions);
-    cli.action.stop();
+    cli.action.stop(color.green('done ✓'));
 
     // writing addon_manifest.json
     const newManifest: object = {
@@ -63,7 +63,7 @@ export default class Pull extends CommandExtension {
     };
     cli.action.start(`Updating ${color.blue('addon_manifest.json')}`);
     writeFileSync('addon_manifest.json', JSON.stringify(newManifest, null, 2));
-    cli.action.stop();
+    cli.action.stop(color.green('done ✓'));
 
     console.log(color.bold(JSON.stringify(newManifest, null, 1)));
   }
