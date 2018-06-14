@@ -28,12 +28,40 @@ The file has been saved!`, ];
     if (!account) {
       this.error(color.red('Please login with Heroku credentials using `heroku login`.'));
     }
-    const manifest = generateManifest({}); // this function takes in an object see utils/manifest
+
+    // prompts for manifest
+    let manifest = generateManifest();
+    this.log(color.green('Input manifest information below: '))
+    const questions = [{
+      type: 'input',
+      name: 'id',
+      message: 'Enter slugname/manifest id:',
+      default: 'myaddon'
+    }, {
+      type: 'input',
+      name: 'name',
+      message: 'Addon name (Name displayed to on addon dashboard):',
+      default: 'MyAddon',
+    }, {
+      type: 'confirm',
+      name: 'toGenerate',
+      message: 'Would you like to generate the password and sso_salt?',
+      default: true,
+    }];
+    await prompt(questions).then(answers => {
+      if (answers.toGenerate) {
+        answers.password = generateString(32);
+        answers.sso_salt = generateString(32);
+      }
+      manifest = generateManifest(answers);
+    })
+
+    // generating manifest
     const manifestObj = JSON.stringify(manifest, null, 2);
     cli.action.start('Generating addon_manifest');
     writeFile('addon_manifest.json', manifestObj , (err) => {
       // console.log('Generating addon_manifest.json...')
-      cli.action.stop();
+      cli.action.stop(color.green('done'));
       if (err) {
         console.log('The file has not been saved: \n', err);
         return;
