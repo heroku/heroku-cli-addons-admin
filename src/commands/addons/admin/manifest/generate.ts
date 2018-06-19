@@ -49,7 +49,14 @@ The file has been saved!`, ];
       type: 'input',
       name: 'id',
       message: 'Enter slugname/manifest id:',
-      default: flags.slug || 'myaddon'
+      default: flags.slug,
+      validate: (input: any): boolean => {
+        if (input.trim() === '' || !isNaN(input)) {
+          this.error('Please use a string as a slug name.')
+          return false;
+        }
+        return true;
+      },
     }, {
       type: 'input',
       name: 'name',
