@@ -21,7 +21,20 @@ export default class Generate extends CommandExtension {
   static examples = [ `$ oclif-example addons:admin:generate
 The file has been saved!`, ];
 
+  static flags = {
+    help: flags.help({char: 'h'}),
+    slug: flags.string({
+      char: 's',
+      description: 'slugname/manifest id'
+    }),
+    addon: flags.string({
+      char: 'a',
+      description: 'addon name (name displayed to on addon dashboard)',
+    })
+  };
+
   async run() {
+    const {flags} = this.parse(Generate);
     const {body: account} = await this.heroku.get<Heroku.Account>('/account', {retryAuth: false});
 
     // checks if user is logged in, in case default user checking measures do not work
@@ -36,12 +49,12 @@ The file has been saved!`, ];
       type: 'input',
       name: 'id',
       message: 'Enter slugname/manifest id:',
-      default: 'myaddon'
+      default: flags.slug || 'myaddon'
     }, {
       type: 'input',
       name: 'name',
       message: 'Addon name (Name displayed to on addon dashboard):',
-      default: 'MyAddon',
+      default: flags.addon || 'MyAddon',
     }, {
       type: 'confirm',
       name: 'toGenerate',
