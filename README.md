@@ -30,28 +30,21 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`oclif-example addons:admin:manifest:fetch [SLUG]`](#oclif-example-addonsadminmanifestfetch-slug)
+* [`oclif-example addons:admin:manifest:diff`](#oclif-example-addonsadminmanifestdiff)
 * [`oclif-example addons:admin:manifest:generate`](#oclif-example-addonsadminmanifestgenerate)
 * [`oclif-example addons:admin:manifest:pull [SLUG]`](#oclif-example-addonsadminmanifestpull-slug)
 * [`oclif-example addons:admin:manifest:push`](#oclif-example-addonsadminmanifestpush)
 
-## `oclif-example addons:admin:manifest:fetch [SLUG]`
+## `oclif-example addons:admin:manifest:diff`
 
-fetch a manifest for a given slug
+compares remote manifest to local manifest and finds differences
 
 ```
 USAGE
-  $ oclif-example addons:admin:manifest:fetch [SLUG]
-
-OPTIONS
-  -h, --help  show CLI help
-
-EXAMPLE
-  $ heroku addons:admin:fetch slowdb
-  {...
+  $ oclif-example addons:admin:manifest:diff
 ```
 
-_See code: [src/commands/addons/admin/manifest/fetch.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/manifest/fetch.ts)_
+_See code: [src/commands/addons/admin/manifest/diff.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/manifest/diff.ts)_
 
 ## `oclif-example addons:admin:manifest:generate`
 
@@ -60,6 +53,11 @@ generate a manifest template
 ```
 USAGE
   $ oclif-example addons:admin:manifest:generate
+
+OPTIONS
+  -a, --addon=addon  addon name (name displayed to on addon dashboard)
+  -h, --help         show CLI help
+  -s, --slug=slug    slugname/manifest id
 
 EXAMPLE
   $ oclif-example addons:admin:generate

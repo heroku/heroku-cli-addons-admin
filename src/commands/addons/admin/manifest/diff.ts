@@ -3,7 +3,7 @@ import CommandExtension from '../../../../CommandExtension';
 
 // heroku-cli
 import color from '@heroku-cli/color';
-import {Command, flags} from '@heroku-cli/command';
+import { Command } from '@heroku-cli/command';
 import * as Heroku from '@heroku-cli/schema';
 
 // other packages
@@ -14,17 +14,7 @@ import { diffLines } from 'diff';
 
 
 export default class Diff extends CommandExtension {
-  static description = 'describe the command here'
-
-  static flags = {
-    help: flags.help({char: 'h'}),
-    // flag with a value (-n, --name=VALUE)
-    name: flags.string({char: 'n', description: 'name to print'}),
-    // flag with no value (-f, --force)
-    force: flags.boolean({char: 'f'}),
-  }
-
-  static args = [{name: 'file'}]
+  static description = 'compares remote manifest to local manifest and finds differences'
 
   async run() {
     const {args, flags} = this.parse(Diff)

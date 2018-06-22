@@ -69,9 +69,10 @@ The file has been saved!`, ];
       default: true,
     }];
     await prompt(questions).then(answers => {
-      if (answers.toGenerate) {
-        answers.password = generateString(32);
-        answers.sso_salt = generateString(32);
+      const promptAnswers = <any> answers; // asserts type to answers param
+      if (promptAnswers.toGenerate) {
+        promptAnswers.password = generateString(32);
+        promptAnswers.sso_salt = generateString(32);
       }
       manifest = generateManifest(answers);
     })
