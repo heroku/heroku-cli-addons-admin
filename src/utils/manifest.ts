@@ -1,3 +1,7 @@
+import CommandExtension from '../CommandExtension';
+
+import { readFileSync } from 'fs';
+
 interface ManifestInterface {
     id: string;
     name: string;
@@ -61,9 +65,18 @@ const generateManifest = (data: any = {}) => {
   return manifest;
 }
 
+function readManifest (this: CommandExtension) {
+  const manifest: string = readFileSync('addon_manifest.json', 'utf8');
+  if (!manifest) {
+    this.error('No manifest found. Please generate a manifest before pushing.');
+  }
+  return manifest;
+}
+
 
 export {
   generateManifest,
+  readManifest,
   ManifestInterface,
   ManifestAPIInterface
 }
