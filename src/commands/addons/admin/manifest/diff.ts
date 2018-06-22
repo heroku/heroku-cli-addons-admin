@@ -12,19 +12,16 @@ import { readFileSync } from 'fs';
 import { prompt } from 'inquirer';
 import { diffLines } from 'diff';
 
+// utilities
+import { getEmail } from '../../../../utils/heroku';
+
 
 export default class Diff extends CommandExtension {
   static description = 'compares remote manifest to local manifest and finds differences'
 
   async run() {
     const {args, flags} = this.parse(Diff)
-    const {body: account} = await this.heroku.get<Heroku.Account>('/account', {retryAuth: false});
-
-    // checks if user is logged in, in case default user checking measures do not work
-    if (!account) {
-      this.error(color.red('Please login with Heroku credentials using `heroku login`.'));
-    }
-    let email = account.email;
+    const email = await getEmail.apply(this);
 
     // reading current manifest
     const manifest: string = readFileSync('addon_manifest.json', 'utf8');
@@ -49,13 +46,17 @@ export default class Diff extends CommandExtension {
     cli.action.stop();
     const fetchedManifest = JSON.stringify(body, null, 2)
 
-    const diff = diffLines(fetchedManifest,manifest, { newlineIsToken: true });
+    const diff = diffLines(fetchedManifest,manifest, { newlineIsToken: true, ignoreCase: true });
 
     this.log(`${color.yellow('Disclaimer:')} Some values may be repeated, but are in different positions.`)
-    diff.forEach(part => {
-      const outputColor = part.added ? 'green' :
-                    part.removed ? 'red' : 'white';
-      console.log(color[outputColor](part.value));
+    diff.forEach(substr => {
+      let outputColor: 'white' | 'green' | 'red' = 'white';
+      if (substr.added) {
+        outputColor = 'green';
+      } else if (substr.removed) {
+        outputColor = 'red';
+      }
+      console.log(color[outputColor](substr.value));
     })
   }
 }

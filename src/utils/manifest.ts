@@ -62,8 +62,8 @@ const generateManifest = (data: any = {}) => {
 }
 
 
-export default generateManifest;
 export {
+  generateManifest,
   ManifestInterface,
   ManifestAPIInterface
 }

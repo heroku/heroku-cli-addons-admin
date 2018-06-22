@@ -10,6 +10,9 @@ import color from '@heroku-cli/color';
 import cli from 'cli-ux';
 import { readFileSync, writeFileSync } from 'fs';
 
+// utilities
+import { getEmail } from '../../../../utils/heroku';
+
 export default class Push extends CommandExtension {
   static description = 'push created manifest';
 
@@ -28,8 +31,7 @@ export default class Push extends CommandExtension {
     const {args, flags} = this.parse(Push);
 
     // getting Heroku user data
-    let {body: account} = await this.heroku.get<Heroku.Account>('/account', {retryAuth: false});
-    let email = account.email;
+    const email = getEmail.apply(this);
 
     const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com';
 

@@ -13,7 +13,7 @@ import { prompt } from 'inquirer';
 import { generate as generateString } from 'randomstring';
 
 // utils
-import generateManifest from '../../../../utils/manifest';
+import { generateManifest } from '../../../../utils/manifest';
 
 export default class Generate extends CommandExtension {
   static description = 'generate a manifest template';
@@ -35,13 +35,7 @@ The file has been saved!`, ];
 
   async run() {
     const {flags} = this.parse(Generate);
-    const {body: account} = await this.heroku.get<Heroku.Account>('/account', {retryAuth: false});
-
-    // checks if user is logged in, in case default user checking measures do not work
-    if (!account) {
-      this.error(color.red('Please login with Heroku credentials using `heroku login`.'));
-    }
-
+    
     // prompts for manifest
     let manifest = generateManifest();
     this.log(color.green('Input manifest information below: '))
