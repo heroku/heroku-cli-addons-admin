@@ -1,4 +1,4 @@
-import {expect, test, FancyTypes} from '@oclif/test';
+import {expect, test} from '@oclif/test';
 
 // mandatory elements in a single manifest document (refer to /src/utils/manifest.ts)
 const manifestElements: string[] = ['id', 'name', 'api'];
