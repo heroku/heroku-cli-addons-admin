@@ -20,6 +20,7 @@
     "fs": "^0.0.1-security",
     "inquirer": "^6.0.0",
     "jsdiff": "^1.1.1",
+    "nock": "^9.3.3",
     "qqjs": "^0.3.10",
     "randomstring": "^1.1.5",
     "tslib": "^1"
@@ -27,7 +28,7 @@
   "devDependencies": {
     "@oclif/dev-cli": "^1",
     "@oclif/plugin-help": "^1",
-    "@oclif/test": "^1",
+    "@oclif/test": "^1.1.0",
     "@oclif/tslint": "^1",
     "@types/chai": "^4",
     "@types/mocha": "^5",
