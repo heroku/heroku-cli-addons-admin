@@ -24,6 +24,10 @@ const testManifest = {
 
 describe('addons:admin:manifest:diff', () => {
   test
+  .nock('https://api.heroku.com', (api: any) => api
+    .get('/account')
+    .reply(200, {email: 'aman@example.com'})
+  )
   .stdout()
   .command(['addons:admin:manifest:diff'])
   .it('contains static stdout', (ctx:any) => {
@@ -31,10 +35,13 @@ describe('addons:admin:manifest:diff', () => {
   });
 
   test
-  .stdout({print: true})
+  .nock('https://api.heroku.com', (api: any) => api
+    .get('/account')
+    .reply(200, {email: 'aman@example.com'})
+  )
+  .stdout()
   .command(['addons:admin:manifest:diff'])
   .it('contains all elements', (ctx: any) => {
-    console.log('ctx:', test)
     manifestElements.forEach(val => {
       expect(ctx.stdout).to.contain(val);
     });
@@ -46,7 +53,12 @@ describe('addons:admin:manifest:diff', () => {
     });
   })
 
-  test.nock(host, (api: any) => {
+  test
+  .nock('https://api.heroku.com', (api: any) => api
+    .get('/account')
+    .reply(200, {email: 'aman@example.com'})
+  )
+  .nock(host, (api: any) => {
     api.get('/provider/addons/testing-123')
     .reply(200, {body: testManifest})
   })
