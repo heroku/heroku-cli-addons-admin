@@ -35,7 +35,7 @@ The file has been saved!`, ];
 
   async run() {
     const {flags} = this.parse(Generate);
-    
+
     // prompts for manifest
     let manifest = generateManifest();
     this.log(color.green('Input manifest information below: '))

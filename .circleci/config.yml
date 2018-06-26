@@ -20,10 +20,7 @@ jobs:
           command: curl https://cli-assets.heroku.com/install.sh | sh
       - run:
           name: Setting up plugin
-          command: npm install -g oclif && heroku plugins:link
-      - run:
-          name: Setting up manifest
-          command: yes "" | heroku addons:admin:manifest:generate -a "CircleCITest" -s "testing-123"
+          command: npm install -g oclif && heroku plugins:link && heroku addons:admin:manifest:pull testing-123
       - run:
           name: Testing
           command: yarn test
