@@ -63,11 +63,11 @@
   },
   "repository": "heroku/heroku-cli-addons-admin",
   "scripts": {
+    "clean:branch": "./bin/clean-branch.sh",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "tsc -p test --noEmit && tslint -p test -t stylish",
     "prepack": "rm -rf lib && tsc && oclif-dev manifest && oclif-dev readme",
     "test": "nyc mocha --forbid-only \"test/**/*.test.ts\"",
-    "version": "oclif-dev readme && git add README.md",
-    "clean:branch": "./bin/clean-branch.sh"
+    "version": "oclif-dev readme && git add README.md"
   }
 }
