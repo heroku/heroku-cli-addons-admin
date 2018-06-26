@@ -30,7 +30,11 @@ The file has been saved!`, ];
     addon: flags.string({
       char: 'a',
       description: 'addon name (name displayed to on addon dashboard)',
-    })
+    }),
+    template: flags.boolean({
+      char: 't',
+      description: 'generates manifest with default options'
+    }),
   };
 
   async run() {
@@ -38,7 +42,6 @@ The file has been saved!`, ];
 
     // prompts for manifest
     let manifest = generateManifest();
-    this.log(color.green('Input manifest information below: '))
     const questions = [{
       type: 'input',
       name: 'id',
@@ -62,14 +65,24 @@ The file has been saved!`, ];
       message: 'Would you like to generate the password and sso_salt?',
       default: true,
     }];
-    await prompt(questions).then(answers => {
-      const promptAnswers = <any> answers; // asserts type to answers param
-      if (promptAnswers.toGenerate) {
-        promptAnswers.password = generateString(32);
-        promptAnswers.sso_salt = generateString(32);
-      }
-      manifest = generateManifest(answers);
-    })
+    if (!flags.template) {
+      this.log(color.green('Input manifest information below: '))
+      await prompt(questions).then(answers => {
+        const promptAnswers = <any> answers; // asserts type to answers param
+        if (promptAnswers.toGenerate) {
+          promptAnswers.password = generateString(32);
+          promptAnswers.sso_salt = generateString(32);
+        }
+        manifest = generateManifest(answers);
+      })
+    } else {
+      manifest = generateManifest({
+        id: 'testing-123',
+        name: 'MyAddon',
+        password: generateString(32),
+        sso_salt: generateString(32)
+      });
+    }
 
     // generating manifest
     const manifestObj = JSON.stringify(manifest, null, 2);
