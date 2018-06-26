@@ -19,7 +19,7 @@ jobs:
           name: Installing up Heroku CLI
           command: curl https://cli-assets.heroku.com/install.sh | sh
       - run:
-          name: Setting up plugin
+          name: Setting up plugin and pulling manifest
           command: npm install -g oclif && heroku plugins:link && heroku addons:admin:manifest:pull testing-123
       - run:
           name: Testing
