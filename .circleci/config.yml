@@ -16,6 +16,15 @@ jobs:
           command: .circleci/greenkeeper
       - run: ./bin/run --help
       - run:
+          name: Installing up Heroku CLI
+          command: curl https://cli-assets.heroku.com/install.sh | sh
+      - run:
+          name: Setting up plugin
+          command: npm install -g oclif
+      - run:
+          name: Setting up manifest
+          command: yes "" | heroku addons:admin:manifest:generate -a "CircleCITest" -s "testing-123"
+      - run:
           name: Testing
           command: yarn test
       - run:
