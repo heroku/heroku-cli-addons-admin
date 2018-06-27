@@ -1,5 +1,8 @@
 import {expect, test} from '@oclif/test';
 
+// test addon
+const manifest = require('./../../../../../addon_manifest');
+
 // mandatory elements in a single manifest document (refer to /src/utils/manifest.ts)
 const manifestElements: string[] = ['id', 'name', 'api'];
 const manifestAPIElements: string[] = [
@@ -26,7 +29,11 @@ describe('addons:admin:manifest:diff', () => {
   test
   .nock('https://api.heroku.com', (api: any) => api
     .get('/account')
-    .reply(200, {email: 'aman@example.com'})
+    .reply(200, {email: 'aman.ibrahim@heroku.com'})
+  )
+  .nock(host, (api: any) => api
+    .get('/provider/addons/testing-123')
+    .reply(200, manifest)
   )
   .stdout()
   .command(['addons:admin:manifest:diff'])
@@ -37,7 +44,11 @@ describe('addons:admin:manifest:diff', () => {
   test
   .nock('https://api.heroku.com', (api: any) => api
     .get('/account')
-    .reply(200, {email: 'aman@example.com'})
+    .reply(200, {email: 'aman.ibrahim@heroku.com'})
+  )
+  .nock(host, (api: any) => api
+    .get('/provider/addons/testing-123')
+    .reply(200, manifest)
   )
   .stdout()
   .command(['addons:admin:manifest:diff'])
@@ -56,7 +67,7 @@ describe('addons:admin:manifest:diff', () => {
   test
   .nock('https://api.heroku.com', (api: any) => api
     .get('/account')
-    .reply(200, {email: 'aman@example.com'})
+    .reply(200, {email: 'aman.ibrahim@heroku.com'})
   )
   .nock(host, (api: any) => {
     api.get('/provider/addons/testing-123')
