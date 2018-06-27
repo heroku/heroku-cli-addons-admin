@@ -1,3 +1,4 @@
+/* tslint:disable */
 import CommandExtension from '../CommandExtension';
 
 import { readFileSync } from 'fs';

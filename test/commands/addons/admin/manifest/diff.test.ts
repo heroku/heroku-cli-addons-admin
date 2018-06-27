@@ -1,3 +1,4 @@
+/* tslint:disable */
 import {expect, test} from '@oclif/test';
 
 // test addon

@@ -1,3 +1,4 @@
+/* tslint:disable */
 // CommandExtension
 import CommandExtension from '../../../../CommandExtension';
 
