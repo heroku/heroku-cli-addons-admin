@@ -47,7 +47,6 @@ export default class Diff extends CommandExtension {
 
     const diff = diffLines(fetchedManifest,manifest, { newlineIsToken: true, ignoreCase: true });
 
-    this.log(`${color.yellow('Disclaimer:')} Some values may be repeated, but are in different positions.`)
     diff.forEach(substr => {
       let outputColor: 'white' | 'green' | 'red' = 'white';
       if (substr.added) {
