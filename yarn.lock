@@ -58,11 +58,11 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.0.tgz#50c1e2260ac0ed9439a181de3725a0168d59c48a"
 
 "@oclif/command@^1.4.29", "@oclif/command@^1.4.30", "@oclif/command@^1.4.33":
-  version "1.4.34"
-  resolved "https://registry.yarnpkg.com/@oclif/command/-/command-1.4.34.tgz#05a8798740e9a01209732cba6557f21629043b30"
+  version "1.4.33"
+  resolved "https://registry.yarnpkg.com/@oclif/command/-/command-1.4.33.tgz#40a48e7384d6b4394c2ca20e5c05ff45541087f5"
   dependencies:
     "@oclif/errors" "^1.1.2"
-    "@oclif/parser" "^3.5.2"
+    "@oclif/parser" "^3.5.1"
     debug "^3.1.0"
     semver "^5.5.0"
 
@@ -74,8 +74,8 @@
     tslib "^1.9.2"
 
 "@oclif/dev-cli@^1":
-  version "1.15.4"
-  resolved "https://registry.yarnpkg.com/@oclif/dev-cli/-/dev-cli-1.15.4.tgz#ffd91e36adcb08dcecc7b8c905428ba0ca17bef3"
+  version "1.15.3"
+  resolved "https://registry.yarnpkg.com/@oclif/dev-cli/-/dev-cli-1.15.3.tgz#e8b5989536d460d18c470eaa1c41cfac926fef4b"
   dependencies:
     "@oclif/command" "^1.4.33"
     "@oclif/config" "^1.6.33"
@@ -103,7 +103,7 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@oclif/linewrap/-/linewrap-1.0.0.tgz#aedcb64b479d4db7be24196384897b5000901d91"
 
-"@oclif/parser@^3.5.2":
+"@oclif/parser@^3.5.1":
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/@oclif/parser/-/parser-3.5.2.tgz#541bd783463ea0b3717836a12de36cf2a73297de"
   dependencies:
@@ -202,8 +202,8 @@
     "@types/node" "*"
 
 "@types/node@*", "@types/node@^10", "@types/node@^10.3.3":
-  version "10.3.6"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.6.tgz#ea8aab9439b59f40d19ec5f13b44642344872b11"
+  version "10.3.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.4.tgz#c74e8aec19e555df44609b8057311052a2c84d9e"
 
 "@types/randomstring@^1.1.6":
   version "1.1.6"
@@ -1210,8 +1210,8 @@ heroku-client@^3.0.6:
     tunnel-agent "^0.6.0"
 
 hosted-git-info@^2.1.4:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.6.1.tgz#6e4cee78b01bb849dcf93527708c69fdbee410df"
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.6.0.tgz#23235b29ab230c576aab0d4f13fc046b0b038222"
 
 http-call@^5.1.2, http-call@^5.1.4:
   version "5.1.4"
