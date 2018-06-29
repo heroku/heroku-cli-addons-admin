@@ -39,7 +39,7 @@ describe('addons:admin:manifest:diff', () => {
   .stdout()
   .command(['addons:admin:manifest:diff'])
   .it('contains static stdout', (ctx:any) => {
-    expect(ctx.stdout).to.contain('Some values may be repeated, but are in different positions.')
+    expect(ctx.stdout).to.contain('testing-123')
   });
 
   test
