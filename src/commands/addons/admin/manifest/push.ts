@@ -33,7 +33,7 @@ export default class Push extends CommandExtension {
     const {args, flags} = this.parse(Push);
 
     // getting Heroku user data
-    const email = getEmail.apply(this);
+    let email: string | undefined = await getEmail.apply(this)
 
     const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com';
 
@@ -53,7 +53,14 @@ export default class Push extends CommandExtension {
 
     // POST request
     cli.action.start(`Pushing manifest`);
-    const {body} = await this.heroku.post<any>(`${host}/provider/addons`, defaultOptions);
+    let body: any = undefined;
+    await this.axios.post(`${host}/provider/addons`, JSON.parse(manifest), defaultOptions)
+    .then((res: any) => {
+      body = res.data;
+    })
+    .catch((err: any) => {
+      if (err) this.error(err)
+    })
     cli.action.stop();
 
     // writing addon_manifest.json

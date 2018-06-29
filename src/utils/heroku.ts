@@ -6,13 +6,20 @@ import * as Heroku from '@heroku-cli/schema';
 
 
 async function getEmail(this: CommandExtension) {
-  const {body: account} = await this.heroku.get<Heroku.Account>('/account', {retryAuth: false});
+  // getting Heroku user data
+  let email: string | undefined = undefined;
+  await this.axios.get('/account')
+  .then ((res: any) => {
+    email = res.data.email;
+  })
+  .catch((err:any) => {
+    if (err) this.error(err)
+  });
 
   // checks if user is logged in, in case default user checking measures do not work
-  if (!account) {
+  if (!email) {
     this.error(color.red('Please login with Heroku credentials using `heroku login`.'));
   }
-  let email = account.email;
   return email;
 }
 

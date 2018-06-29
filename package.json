@@ -19,6 +19,7 @@
     "@types/write-json-file": "^2.2.1",
     "cli-ux": "^4.7.3",
     "diff": "^3.5.0",
+    "axios": "^0.18.0",
     "fs": "^0.0.1-security",
     "inquirer": "^6.0.0",
     "jsdiff": "^1.1.1",

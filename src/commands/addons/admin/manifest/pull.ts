@@ -33,7 +33,7 @@ export default class Pull extends CommandExtension {
     const {args, flags} = this.parse(Pull);
 
     // getting Heroku user data
-    const email = getEmail.apply(this);
+    let email: string | undefined = await getEmail.apply(this);
 
     // headers and data to sent addons API via http request
     let defaultOptions = {
@@ -50,7 +50,15 @@ export default class Pull extends CommandExtension {
     // GET request
     cli.action.start(`Fetching add-on manifest for ${color.addon(slug)}`);
 
-    const {body} = await this.heroku.get<any>(`${host}/provider/addons/${slug}`, defaultOptions);
+    let body: any;
+    await this.axios.get(`${host}/provider/addons/${slug}`, defaultOptions)
+    .then((res: any) => {
+      this.log(res.data);
+      body = res.data;
+    })
+    .catch((err:any) => {
+      if (err) this.error(err)
+    })
     cli.action.stop();
 
     // writing addon_manifest.json

@@ -15,6 +15,7 @@ import { generate as generateString } from 'randomstring';
 
 // utils
 import { generateManifest } from '../../../../utils/manifest';
+import { getEmail } from '../../../../utils/heroku';
 
 export default class Generate extends CommandExtension {
   static description = 'generate a manifest template';
@@ -40,6 +41,9 @@ The file has been saved!`, ];
 
   async run() {
     const {flags} = this.parse(Generate);
+
+    // getting Heroku user data
+    let email: string | undefined = await getEmail.apply(this)
 
     // prompts for manifest
     let manifest = generateManifest();
