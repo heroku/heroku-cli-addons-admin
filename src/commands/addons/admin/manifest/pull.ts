@@ -38,7 +38,7 @@ export default class Pull extends CommandExtension {
     // headers and data to sent addons API via http request
     let defaultOptions = {
       headers: {
-        authorization: `Basic ${Buffer.from(email + ':' + this.heroku.auth).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(email + ':' + this.heroku.auth).toString('base64')}`,
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'User-Agent': 'kensa future'

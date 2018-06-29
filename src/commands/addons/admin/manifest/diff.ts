@@ -22,7 +22,7 @@ export default class Diff extends CommandExtension {
   static description = 'compares remote manifest to local manifest and finds differences'
 
   async run() {
-    const {args, flags} = this.parse(Diff)
+    const {flags} = this.parse(Diff)
     const email = await getEmail.apply(this);
 
     // reading current manifest
@@ -34,20 +34,28 @@ export default class Diff extends CommandExtension {
     const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com';
     let defaultOptions = {
       headers: {
-        authorization: `Basic ${Buffer.from(email + ':' + this.heroku.auth).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(email + ':' + this.heroku.auth).toString('base64')}`,
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'User-Agent': 'kensa future'
       }
     };
 
-    const {body} = await this.heroku.get<any>(`${host}/provider/addons/${slug}`, defaultOptions); // manifest fetched
+    let body: any = undefined;
+    await this.axios.get(`${host}/provider/addons/${slug}`, defaultOptions)
+    .then((res: any) => {
+      body = res.data
+    })
+    .catch((err: any) => {
+      this.log('here')
+      if (err) this.error(err);
+    })
     cli.action.stop();
     const fetchedManifest = JSON.stringify(body, null, 2)
 
     const diff = diffLines(fetchedManifest,manifest, { newlineIsToken: true, ignoreCase: true });
 
-    diff.forEach(substr => {
+    diff.forEach((substr: any) => {
       let outputColor: 'white' | 'green' | 'red' = 'white';
       if (substr.added) {
         outputColor = 'green';

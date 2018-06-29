@@ -79,4 +79,24 @@ describe('addons:admin:manifest:diff', () => {
   .it('contains correct test API elements', (ctx: any) => {
     expect(ctx.stdout).to.contain(`"test": "${testManifest.test}"`);
   })
+
+  test
+  .nock('https://api.heroku.com', (api: any) => api
+    .get('/account')
+    .reply(200, {email: 'aman.ibrahim@heroku.com'})
+  )
+  .nock(host, (api: any) => {
+    try {
+      api.get('/provider/addons/testing-123')
+      .replyWithError('test')
+    } catch (err) {
+      expect(err).to.exist;
+    }
+  })
+  .stdout({ print: true })
+  .stderr({ print: true })
+  .command(['addons:admin:manifest:diff'])
+  .it('error testing', (ctx: any) => {
+    console.log('etst', ctx.stderr)
+  })
 })
