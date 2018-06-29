@@ -72,17 +72,30 @@ The file has been saved!`, ];
       message: 'Addon name (Name displayed to on addon dashboard):',
       default: flags.addon || 'MyAddon',
     }, {
+      type: 'checkbox',
+      name: 'regions',
+      message: 'Choose regions to support',
+      choices: ['us', 'eu', 'dublin', 'frankfurt', 'oregan', 'sydney', 'tokyo', 'virginia'],
+      validate: (input: any): boolean => {
+        if (input.length < 1) {
+          this.error('Please select at least one region.');
+          return false;
+        }
+        return true;
+      },
+    }, {
       type: 'confirm',
       name: 'toGenerate',
       message: 'Would you like to generate the password and sso_salt?',
       default: true,
     }];
     await prompt(questions).then(answers => {
-      if (answers.toGenerate) {
-        answers.password = generateString(32);
-        answers.sso_salt = generateString(32);
+      const promptAnswers = <any> answers;
+      if (promptAnswers.toGenerate) {
+        promptAnswers.password = generateString(32);
+        promptAnswers.sso_salt = generateString(32);
       }
-      manifest = generateManifest(answers);
+      manifest = generateManifest(promptAnswers);
     })
 
     // generating manifest
