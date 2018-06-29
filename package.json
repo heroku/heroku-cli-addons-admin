@@ -11,6 +11,7 @@
     "@oclif/config": "^1",
     "@types/inquirer": "^0.0.41",
     "@types/randomstring": "^1.1.6",
+    "axios": "^0.18.0",
     "cli-ux": "^4.5.1",
     "fs": "^0.0.1-security",
     "inquirer": "^6.0.0",

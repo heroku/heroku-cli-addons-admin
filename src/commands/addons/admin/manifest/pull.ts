@@ -29,8 +29,19 @@ export default class Pull extends CommandExtension {
     const {args, flags} = this.parse(Pull);
 
     // getting Heroku user data
-    let {body: account} = await this.heroku.get<Heroku.Account>('/account', {retryAuth: false});
-    let email = account.email;
+    let email: string | undefined = undefined;
+    await this.axios.get('/account')
+    .then ((res: any) => {
+      email = res.data.email;
+    })
+    .catch((err:any) => {
+      if (err) this.error(err)
+    });
+
+    // checks if user is logged in, in case default user checking measures do not work
+    if (!email) {
+      this.error(color.red('Please login with Heroku credentials using `heroku login`.'));
+    }
 
     // headers and data to sent addons API via http request
     let defaultOptions = {
@@ -47,7 +58,15 @@ export default class Pull extends CommandExtension {
     // GET request
     cli.action.start(`Fetching add-on manifest for ${color.addon(slug)}`);
 
-    const {body} = await this.heroku.get<any>(`${host}/provider/addons/${slug}`, defaultOptions);
+    let body: any;
+    await this.axios.get(`${host}/provider/addons/${slug}`, defaultOptions)
+    .then((res: any) => {
+      this.log(res.data);
+      body = res.data;
+    })
+    .catch((err:any) => {
+      if (err) this.error(err)
+    })
     cli.action.stop();
 
     // writing addon_manifest.json
