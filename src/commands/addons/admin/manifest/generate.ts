@@ -43,7 +43,10 @@ The file has been saved!`, ];
     const {flags} = this.parse(Generate);
 
     // getting Heroku user data
-    let email: string | undefined = await getEmail.apply(this)
+    let email: string | undefined = undefined; // allow circleci 
+    if (!flags.template) {
+    email = await getEmail.apply(this)
+    }
 
     // prompts for manifest
     let manifest = generateManifest();
