@@ -86,17 +86,14 @@ describe('addons:admin:manifest:diff', () => {
     .reply(200, {email: 'aman.ibrahim@heroku.com'})
   )
   .nock(host, (api: any) => {
-    try {
-      api.get('/provider/addons/testing-123')
-      .replyWithError('test')
-    } catch (err) {
-      expect(err).to.exist;
-    }
+    api.get('/provider/addons/testing-123')
+    .replyWithError('test')
   })
   .stdout({ print: true })
   .stderr({ print: true })
   .command(['addons:admin:manifest:diff'])
-  .it('error testing', (ctx: any) => {
-    console.log('etst', ctx.stderr)
+  .catch((err: any) => {
+    expect(err).to.be.an('error');
   })
+  .it('error testing')
 })
