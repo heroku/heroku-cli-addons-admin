@@ -1,3 +1,4 @@
+/* tslint:disable */
 // CommandExtension
 import CommandExtension from '../../../../CommandExtension';
 
@@ -13,7 +14,8 @@ import { prompt } from 'inquirer';
 import { generate as generateString } from 'randomstring';
 
 // utils
-import generateManifest from '../../../../utils/manifest';
+import { generateManifest } from '../../../../utils/manifest';
+import { getEmail } from '../../../../utils/heroku';
 
 export default class Generate extends CommandExtension {
   static description = 'generate a manifest template';
@@ -37,23 +39,10 @@ The file has been saved!`, ];
     const {flags} = this.parse(Generate);
 
     // getting Heroku user data
-    let email: string | undefined = undefined;
-    await this.axios.get('/account')
-    .then ((res: any) => {
-      email = res.data.email;
-    })
-    .catch((err:any) => {
-      if (err) this.error(err)
-    });
-
-    // checks if user is logged in, in case default user checking measures do not work
-    if (!email) {
-      this.error(color.red('Please login with Heroku credentials using `heroku login`.'));
-    }
+    let email: string | undefined = await getEmail.apply(this)
 
     // prompts for manifest
     let manifest = generateManifest();
-    this.log(color.green('Input manifest information below: '))
     const questions = [{
       type: 'input',
       name: 'id',
@@ -89,8 +78,11 @@ The file has been saved!`, ];
       message: 'Would you like to generate the password and sso_salt?',
       default: true,
     }];
+
+    // prompts begin here
+    this.log(color.green('Input manifest information below: '))
     await prompt(questions).then(answers => {
-      const promptAnswers = <any> answers;
+      const promptAnswers = <any> answers; // asserts type to answers param
       if (promptAnswers.toGenerate) {
         promptAnswers.password = generateString(32);
         promptAnswers.sso_salt = generateString(32);

@@ -1,4 +1,5 @@
-import {Command} from '@heroku-cli/command';
+/* tslint:disable */
+import {Command} from '@heroku-cli/command'
 import * as qqjs from 'qqjs';
 import axios from 'axios';
 

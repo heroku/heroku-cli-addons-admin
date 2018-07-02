@@ -1,3 +1,4 @@
+/* tslint:disable */
 // CommandExtension
 import CommandExtension from '../../../../CommandExtension';
 
@@ -9,6 +10,10 @@ import color from '@heroku-cli/color';
 // other packages
 import cli from 'cli-ux';
 import { readFileSync, writeFileSync } from 'fs';
+
+// utilities
+import { getEmail } from '../../../../utils/heroku';
+import { readManifest } from '../../../../utils/manifest';
 
 export default class Push extends CommandExtension {
   static description = 'push created manifest';
@@ -28,27 +33,17 @@ export default class Push extends CommandExtension {
     const {args, flags} = this.parse(Push);
 
     // getting Heroku user data
-    let email: string | undefined = undefined;
-    await this.axios.get('/account')
-    .then ((res: any) => {
-      email = res.data.email;
-    })
-    .catch((err:any) => {
-      if (err) this.error(err)
-    });
+    let email: string | undefined = await getEmail.apply(this)
 
     const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com';
 
     // grabbing manifest data
-    const manifest: string = readFileSync('addon_manifest.json', 'utf8');
-    if (!manifest) {
-      this.error('No manifest found. Please generate a manifest before pushing.');
-    }
+    const manifest: string = readManifest.apply(this);
 
     // headers and data to sent addons API via http request
     let defaultOptions: object = {
       headers: {
-        authorization: `Basic ${Buffer.from(email + ':' + this.heroku.auth).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(email + ':' + this.heroku.auth).toString('base64')}`,
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'User-Agent': 'kensa future'

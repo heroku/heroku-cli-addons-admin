@@ -7,3 +7,4 @@
 /tmp
 node_modules
 addon_manifest.json
+!*/fixture/addon_manifest.json

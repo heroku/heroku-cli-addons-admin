@@ -30,9 +30,22 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`oclif-example addons:admin:manifest:diff`](#oclif-example-addonsadminmanifestdiff)
 * [`oclif-example addons:admin:manifest:generate`](#oclif-example-addonsadminmanifestgenerate)
 * [`oclif-example addons:admin:manifest:pull [SLUG]`](#oclif-example-addonsadminmanifestpull-slug)
 * [`oclif-example addons:admin:manifest:push`](#oclif-example-addonsadminmanifestpush)
+
+
+## `oclif-example addons:admin:manifest:diff`
+
+compares remote manifest to local manifest and finds differences
+
+```
+USAGE
+  $ oclif-example addons:admin:manifest:diff
+```
+
+_See code: [src/commands/addons/admin/manifest/diff.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/manifest/diff.ts)_
 
 ## `oclif-example addons:admin:manifest:generate`
 

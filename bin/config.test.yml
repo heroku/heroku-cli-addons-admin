@@ -2,6 +2,7 @@
 version: 2
 jobs:
   node-latest: &test
+  build:
     docker:
       - image: node:latest
     working_directory: ~/cli
@@ -19,8 +20,11 @@ jobs:
           name: Installing Heroku CLI
           command: curl https://cli-assets.heroku.com/install.sh | sh
       - run:
-          name: Setting up plugin and manifet
-          command: yarn global add oclif && heroku plugins:link && cp test/fixture/addon_manifest.json .
+          name: Setting up plugin
+          command: yarn global add oclif && heroku plugins:link
+      - run:
+          name: Setting up manifest
+          command: heroku addons:admin:manifest:generate -t
       - run:
           name: Testing
           command: yarn test

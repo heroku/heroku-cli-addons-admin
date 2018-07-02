@@ -28,7 +28,7 @@
     strip-ansi "^4.0.0"
     supports-color "^5.4.0"
 
-"@heroku-cli/command@^8.1.20":
+"@heroku-cli/command@^8.1.26":
   version "8.1.26"
   resolved "https://registry.yarnpkg.com/@heroku-cli/command/-/command-8.1.26.tgz#9a40d29ae11e6e6c239e0c67c9e89f0c54beb391"
   dependencies:
@@ -138,7 +138,7 @@
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@oclif/screen/-/screen-1.0.2.tgz#c9d7c84b0ea60ecec8dd7a9b22c012ba9967aed8"
 
-"@oclif/test@^1":
+"@oclif/test@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@oclif/test/-/test-1.1.0.tgz#63eea93f3b20ff534831b1a281d217eb02073a9c"
   dependencies:
@@ -154,6 +154,28 @@
   version "4.1.4"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.1.4.tgz#5ca073b330d90b4066d6ce18f60d57f2084ce8ca"
 
+"@types/diff@^3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@types/diff/-/diff-3.5.1.tgz#30253f6e177564ad7da707b1ebe46d3eade71706"
+
+"@types/events@*":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/events/-/events-1.2.0.tgz#81a6731ce4df43619e5c8c945383b3e62a89ea86"
+
+"@types/execa@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@types/execa/-/execa-0.9.0.tgz#9b025d2755f17e80beaf9368c3f4f319d8b0fb93"
+  dependencies:
+    "@types/node" "*"
+
+"@types/glob@^5.0.35":
+  version "5.0.35"
+  resolved "https://registry.yarnpkg.com/@types/glob/-/glob-5.0.35.tgz#1ae151c802cece940443b5ac246925c85189f32a"
+  dependencies:
+    "@types/events" "*"
+    "@types/minimatch" "*"
+    "@types/node" "*"
+
 "@types/inquirer@^0.0.41":
   version "0.0.41"
   resolved "https://registry.yarnpkg.com/@types/inquirer/-/inquirer-0.0.41.tgz#0c33027dcd0b0dde234e22afa454f2c75d8b30d2"
@@ -164,6 +186,10 @@
 "@types/lodash@^4.14.109":
   version "4.14.110"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.110.tgz#fb07498f84152947f30ea09d89207ca07123461e"
+
+"@types/minimatch@*":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
 
 "@types/mocha@^5", "@types/mocha@^5.2.2":
   version "5.2.3"
@@ -275,11 +301,19 @@
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-5.0.1.tgz#a15b36ec42f1f53166617491feabd1734cb03e21"
 
+"@types/supports-color@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@types/supports-color/-/supports-color-5.3.0.tgz#eb6a52e9531fb3ebcd401cec774d1bdfb571f793"
+
 "@types/through@*":
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/through/-/through-0.0.29.tgz#72943aac922e179339c651fa34a4428a4d722f93"
   dependencies:
     "@types/node" "*"
+
+"@types/write-json-file@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@types/write-json-file/-/write-json-file-2.2.1.tgz#74155aaccbb0d532be21f9d66bebc4ea875a5a62"
 
 align-text@^0.1.1, align-text@^0.1.3:
   version "0.1.4"
@@ -583,7 +617,7 @@ center-align@^0.1.1:
     align-text "^0.1.3"
     lazy-cache "^1.0.3"
 
-chai@^4:
+chai@^4, chai@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/chai/-/chai-4.1.2.tgz#0f64584ba642f0f2ace2806279f4f06ca23ad73c"
   dependencies:
@@ -643,7 +677,7 @@ cli-cursor@^2.1.0:
   dependencies:
     restore-cursor "^2.0.0"
 
-cli-ux@^4.5.1, cli-ux@^4.7.1, cli-ux@^4.7.2:
+cli-ux@^4.7.1, cli-ux@^4.7.2, cli-ux@^4.7.3:
   version "4.7.3"
   resolved "https://registry.yarnpkg.com/cli-ux/-/cli-ux-4.7.3.tgz#5b7f5e70105fde53883c5307a88e2f29f64236c4"
   dependencies:
@@ -797,6 +831,10 @@ deep-eql@^3.0.0:
   dependencies:
     type-detect "^4.0.0"
 
+deep-equal@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-1.0.1.tgz#f5d260292b660e084eff4cdbc9f08ad3247448b5"
+
 default-require-extensions@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/default-require-extensions/-/default-require-extensions-1.0.0.tgz#f37ea15d3e13ffd9b437d33e1a75b5fb97874cb8"
@@ -832,7 +870,7 @@ detect-indent@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/detect-indent/-/detect-indent-5.0.0.tgz#3871cc0a6a002e8c3e5b3cf7f336264675f06b9d"
 
-diff@3.5.0, diff@^3.1.0, diff@^3.2.0:
+diff@3.5.0, diff@^3.1.0, diff@^3.2.0, diff@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/diff/-/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
 
@@ -926,6 +964,10 @@ extend-shallow@^3.0.0, extend-shallow@^3.0.2:
   dependencies:
     assign-symbols "^1.0.0"
     is-extendable "^1.0.1"
+
+"extensionmgr@>= 0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/extensionmgr/-/extensionmgr-0.1.0.tgz#177767ce5f5f6b3f2f59205261f4fe1f0efa2c16"
 
 external-editor@^3.0.0:
   version "3.0.0"
@@ -1317,6 +1359,10 @@ is-descriptor@^1.0.0, is-descriptor@^1.0.2:
     is-data-descriptor "^1.0.0"
     kind-of "^6.0.2"
 
+is-equal@~0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/is-equal/-/is-equal-0.1.0.tgz#fcf6e0fdc9dca9a4d4768bae73b8cdaa5b3fab6e"
+
 is-extendable@^0.1.0, is-extendable@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/is-extendable/-/is-extendable-0.1.1.tgz#62b110e289a471418e3ec36a617d472e301dfc89"
@@ -1489,6 +1535,12 @@ js-yaml@^3.7.0:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
+jsdiff@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/jsdiff/-/jsdiff-1.1.1.tgz#eaa6e7c16db9f64b979d28f986fa1ca457b222e5"
+  dependencies:
+    is-equal "~0.1.0"
+
 jsesc@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-1.3.0.tgz#46c3fec8c1892b12b0833db9bc7622176dbab34b"
@@ -1496,6 +1548,10 @@ jsesc@^1.3.0:
 json-parse-better-errors@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
+
+json-stringify-safe@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
 
 jsonfile@^4.0.0:
   version "4.0.0"
@@ -1576,7 +1632,7 @@ lodash.templatesettings@^4.0.0:
   dependencies:
     lodash._reinterpolate "~3.0.0"
 
-lodash@^4.17.10, lodash@^4.17.4, lodash@^4.3.0:
+lodash@^4.17.10, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0:
   version "4.17.10"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
 
@@ -1751,6 +1807,20 @@ netrc-parser@^3.1.5:
 nice-try@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.4.tgz#d93962f6c52f2c1558c0fbda6d512819f1efe1c4"
+
+nock@^9.3.3:
+  version "9.3.3"
+  resolved "https://registry.yarnpkg.com/nock/-/nock-9.3.3.tgz#d9f4cd3c011afeadaf5ccf1b243f6e353781cda0"
+  dependencies:
+    chai "^4.1.2"
+    debug "^3.1.0"
+    deep-equal "^1.0.0"
+    json-stringify-safe "^5.0.1"
+    lodash "^4.17.5"
+    mkdirp "^0.5.0"
+    propagate "^1.0.0"
+    qs "^6.5.1"
+    semver "^5.5.0"
 
 normalize-package-data@^2.3.2, normalize-package-data@^2.4.0:
   version "2.4.0"
@@ -1994,6 +2064,10 @@ process-nextick-args@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.0.tgz#a37d732f4271b4ab1ad070d35508e8290788ffaa"
 
+propagate@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/propagate/-/propagate-1.0.0.tgz#00c2daeedda20e87e3782b344adba1cddd6ad709"
+
 pseudomap@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
@@ -2022,6 +2096,10 @@ qqjs@^0.3.10:
     tar-fs "^1.16.2"
     tmp "^0.0.33"
     write-json-file "^2.3.0"
+
+qs@^6.5.1:
+  version "6.5.2"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
 
 randomstring@^1.1.5:
   version "1.1.5"
@@ -2381,6 +2459,12 @@ strip-bom@^3.0.0:
 strip-eof@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/strip-eof/-/strip-eof-1.0.0.tgz#bb43ff5598a6eb05d89b59fcd129c983313606bf"
+
+stub@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/stub/-/stub-0.3.2.tgz#c449904b35eae98f4c2bfd61b9ea3767b027b7d0"
+  dependencies:
+    extensionmgr ">= 0.1.0"
 
 supports-color@5.4.0, supports-color@^5.0.0, supports-color@^5.3.0, supports-color@^5.4.0:
   version "5.4.0"

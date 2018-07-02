@@ -1,3 +1,4 @@
+/* tslint:disable */
 // CommandExtension
 import CommandExtension from '../../../../CommandExtension';
 
@@ -9,6 +10,9 @@ import color from '@heroku-cli/color';
 // other packages
 import cli from 'cli-ux';
 import { writeFileSync } from 'fs';
+
+// utilities
+import { getEmail } from '../../../../utils/heroku';
 
 export default class Pull extends CommandExtension {
   static description = 'pull a manifest for a given slug';
@@ -29,24 +33,12 @@ export default class Pull extends CommandExtension {
     const {args, flags} = this.parse(Pull);
 
     // getting Heroku user data
-    let email: string | undefined = undefined;
-    await this.axios.get('/account')
-    .then ((res: any) => {
-      email = res.data.email;
-    })
-    .catch((err:any) => {
-      if (err) this.error(err)
-    });
-
-    // checks if user is logged in, in case default user checking measures do not work
-    if (!email) {
-      this.error(color.red('Please login with Heroku credentials using `heroku login`.'));
-    }
+    let email: string | undefined = await getEmail.apply(this);
 
     // headers and data to sent addons API via http request
     let defaultOptions = {
       headers: {
-        authorization: `Basic ${Buffer.from(email + ':' + this.heroku.auth).toString('base64')}`,
+        'Authorization': `Basic ${Buffer.from(email + ':' + this.heroku.auth).toString('base64')}`,
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'User-Agent': 'kensa future'
