@@ -965,6 +965,10 @@ extend-shallow@^3.0.0, extend-shallow@^3.0.2:
     assign-symbols "^1.0.0"
     is-extendable "^1.0.1"
 
+"extensionmgr@>= 0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/extensionmgr/-/extensionmgr-0.1.0.tgz#177767ce5f5f6b3f2f59205261f4fe1f0efa2c16"
+
 external-editor@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/external-editor/-/external-editor-3.0.0.tgz#dc35c48c6f98a30ca27a20e9687d7f3c77704bb6"
@@ -2455,6 +2459,12 @@ strip-bom@^3.0.0:
 strip-eof@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/strip-eof/-/strip-eof-1.0.0.tgz#bb43ff5598a6eb05d89b59fcd129c983313606bf"
+
+stub@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/stub/-/stub-0.3.2.tgz#c449904b35eae98f4c2bfd61b9ea3767b027b7d0"
+  dependencies:
+    extensionmgr ">= 0.1.0"
 
 supports-color@5.4.0, supports-color@^5.0.0, supports-color@^5.3.0, supports-color@^5.4.0:
   version "5.4.0"

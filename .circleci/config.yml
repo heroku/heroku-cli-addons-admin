@@ -19,8 +19,8 @@ jobs:
           name: Installing Heroku CLI
           command: curl https://cli-assets.heroku.com/install.sh | sh
       - run:
-          name: Setting up plugin
-          command: yarn global add oclif && heroku plugins:link
+          name: Setting up plugin and manifet
+          command: yarn global add oclif && heroku plugins:link && cp test/fixture/addon_manifest.json .
       - run:
           name: Testing
           command: yarn test

@@ -47,7 +47,6 @@ export default class Diff extends CommandExtension {
       body = res.data
     })
     .catch((err: any) => {
-      this.log('here')
       if (err) this.error(err);
     })
     cli.action.stop();
@@ -62,7 +61,7 @@ export default class Diff extends CommandExtension {
       } else if (substr.removed) {
         outputColor = 'red';
       }
-      console.log(color[outputColor](substr.value));
+      this.log(color[outputColor](substr.value));
     })
   }
 }
