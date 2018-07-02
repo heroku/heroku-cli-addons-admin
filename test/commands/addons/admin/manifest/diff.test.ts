@@ -2,7 +2,7 @@
 import {expect, test} from '@oclif/test';
 
 // test addon
-const manifest = require('./../../../../../addon_manifest');
+const manifest = require('./../../../../fixture/addon_manifest');
 
 // mandatory elements in a single manifest document (refer to /src/utils/manifest.ts)
 const manifestElements: string[] = ['id', 'name', 'api'];

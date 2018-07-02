@@ -22,9 +22,6 @@ jobs:
           name: Setting up plugin
           command: yarn global add oclif && heroku plugins:link
       - run:
-          name: Setting up manifest
-          command: heroku addons:admin:manifest:generate -t
-      - run:
           name: Testing
           command: yarn test
       - run:

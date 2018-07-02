@@ -32,21 +32,14 @@ The file has been saved!`, ];
     addon: flags.string({
       char: 'a',
       description: 'addon name (name displayed to on addon dashboard)',
-    }),
-    template: flags.boolean({
-      char: 't',
-      description: 'generates manifest with default options'
-    }),
+    })
   };
 
   async run() {
     const {flags} = this.parse(Generate);
 
     // getting Heroku user data
-    let email: string | undefined = undefined; // allow circleci 
-    if (!flags.template) {
-    email = await getEmail.apply(this)
-    }
+    let email: string | undefined = await getEmail.apply(this)
 
     // prompts for manifest
     let manifest = generateManifest();
@@ -73,24 +66,17 @@ The file has been saved!`, ];
       message: 'Would you like to generate the password and sso_salt?',
       default: true,
     }];
-    if (!flags.template) {
-      this.log(color.green('Input manifest information below: '))
-      await prompt(questions).then(answers => {
-        const promptAnswers = <any> answers; // asserts type to answers param
-        if (promptAnswers.toGenerate) {
-          promptAnswers.password = generateString(32);
-          promptAnswers.sso_salt = generateString(32);
-        }
-        manifest = generateManifest(answers);
-      })
-    } else {
-      manifest = generateManifest({
-        id: 'testing-123',
-        name: 'MyAddon',
-        password: generateString(32),
-        sso_salt: generateString(32)
-      });
-    }
+
+    // prompts begin here
+    this.log(color.green('Input manifest information below: '))
+    await prompt(questions).then(answers => {
+      const promptAnswers = <any> answers; // asserts type to answers param
+      if (promptAnswers.toGenerate) {
+        promptAnswers.password = generateString(32);
+        promptAnswers.sso_salt = generateString(32);
+      }
+      manifest = generateManifest(answers);
+    })
 
     // generating manifest
     const manifestObj = JSON.stringify(manifest, null, 2);
