@@ -63,6 +63,8 @@ const generateManifest = (data: any = {}) => {
   manifest.api.password = data.password || manifest.api.password;
   manifest.api.sso_salt = data.sso_salt || manifest.api.sso_salt;
 
+  manifest.api.regions = data.regions || manifest.api.regions;
+
   return manifest;
 }
 

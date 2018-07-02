@@ -4,7 +4,7 @@
 Heroku CLI plugin to help Heroku add-on providers integrate their services with Heroku.
 
 [![Version](https://img.shields.io/npm/v/@heroku-cli/addons-admin.svg)](https://npmjs.org/package/@heroku-cli/addons-admin)
-[![CircleCI](https://circleci.com/gh/heroku/heroku-cli-addons-admin/tree/master.svg?style=shield)](https://circleci.com/gh/heroku/heroku-cli-addons-admin/tree/master)
+[![CircleCI](https://circleci.com/gh/heroku/heroku-cli-addons-admin/tree/master.svg?style=svg)](https://circleci.com/gh/heroku/heroku-cli-addons-admin/tree/master)
 [![Appveyor CI](https://ci.appveyor.com/api/projects/status/github/heroku/heroku-cli-addons-admin?branch=master&svg=true)](https://ci.appveyor.com/project/heroku/heroku-cli-addons-admin/branch/master)
 [![Codecov](https://codecov.io/gh/heroku/heroku-cli-addons-admin/branch/master/graph/badge.svg)](https://codecov.io/gh/heroku/heroku-cli-addons-admin)
 [![Downloads/week](https://img.shields.io/npm/dw/@heroku-cli/addons-admin.svg)](https://npmjs.org/package/@heroku-cli/addons-admin)
@@ -34,6 +34,7 @@ USAGE
 * [`oclif-example addons:admin:manifest:generate`](#oclif-example-addonsadminmanifestgenerate)
 * [`oclif-example addons:admin:manifest:pull [SLUG]`](#oclif-example-addonsadminmanifestpull-slug)
 * [`oclif-example addons:admin:manifest:push`](#oclif-example-addonsadminmanifestpush)
+
 
 ## `oclif-example addons:admin:manifest:diff`
 

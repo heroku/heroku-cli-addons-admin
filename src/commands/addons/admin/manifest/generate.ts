@@ -61,6 +61,18 @@ The file has been saved!`, ];
       message: 'Addon name (Name displayed to on addon dashboard):',
       default: flags.addon || 'MyAddon',
     }, {
+      type: 'checkbox',
+      name: 'regions',
+      message: 'Choose regions to support',
+      choices: ['us', 'eu', 'dublin', 'frankfurt', 'oregan', 'sydney', 'tokyo', 'virginia'],
+      validate: (input: any): boolean => {
+        if (input.length < 1) {
+          this.error('Please select at least one region.');
+          return false;
+        }
+        return true;
+      },
+    }, {
       type: 'confirm',
       name: 'toGenerate',
       message: 'Would you like to generate the password and sso_salt?',
@@ -71,11 +83,12 @@ The file has been saved!`, ];
     this.log(color.green('Input manifest information below: '))
     await prompt(questions).then(answers => {
       const promptAnswers = <any> answers; // asserts type to answers param
+      const promptAnswers = <any> answers;
       if (promptAnswers.toGenerate) {
         promptAnswers.password = generateString(32);
         promptAnswers.sso_salt = generateString(32);
       }
-      manifest = generateManifest(answers);
+      manifest = generateManifest(promptAnswers);
     })
 
     // generating manifest
