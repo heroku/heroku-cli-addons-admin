@@ -83,7 +83,6 @@ The file has been saved!`, ];
     this.log(color.green('Input manifest information below: '))
     await prompt(questions).then(answers => {
       const promptAnswers = <any> answers; // asserts type to answers param
-      const promptAnswers = <any> answers;
       if (promptAnswers.toGenerate) {
         promptAnswers.password = generateString(32);
         promptAnswers.sso_salt = generateString(32);
