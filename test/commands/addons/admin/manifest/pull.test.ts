@@ -1,6 +1,8 @@
 /* tslint:disable */
-import {expect, test} from '@oclif/test';
+import {expect} from '@oclif/test';
 import { readFileSync, writeFileSync } from 'fs';
+
+import test from '../../../../utils/test';
 
 // test addon
 const manifest = require('./../../../../fixture/addon_manifest');
@@ -10,10 +12,6 @@ const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com';
 
 describe('addons:admin:manifest:pull', () => {
   const pullTest = test
-  .nock('https://api.heroku.com', (api: any) => api
-    .get('/account')
-    .reply(200, {email: 'aman.ibrahim@heroku.com'})
-  )
   .nock(host, (api: any) => api
     .get('/provider/addons/testing-123')
     .reply(200, manifest)
@@ -35,10 +33,6 @@ describe('addons:admin:manifest:pull', () => {
   .it('pull grabs slug from manifest')
 
   test
-  .nock('https://api.heroku.com', (api: any) => api
-    .get('/account')
-    .reply(200, {email: 'aman.ibrahim@heroku.com'})
-  )
   .nock(host, (api: any) => api
     .get('/provider/addons/fakeslug')
     .replyWithError(400)
