@@ -13,6 +13,7 @@ import { readFileSync, writeFileSync } from 'fs';
 
 // utilities
 import { getEmail } from '../../../../utils/heroku';
+import { readManifest } from '../../../../utils/manifest';
 
 export default class Pull extends CommandExtension {
   static description = 'pull a manifest for a given slug';
@@ -48,7 +49,7 @@ export default class Pull extends CommandExtension {
     let slug = args.slug;
     if (!args.slug) {
       try {
-        let manifest: string = readFileSync('addon_manifest.json', 'utf8');
+        let manifest: string = readManifest.apply(this);
         const manifestJSON = JSON.parse(manifest);
         if(manifestJSON.id) {
           slug = manifestJSON.id;
