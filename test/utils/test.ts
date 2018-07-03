@@ -1,3 +1,4 @@
+/* tslint:disable */
 import {test as oTest} from '@oclif/test';
 
 const test = oTest
