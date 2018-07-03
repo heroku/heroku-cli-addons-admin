@@ -14,7 +14,7 @@ import { prompt } from 'inquirer';
 import { generate as generateString } from 'randomstring';
 
 // utils
-import { generateManifest } from '../../../../utils/manifest';
+import { manifests } from '../../../../utils/manifest';
 import { getEmail } from '../../../../utils/heroku';
 
 export default class Generate extends CommandExtension {
@@ -42,7 +42,7 @@ The file has been saved!`, ];
     let email: string | undefined = await getEmail.apply(this)
 
     // prompts for manifest
-    let manifest = generateManifest();
+    let manifest = manifests.generateManifest();
     const questions = [{
       type: 'input',
       name: 'id',
@@ -87,7 +87,7 @@ The file has been saved!`, ];
         promptAnswers.password = generateString(32);
         promptAnswers.sso_salt = generateString(32);
       }
-      manifest = generateManifest(promptAnswers);
+      manifest = manifests.generateManifest(promptAnswers);
     })
 
     // generating manifest

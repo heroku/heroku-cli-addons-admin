@@ -76,10 +76,9 @@ function readManifest (this: CommandExtension) {
   return manifest;
 }
 
-
-export {
+const manifests = {
   generateManifest,
-  readManifest,
-  ManifestInterface,
-  ManifestAPIInterface
+  readManifest
 }
+
+export {manifests}

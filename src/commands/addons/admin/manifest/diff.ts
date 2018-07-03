@@ -9,13 +9,12 @@ import * as Heroku from '@heroku-cli/schema';
 
 // other packages
 import cli from 'cli-ux';
-import { readFileSync } from 'fs';
 import { prompt } from 'inquirer';
 import { diffLines } from 'diff';
 
 // utilities
 import { getEmail } from '../../../../utils/heroku';
-import { readManifest } from '../../../../utils/manifest';
+import { manifests } from '../../../../utils/manifest';
 
 
 export default class Diff extends CommandExtension {
@@ -26,7 +25,7 @@ export default class Diff extends CommandExtension {
     const email = await getEmail.apply(this);
 
     // reading current manifest
-    const manifest: string = readManifest.apply(this);
+    const manifest: string = manifests.readManifest.apply(this);
     const slug: string = JSON.parse(manifest).id;
 
     // GET request

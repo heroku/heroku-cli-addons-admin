@@ -13,7 +13,7 @@ import { readFileSync, writeFileSync } from 'fs';
 
 // utilities
 import { getEmail } from '../../../../utils/heroku';
-import { readManifest } from '../../../../utils/manifest';
+import { manifests } from '../../../../utils/manifest';
 
 export default class Push extends CommandExtension {
   static description = 'push created manifest';
@@ -38,7 +38,7 @@ export default class Push extends CommandExtension {
     const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com';
 
     // grabbing manifest data
-    const manifest: string = readManifest.apply(this);
+    const manifest: string = manifests.readManifest.apply(this);
 
     // headers and data to sent addons API via http request
     let defaultOptions: object = {

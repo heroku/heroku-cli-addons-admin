@@ -1,5 +1,6 @@
 /* tslint:disable */
 import {expect, test} from '@oclif/test';
+import {manifests} from './../../../../../src/utils/manifest'
 
 // test addon
 const manifest = require('./../../../../fixture/addon_manifest');
@@ -96,4 +97,22 @@ describe('addons:admin:manifest:diff', () => {
     expect(err).to.be.an('error');
   })
   .it('error testing')
+
+  describe('when manifest is empty', () => {
+    test
+    .nock('https://api.heroku.com', (api: any) => api
+      .get('/account')
+      .reply(200, {email: 'aman.ibrahim@heroku.com'})
+    )
+    .nock(host, (api: any) => api
+      .get('/provider/addons/testing-123')
+      .reply(200, manifest)
+    )
+    .stub(manifests, 'readManifest', () => '{}')
+    .stdout()
+    .command(['addons:admin:manifest:diff'])
+    .it('handles empty manifest', (ctx: any) => {
+      expect(ctx.stdout).to.contain(`"test": "foo"`);
+    })
+  })
 })
