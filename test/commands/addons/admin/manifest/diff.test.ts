@@ -1,5 +1,7 @@
 /* tslint:disable */
-import {expect, test} from '@oclif/test';
+import {expect} from '@oclif/test';
+
+import test from '../../../../utils/test';
 
 // test addon
 const manifest = require('./../../../../fixture/addon_manifest');
@@ -28,10 +30,6 @@ const testManifest = {
 
 describe('addons:admin:manifest:diff', () => {
   test
-  .nock('https://api.heroku.com', (api: any) => api
-    .get('/account')
-    .reply(200, {email: 'aman.ibrahim@heroku.com'})
-  )
   .nock(host, (api: any) => api
     .get('/provider/addons/testing-123')
     .reply(200, manifest)
@@ -43,10 +41,6 @@ describe('addons:admin:manifest:diff', () => {
   });
 
   test
-  .nock('https://api.heroku.com', (api: any) => api
-    .get('/account')
-    .reply(200, {email: 'aman.ibrahim@heroku.com'})
-  )
   .nock(host, (api: any) => api
     .get('/provider/addons/testing-123')
     .reply(200, manifest)
@@ -66,10 +60,6 @@ describe('addons:admin:manifest:diff', () => {
   })
 
   test
-  .nock('https://api.heroku.com', (api: any) => api
-    .get('/account')
-    .reply(200, {email: 'aman.ibrahim@heroku.com'})
-  )
   .nock(host, (api: any) => {
     api.get('/provider/addons/testing-123')
     .reply(200, {body: testManifest})
@@ -81,10 +71,6 @@ describe('addons:admin:manifest:diff', () => {
   })
 
   test
-  .nock('https://api.heroku.com', (api: any) => api
-    .get('/account')
-    .reply(200, {email: 'aman.ibrahim@heroku.com'})
-  )
   .nock(host, (api: any) => {
     api.get('/provider/addons/testing-123')
     .replyWithError('test')
