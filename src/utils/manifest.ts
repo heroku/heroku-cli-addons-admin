@@ -71,7 +71,7 @@ const generateManifest = (data: any = {}) => {
 function readManifest (this: CommandExtension) {
   const manifest: string = readFileSync('addon_manifest.json', 'utf8');
   if (!manifest) {
-    this.error('No manifest found. Please generate a manifest before pushing.');
+    this.error('No manifest found. Please generate a manifest first.');
   }
   return manifest;
 }
