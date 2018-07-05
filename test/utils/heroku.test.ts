@@ -8,9 +8,8 @@ import test from './test'
 
 describe('heroku util functions', () => {
   test
-  .it('getEmail()', () => {
-    // console.log(getEmail.apply(Generate))
-    // expect(getEmail.apply(Generate)).to.equal('aman@abc123.com')
-
+  .it('getEmail()', async () => {
+    const email = await getEmail.apply(Generate)
+    expect(email).to.equal('aman@abc123.com')
   })
 })
