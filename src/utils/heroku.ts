@@ -4,11 +4,12 @@ import CommandExtension from '../CommandExtension';
 import color from '@heroku-cli/color';
 import * as Heroku from '@heroku-cli/schema';
 
+import axiosInstance from './axios';
 
 async function getEmail(this: CommandExtension) {
   // getting Heroku user data
   let email: string | undefined = undefined;
-  await this.axios.get('/account')
+  await axiosInstance.get('/account')
   .then ((res: any) => {
     email = res.data.email;
   })
