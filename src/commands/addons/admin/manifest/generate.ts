@@ -41,6 +41,19 @@ The file has been saved!`, ];
     // getting Heroku user data
     let email: string | undefined = await getEmail.apply(this)
 
+    // grab region data
+    let regions: string[] = [];
+    await this.axios.get('/regions')
+    .then((res: any) => {
+      regions = res.data.map((val: any) => {
+        return val.name
+      })
+    })
+    .catch((err: any) => {
+      this.error(err);
+    })
+
+
     // prompts for manifest
     let manifest = generateManifest();
     const questions = [{
@@ -64,7 +77,7 @@ The file has been saved!`, ];
       type: 'checkbox',
       name: 'regions',
       message: 'Choose regions to support',
-      choices: ['us', 'eu', 'dublin', 'frankfurt', 'oregan', 'sydney', 'tokyo', 'virginia'],
+      choices: regions,
       validate: (input: any): boolean => {
         if (input.length < 1) {
           this.error('Please select at least one region.');
