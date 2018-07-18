@@ -67,6 +67,9 @@
     ]
   },
   "repository": "heroku/heroku-cli-addons-admin",
+  "publishConfig": {
+    "registry": "https://heroku-npm.herokuapp.com"
+  },
   "scripts": {
     "clean:branch": "./bin/clean-branch.sh",
     "postpack": "rm -f oclif.manifest.json",
