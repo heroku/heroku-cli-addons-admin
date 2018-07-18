@@ -1,5 +1,5 @@
 {
-  "name": "@heroku-cli/addons-admin",
+  "name": "@heroku-cli/plugin-addons-admin",
   "description": "Heroku CLI plugin to help Heroku add-on providers integrate their services with Heroku.",
   "version": "0.0.1",
   "author": "Aman Ibrahim @amanmibra",
