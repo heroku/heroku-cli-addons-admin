@@ -1,4 +1,4 @@
-@heroku-cli/addons-admin
+@heroku-cli/plugin-addons-admin
 ========================
 
 Heroku CLI plugin to help Heroku add-on providers integrate their services with Heroku.
@@ -17,11 +17,11 @@ Heroku CLI plugin to help Heroku add-on providers integrate their services with 
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g @heroku-cli/addons-admin
+$ npm install -g @heroku-cli/plugin-addons-admin
 $ oclif-example COMMAND
 running command...
 $ oclif-example (-v|--version|version)
-@heroku-cli/addons-admin/0.0.1 darwin-x64 node-v10.3.0
+@heroku-cli/plugin-addons-admin/0.1.0 darwin-x64 node-v9.3.0
 $ oclif-example --help [COMMAND]
 USAGE
   $ oclif-example COMMAND
@@ -35,7 +35,6 @@ USAGE
 * [`oclif-example addons:admin:manifest:pull [SLUG]`](#oclif-example-addonsadminmanifestpull-slug)
 * [`oclif-example addons:admin:manifest:push`](#oclif-example-addonsadminmanifestpush)
 
-
 ## `oclif-example addons:admin:manifest:diff`
 
 compares remote manifest to local manifest and finds differences
@@ -45,7 +44,7 @@ USAGE
   $ oclif-example addons:admin:manifest:diff
 ```
 
-_See code: [src/commands/addons/admin/manifest/diff.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/manifest/diff.ts)_
+_See code: [src/commands/addons/admin/manifest/diff.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.1.0/src/commands/addons/admin/manifest/diff.ts)_
 
 ## `oclif-example addons:admin:manifest:generate`
 
@@ -65,7 +64,7 @@ EXAMPLE
   The file has been saved!
 ```
 
-_See code: [src/commands/addons/admin/manifest/generate.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/manifest/generate.ts)_
+_See code: [src/commands/addons/admin/manifest/generate.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.1.0/src/commands/addons/admin/manifest/generate.ts)_
 
 ## `oclif-example addons:admin:manifest:pull [SLUG]`
 
@@ -85,7 +84,7 @@ EXAMPLE
     Updating addon_manifest.json... done
 ```
 
-_See code: [src/commands/addons/admin/manifest/pull.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/manifest/pull.ts)_
+_See code: [src/commands/addons/admin/manifest/pull.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.1.0/src/commands/addons/admin/manifest/pull.ts)_
 
 ## `oclif-example addons:admin:manifest:push`
 
@@ -105,5 +104,5 @@ EXAMPLE
     Updating addon_manifest.json... done
 ```
 
-_See code: [src/commands/addons/admin/manifest/push.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.0.1/src/commands/addons/admin/manifest/push.ts)_
+_See code: [src/commands/addons/admin/manifest/push.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.1.0/src/commands/addons/admin/manifest/push.ts)_
 <!-- commandsstop -->

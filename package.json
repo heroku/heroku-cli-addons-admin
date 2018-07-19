@@ -1,7 +1,7 @@
 {
-  "name": "@heroku-cli/addons-admin",
+  "name": "@heroku-cli/plugin-addons-admin",
   "description": "Heroku CLI plugin to help Heroku add-on providers integrate their services with Heroku.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "Aman Ibrahim @amanmibra",
   "bugs": "https://github.com/heroku/heroku-cli-addons-admin/issues",
   "dependencies": {
@@ -67,6 +67,9 @@
     ]
   },
   "repository": "heroku/heroku-cli-addons-admin",
+  "publishConfig": {
+    "registry": "https://heroku-npm.herokuapp.com"
+  },
   "scripts": {
     "clean:branch": "./bin/clean-branch.sh",
     "postpack": "rm -f oclif.manifest.json",
