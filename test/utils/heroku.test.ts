@@ -9,7 +9,7 @@ import test from './test'
 describe('heroku util functions', () => {
   test
   .it('getEmail()', async () => {
-    const email = await getEmail.apply(Generate)
+    const email = await getEmail.apply(Generate, [true]);
     expect(email).to.equal('aman@abc123.com')
   })
 })
