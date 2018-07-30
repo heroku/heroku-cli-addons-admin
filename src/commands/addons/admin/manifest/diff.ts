@@ -55,9 +55,9 @@ export default class Diff extends CommandExtension {
     const diff = diffLines(fetchedManifest,manifest, { newlineIsToken: true, ignoreCase: true });
 
     diff.forEach((substr: any) => {
-      let outputColor: 'white' | 'green' | 'red' = 'white';
+      let outputColor: 'white' | 'green' | 'red' | 'pipeline' = 'white';
       if (substr.added) {
-        outputColor = 'green';
+        outputColor = 'pipeline'; // this is supposed to be a bold green (chalk.green.bold)
       } else if (substr.removed) {
         outputColor = 'red';
       }
