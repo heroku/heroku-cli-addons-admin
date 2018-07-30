@@ -27,11 +27,11 @@ The file has been saved!`, ];
     help: flags.help({char: 'h'}),
     slug: flags.string({
       char: 's',
-      description: 'slugname/manifest id'
+      description: '[OPTIONAL] slugname/manifest id'
     }),
     addon: flags.string({
       char: 'a',
-      description: 'addon name (name displayed to on addon dashboard)',
+      description: '[OPTIONAL] addon name (name displayed to on addon dashboard)',
     })
   };
 
@@ -78,6 +78,7 @@ The file has been saved!`, ];
       name: 'regions',
       message: 'Choose regions to support',
       choices: regions,
+      suffix: `\n  ${color.bold('<space>')} - select\n  ${color.bold('<a>')} - toggle all\n  ${color.bold('<i>')} - invert all \n`,
       validate: (input: any): boolean => {
         if (input.length < 1) {
           this.error('Please select at least one region.');
