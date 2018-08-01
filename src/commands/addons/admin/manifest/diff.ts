@@ -55,13 +55,19 @@ export default class Diff extends CommandExtension {
     const diff = diffLines(fetchedManifest,manifest, { newlineIsToken: true, ignoreCase: true });
 
     diff.forEach((substr: any) => {
-      let outputColor: 'white' | 'green' | 'red' | 'pipeline' = 'white';
+      let outputColor: 'white' | 'green' | 'red' = 'white';
       if (substr.added) {
-        outputColor = 'pipeline'; // this is supposed to be a bold green (chalk.green.bold)
+        outputColor = 'green'; // this is supposed to be a bold green (chalk.green.bold)
       } else if (substr.removed) {
         outputColor = 'red';
       }
-      this.log(color[outputColor](substr.value));
+      let message: string = color[outputColor](substr.value);
+      if (outputColor === 'green') {
+        message = color.italic.bold(message);
+      } else if (outputColor === 'red') {
+        message = color.strikethrough(message)
+      }
+      this.log(message);
     })
   }
 }
