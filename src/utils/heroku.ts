@@ -23,7 +23,10 @@ async function getEmail(this: CommandExtension, isTest: boolean) {
       email = res.data.email;
     })
     .catch((err:any) => {
-      if (err) this.error(err)
+      if (err){
+        this.error('Unable to log in. Make sure Heroku user credentials are correct.')
+        // this.error(err)
+      }
     });
   }
 

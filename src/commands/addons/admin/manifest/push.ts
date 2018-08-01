@@ -16,7 +16,7 @@ import { getEmail } from '../../../../utils/heroku';
 import { readManifest } from '../../../../utils/manifest';
 
 export default class Push extends CommandExtension {
-  static description = 'push created manifest';
+  static description = 'update remote manifest';
 
   static flags = {
     help: flags.help({char: 'h'}),
@@ -59,14 +59,20 @@ export default class Push extends CommandExtension {
       body = res.data;
     })
     .catch((err: any) => {
-      if (err) this.error(err)
+      if (err){
+        if (err.response.status === 422) {
+          this.error(`${color.red(`Looks like an issue in your manifest. Please make sure there are no issues with your ${color.addon('$base')} or ${color.addon('id')} elements. Also try pulling with slugname as such:`)} \n${color.addon('heroku addons:admin:manifest:pull [SLUG]')}`)
+
+        } else {
+          this.error(`Following error from addons.heroku.com: ${color.red(err.response.data)}`)
+        }
+        // this.error(err)
+      }
     })
     cli.action.stop();
 
     // writing addon_manifest.json
     const newManifest: object = {
-      id: body.id,
-      name: body.name,
       ...body
     };
     console.log(color.bold(JSON.stringify(newManifest, null, 1)));

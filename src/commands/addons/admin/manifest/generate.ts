@@ -20,18 +20,18 @@ import { getEmail } from '../../../../utils/heroku';
 export default class Generate extends CommandExtension {
   static description = 'generate a manifest template';
 
-  static examples = [ `$ oclif-example addons:admin:generate
+  static examples = [ `$ heroku addons:admin:generate
 The file has been saved!`, ];
 
   static flags = {
     help: flags.help({char: 'h'}),
     slug: flags.string({
       char: 's',
-      description: 'slugname/manifest id'
+      description: '[OPTIONAL] slugname/manifest id'
     }),
     addon: flags.string({
       char: 'a',
-      description: 'addon name (name displayed to on addon dashboard)',
+      description: '[OPTIONAL] add-on name (name displayed on addon dashboard)',
     })
   };
 
@@ -50,7 +50,8 @@ The file has been saved!`, ];
       })
     })
     .catch((err: any) => {
-      this.error(err);
+      this.error('Unable to grab region data.')
+      // this.error(err);
     })
 
 
@@ -78,6 +79,7 @@ The file has been saved!`, ];
       name: 'regions',
       message: 'Choose regions to support',
       choices: regions,
+      suffix: `\n  ${color.bold('<space>')} - select\n  ${color.bold('<a>')} - toggle all\n  ${color.bold('<i>')} - invert all \n`,
       validate: (input: any): boolean => {
         if (input.length < 1) {
           this.error('Please select at least one region.');
@@ -90,7 +92,14 @@ The file has been saved!`, ];
       name: 'toGenerate',
       message: 'Would you like to generate the password and sso_salt?',
       default: true,
-    }];
+    },
+    {
+      type: 'confirm',
+      name: 'toWrite',
+      message: 'This prompt will create/replace addon_manifest.json. Is that okay with you?',
+      default: true,
+    }
+  ];
 
     // prompts begin here
     this.log(color.green('Input manifest information below: '))
@@ -100,7 +109,12 @@ The file has been saved!`, ];
         promptAnswers.password = generateString(32);
         promptAnswers.sso_salt = generateString(32);
       }
-      manifest = generateManifest(promptAnswers);
+      if (promptAnswers.toWrite) {
+        manifest = generateManifest(promptAnswers);
+      } else {
+        this.log(`${color.green.italic('addon_manifest.json')}${color.green(' will not be created. Have a good day!')}`)
+        this.exit()
+      }
     })
 
     // generating manifest
@@ -110,10 +124,10 @@ The file has been saved!`, ];
       // console.log('Generating addon_manifest.json...')
       cli.action.stop(color.green('done'));
       if (err) {
-        console.log('The file has not been saved: \n', err);
+        console.log(`The file ${color.green('addon_manifest.json')} has NOT been saved! \n`, err);
         return;
       }
-      console.log('The file has been saved!');
+      console.log(`The file ${color.green('addon_manifest.json')} has been saved!`);
     });
   }
 }

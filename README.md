@@ -18,61 +18,61 @@ Heroku CLI plugin to help Heroku add-on providers integrate their services with 
 <!-- usage -->
 ```sh-session
 $ npm install -g @heroku-cli/plugin-addons-admin
-$ oclif-example COMMAND
+$ heroku COMMAND
 running command...
-$ oclif-example (-v|--version|version)
+$ heroku (-v|--version|version)
 @heroku-cli/plugin-addons-admin/0.1.1 darwin-x64 node-v10.3.0
-$ oclif-example --help [COMMAND]
+$ heroku --help [COMMAND]
 USAGE
-  $ oclif-example COMMAND
+  $ heroku COMMAND
 ...
 ```
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`oclif-example addons:admin:manifest:diff`](#oclif-example-addonsadminmanifestdiff)
-* [`oclif-example addons:admin:manifest:generate`](#oclif-example-addonsadminmanifestgenerate)
-* [`oclif-example addons:admin:manifest:pull [SLUG]`](#oclif-example-addonsadminmanifestpull-slug)
-* [`oclif-example addons:admin:manifest:push`](#oclif-example-addonsadminmanifestpush)
+* [`heroku addons:admin:manifest:diff`](#heroku-addonsadminmanifestdiff)
+* [`heroku addons:admin:manifest:generate`](#heroku-addonsadminmanifestgenerate)
+* [`heroku addons:admin:manifest:pull [SLUG]`](#heroku-addonsadminmanifestpull-slug)
+* [`heroku addons:admin:manifest:push`](#heroku-addonsadminmanifestpush)
 
-## `oclif-example addons:admin:manifest:diff`
+## `heroku addons:admin:manifest:diff`
 
 compares remote manifest to local manifest and finds differences
 
 ```
 USAGE
-  $ oclif-example addons:admin:manifest:diff
+  $ heroku addons:admin:manifest:diff
 ```
 
 _See code: [src/commands/addons/admin/manifest/diff.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.1.1/src/commands/addons/admin/manifest/diff.ts)_
 
-## `oclif-example addons:admin:manifest:generate`
+## `heroku addons:admin:manifest:generate`
 
 generate a manifest template
 
 ```
 USAGE
-  $ oclif-example addons:admin:manifest:generate
+  $ heroku addons:admin:manifest:generate
 
 OPTIONS
-  -a, --addon=addon  addon name (name displayed to on addon dashboard)
+  -a, --addon=addon  [OPTIONAL] add-on name (name displayed on addon dashboard)
   -h, --help         show CLI help
-  -s, --slug=slug    slugname/manifest id
+  -s, --slug=slug    [OPTIONAL] slugname/manifest id
 
 EXAMPLE
-  $ oclif-example addons:admin:generate
+  $ heroku addons:admin:generate
   The file has been saved!
 ```
 
 _See code: [src/commands/addons/admin/manifest/generate.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.1.1/src/commands/addons/admin/manifest/generate.ts)_
 
-## `oclif-example addons:admin:manifest:pull [SLUG]`
+## `heroku addons:admin:manifest:pull [SLUG]`
 
 pull a manifest for a given slug
 
 ```
 USAGE
-  $ oclif-example addons:admin:manifest:pull [SLUG]
+  $ heroku addons:admin:manifest:pull [SLUG]
 
 OPTIONS
   -h, --help  show CLI help
@@ -86,13 +86,13 @@ EXAMPLE
 
 _See code: [src/commands/addons/admin/manifest/pull.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.1.1/src/commands/addons/admin/manifest/pull.ts)_
 
-## `oclif-example addons:admin:manifest:push`
+## `heroku addons:admin:manifest:push`
 
-push created manifest
+update remote manifest
 
 ```
 USAGE
-  $ oclif-example addons:admin:manifest:push
+  $ heroku addons:admin:manifest:push
 
 OPTIONS
   -h, --help  show CLI help

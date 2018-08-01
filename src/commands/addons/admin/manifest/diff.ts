@@ -47,7 +47,14 @@ export default class Diff extends CommandExtension {
       body = res.data
     })
     .catch((err: any) => {
-      if (err) this.error(err);
+      if (err){
+        if (slug) {
+          this.error(`Unable to fetch manifest of a slug named ${color.blue(slug)}`)
+        } else {
+          this.error('Please make sure you have a slug.')
+        }
+        // this.error(err);
+      }
     })
     cli.action.stop();
     const fetchedManifest = JSON.stringify(body, null, 2)
@@ -57,11 +64,15 @@ export default class Diff extends CommandExtension {
     diff.forEach((substr: any) => {
       let outputColor: 'white' | 'green' | 'red' = 'white';
       if (substr.added) {
-        outputColor = 'green';
+        outputColor = 'green'; // this is supposed to be a bold green (chalk.green.bold)
       } else if (substr.removed) {
         outputColor = 'red';
       }
-      this.log(color[outputColor](substr.value));
+      let message: string = color[outputColor](substr.value);
+      if (outputColor === 'green') {
+        message = color.italic.bold(message);
+      }
+      this.log(message);
     })
   }
 }

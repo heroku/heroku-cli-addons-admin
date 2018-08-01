@@ -31,7 +31,6 @@ interface ManifestAPIInterface {
 let manifest: ManifestInterface
  = {
   id: "myaddon",
-  name: "MyAddon",
   api: {
     config_vars_prefix: "MYADDON",
     config_vars: [
@@ -50,20 +49,22 @@ let manifest: ManifestInterface
       sso_url: "http://localhost:4567/sso/login"
     },
     version: "3"
-  }
+  },
+  name: "MyAddon",
 }
 
 const generateManifest = (data: any = {}) => {
   manifest.id = data.id || manifest.id;
-  manifest.name = data.name || manifest.name;
 
-  manifest.api.config_vars_prefix = (data.name ? data.name.toUpperCase() : manifest.api.config_vars_prefix);
-  manifest.api.config_vars = (data.name ? [`${data.name.toUpperCase()}_URL`] : manifest.api.config_vars);
+  manifest.api.config_vars_prefix = (data.id ? data.id.toUpperCase() : manifest.api.config_vars_prefix);
+  manifest.api.config_vars = (data.id ? [`${data.id.toUpperCase()}_URL`] : manifest.api.config_vars);
 
   manifest.api.password = data.password || manifest.api.password;
   manifest.api.sso_salt = data.sso_salt || manifest.api.sso_salt;
 
   manifest.api.regions = data.regions || manifest.api.regions;
+
+  manifest.name = data.name || manifest.name;
 
   return manifest;
 }
