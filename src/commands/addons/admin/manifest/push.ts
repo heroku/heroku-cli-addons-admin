@@ -65,8 +65,6 @@ export default class Push extends CommandExtension {
 
     // writing addon_manifest.json
     const newManifest: object = {
-      id: body.id,
-      name: body.name,
       ...body
     };
     console.log(color.bold(JSON.stringify(newManifest, null, 1)));
