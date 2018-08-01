@@ -91,7 +91,14 @@ The file has been saved!`, ];
       name: 'toGenerate',
       message: 'Would you like to generate the password and sso_salt?',
       default: true,
-    }];
+    },
+    {
+      type: 'confirm',
+      name: 'toWrite',
+      message: 'This prompt will create/replace addon_manifest.json. Is that okay with you?',
+      default: true,
+    }
+  ];
 
     // prompts begin here
     this.log(color.green('Input manifest information below: '))
@@ -101,7 +108,12 @@ The file has been saved!`, ];
         promptAnswers.password = generateString(32);
         promptAnswers.sso_salt = generateString(32);
       }
-      manifest = generateManifest(promptAnswers);
+      if (promptAnswers.toWrite) {
+        manifest = generateManifest(promptAnswers);
+      } else {
+        this.log(`${color.green.italic('addon_manifest.json')}${color.green(' will not be created. Have a good day!')}`)
+        this.exit()
+      }
     })
 
     // generating manifest

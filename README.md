@@ -55,9 +55,9 @@ USAGE
   $ oclif-example addons:admin:manifest:generate
 
 OPTIONS
-  -a, --addon=addon  addon name (name displayed to on addon dashboard)
+  -a, --addon=addon  [OPTIONAL] addon name (name displayed to on addon dashboard)
   -h, --help         show CLI help
-  -s, --slug=slug    slugname/manifest id
+  -s, --slug=slug    [OPTIONAL] slugname/manifest id
 
 EXAMPLE
   $ oclif-example addons:admin:generate
