@@ -123,10 +123,10 @@ The file has been saved!`, ];
       // console.log('Generating addon_manifest.json...')
       cli.action.stop(color.green('done'));
       if (err) {
-        console.log('The file has not been saved: \n', err);
+        console.log(`The file ${color.green('addon_manifest.json')} has NOT been saved! \n`, err);
         return;
       }
-      console.log('The file has been saved!');
+      console.log(`The file ${color.green('addon_manifest.json')} has been saved!`);
     });
   }
 }
