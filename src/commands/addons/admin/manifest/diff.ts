@@ -49,7 +49,7 @@ export default class Diff extends CommandExtension {
     .catch((err: any) => {
       if (err){
         if (slug) {
-          this.error(`Unable to fetch data on a slug with the name of ${color.blue(slug)}`)
+          this.error(`Unable to fetch manifest of a slug named ${color.blue(slug)}`)
         } else {
           this.error('Please make sure you have a slug.')
         }
