@@ -20,7 +20,7 @@ import { getEmail } from '../../../../utils/heroku';
 export default class Generate extends CommandExtension {
   static description = 'generate a manifest template';
 
-  static examples = [ `$ oclif-example addons:admin:generate
+  static examples = [ `$ heroku addons:admin:generate
 The file has been saved!`, ];
 
   static flags = {
@@ -31,7 +31,7 @@ The file has been saved!`, ];
     }),
     addon: flags.string({
       char: 'a',
-      description: '[OPTIONAL] addon name (name displayed on addon dashboard)',
+      description: '[OPTIONAL] add-on name (name displayed on addon dashboard)',
     })
   };
 

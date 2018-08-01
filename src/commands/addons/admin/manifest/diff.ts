@@ -71,8 +71,6 @@ export default class Diff extends CommandExtension {
       let message: string = color[outputColor](substr.value);
       if (outputColor === 'green') {
         message = color.italic.bold(message);
-      } else if (outputColor === 'red') {
-        message = color.strikethrough(message)
       }
       this.log(message);
     })
