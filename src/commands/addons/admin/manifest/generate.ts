@@ -50,7 +50,8 @@ The file has been saved!`, ];
       })
     })
     .catch((err: any) => {
-      this.error(err);
+      this.error('Unable to grab region data.')
+      // this.error(err);
     })
 
 

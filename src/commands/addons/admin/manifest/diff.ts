@@ -47,7 +47,14 @@ export default class Diff extends CommandExtension {
       body = res.data
     })
     .catch((err: any) => {
-      if (err) this.error(err);
+      if (err){
+        if (slug) {
+          this.error(`Unable to make get data on a slug with the name of ${color.blue(slug)}`)
+        } else {
+          this.error('Please make sure you have a slug.')
+        }
+        // this.error(err);
+      }
     })
     cli.action.stop();
     const fetchedManifest = JSON.stringify(body, null, 2)
