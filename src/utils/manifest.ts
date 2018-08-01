@@ -56,8 +56,8 @@ let manifest: ManifestInterface
 const generateManifest = (data: any = {}) => {
   manifest.id = data.id || manifest.id;
 
-  manifest.api.config_vars_prefix = (data.name ? data.name.toUpperCase() : manifest.api.config_vars_prefix);
-  manifest.api.config_vars = (data.name ? [`${data.name.toUpperCase()}_URL`] : manifest.api.config_vars);
+  manifest.api.config_vars_prefix = (data.id ? data.id.toUpperCase() : manifest.api.config_vars_prefix);
+  manifest.api.config_vars = (data.id ? [`${data.id.toUpperCase()}_URL`] : manifest.api.config_vars);
 
   manifest.api.password = data.password || manifest.api.password;
   manifest.api.sso_salt = data.sso_salt || manifest.api.sso_salt;
