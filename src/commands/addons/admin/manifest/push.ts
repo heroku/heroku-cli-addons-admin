@@ -16,7 +16,7 @@ import { getEmail } from '../../../../utils/heroku';
 import { readManifest } from '../../../../utils/manifest';
 
 export default class Push extends CommandExtension {
-  static description = 'push created manifest';
+  static description = 'update remote manifest';
 
   static flags = {
     help: flags.help({char: 'h'}),

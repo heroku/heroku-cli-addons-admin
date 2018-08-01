@@ -31,7 +31,7 @@ The file has been saved!`, ];
     }),
     addon: flags.string({
       char: 'a',
-      description: '[OPTIONAL] addon name (name displayed to on addon dashboard)',
+      description: '[OPTIONAL] addon name (name displayed on addon dashboard)',
     })
   };
 
