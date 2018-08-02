@@ -79,7 +79,7 @@ The file has been saved!`, ];
       name: 'regions',
       message: 'Choose regions to support',
       choices: regions,
-      suffix: `\n  ${color.bold('<space>')} - select\n  ${color.bold('<a>')} - toggle all\n  ${color.bold('<i>')} - invert all \n`,
+      suffix: `\n  ${color.bold('<space>')} - select\n  ${color.bold('<a>')} - toggle all\n  ${color.bold('<i>')} - invert all \n  ${color.bold('↑↓')} use arrow keys to navigate\n`,
       validate: (input: any): boolean => {
         if (input.length < 1) {
           this.error('Please select at least one region.');
