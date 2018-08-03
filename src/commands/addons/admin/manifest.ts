@@ -1,3 +1,4 @@
+/* tslint:disable */
 import {Command, flags} from '@oclif/command'
 
 export default class AddonsAdminManifest extends Command {
