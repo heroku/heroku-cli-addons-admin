@@ -120,6 +120,11 @@ USAGE
 
 ARGUMENTS
   SLUG  slug name of add-on
+
+EXAMPLE
+  $ heroku addons:admin:open
+  Checking addon_manifest.json... done
+  Opening https://addons-next.heroku.com/addons/testing-123... done
 ```
 
 _See code: [src/commands/addons/admin/open.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.1.3/src/commands/addons/admin/open.ts)_
