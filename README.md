@@ -33,6 +33,7 @@ USAGE
 * [`heroku addons:admin:manifest:generate`](#heroku-addonsadminmanifestgenerate)
 * [`heroku addons:admin:manifest:pull [SLUG]`](#heroku-addonsadminmanifestpull-slug)
 * [`heroku addons:admin:manifest:push`](#heroku-addonsadminmanifestpush)
+* [`heroku addons:admin:open [SLUG]`](#heroku-addonsadminopen-slug)
 
 ## `heroku addons:admin:manifest:diff`
 
@@ -73,6 +74,9 @@ pull a manifest for a given slug
 USAGE
   $ heroku addons:admin:manifest:pull [SLUG]
 
+ARGUMENTS
+  SLUG  slug name of add-on
+
 OPTIONS
   -h, --help  show CLI help
 
@@ -104,4 +108,23 @@ EXAMPLE
 ```
 
 _See code: [src/commands/addons/admin/manifest/push.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.1.3/src/commands/addons/admin/manifest/push.ts)_
+
+## `heroku addons:admin:open [SLUG]`
+
+open add-on dashboard
+
+```
+USAGE
+  $ heroku addons:admin:open [SLUG]
+
+ARGUMENTS
+  SLUG  slug name of add-on
+
+EXAMPLE
+  $ heroku addons:admin:open
+  Checking addon_manifest.json... done
+  Opening https://addons-next.heroku.com/addons/testing-123... done
+```
+
+_See code: [src/commands/addons/admin/open.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v0.1.3/src/commands/addons/admin/open.ts)_
 <!-- commandsstop -->
