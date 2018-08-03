@@ -13,6 +13,11 @@ export default class Open extends CommandExtension {
 
   static args = [{name: 'slug',  description: 'slug name of add-on'}];
 
+  static examples = [
+`$ heroku addons:admin:open
+Checking addon_manifest.json... done
+Opening https://addons-next.heroku.com/addons/testing-123... done`, ];
+
 
   async run() {
     const {args} = this.parse(Open);
@@ -25,12 +30,16 @@ export default class Open extends CommandExtension {
     } else {
       // if not use slug specified in manifest
       cli.action.start('Checking addon_manifest.json')
-      const manifest = readManifest.apply(this)
+      const manifest = await readManifest.apply(this)
       cli.action.stop()
 
       slug = JSON.parse(manifest).id;
     }
 
-    cli.open(`https://addons-next.heroku.com/addons/${slug}`)
+    const url = `https://addons-next.heroku.com/addons/${slug}`
+
+    cli.action.start(`Opening ${url}`)
+    cli.open(url)
+    cli.action.stop()
   }
 }
