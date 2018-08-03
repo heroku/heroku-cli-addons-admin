@@ -17,7 +17,6 @@ Heroku CLI plugin to help Heroku add-on providers integrate their services with 
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g @heroku-cli/plugin-addons-admin
 $ heroku COMMAND
 running command...
 $ heroku (-v|--version|version)
