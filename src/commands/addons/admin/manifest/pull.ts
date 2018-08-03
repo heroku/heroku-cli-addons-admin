@@ -28,7 +28,7 @@ export default class Pull extends CommandExtension {
     help: flags.help({char: 'h'}),
   };
 
-  static args = [{name: 'slug'}];
+  static args = [{name: 'slug',  description: 'slug name of add-on'}];
 
   async run() {
     const {args, flags} = this.parse(Pull);
