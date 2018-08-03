@@ -8,15 +8,29 @@ import cli from 'cli-ux';
 // utilities
 import { readManifest } from '../../../utils/manifest';
 
-export default class AddonsAdminOpen extends CommandExtension {
+export default class Open extends CommandExtension {
   static description = 'open add-on dashboard'
 
-  async run() {
-    cli.action.start('Checking addon_manifest.json')
-    const manifest = readManifest.apply(this)
-    cli.action.stop()
+  static args = [{name: 'slug',  description: 'slug name of add-on'}];
 
-    const slug: string = JSON.parse(manifest).id;
+
+  async run() {
+    const {args} = this.parse(Open);
+
+    let slug: string;
+
+    // check if user gave slug argument
+    if (args.slug) {
+      slug = args.slug
+    } else {
+      // if not use slug specified in manifest
+      cli.action.start('Checking addon_manifest.json')
+      const manifest = readManifest.apply(this)
+      cli.action.stop()
+
+      slug = JSON.parse(manifest).id;
+    }
+
     cli.open(`https://addons-next.heroku.com/addons/${slug}`)
   }
 }
