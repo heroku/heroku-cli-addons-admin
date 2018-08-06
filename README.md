@@ -35,6 +35,11 @@ USAGE
 ...
 ```
 <!-- usagestop -->
+
+# Development
+
+Follow the [Developing CLI Plugins](https://devcenter.heroku.com/articles/developing-cli-plugins) guide.
+
 # Commands
 <!-- commands -->
 * [`heroku addons:admin`](#heroku-addonsadmin)
