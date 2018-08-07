@@ -15,7 +15,7 @@ Heroku CLI plugin to help Heroku add-on providers integrate their services with 
 * [Commands](#commands)
 <!-- tocstop -->
 
-# Installation (for private beta only)
+# Installation
 ```sh-session
 $ heroku plugins:install addons-admin
 ```
