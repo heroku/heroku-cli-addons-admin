@@ -17,9 +17,7 @@ Heroku CLI plugin to help Heroku add-on providers integrate their services with 
 
 # Installation (for private beta only)
 ```sh-session
-$ git clone https://github.com/heroku/heroku-cli-addons-admin
-$ cd heroku-cli-addons-admin
-$ heroku plugins:link
+$ heroku plugins:install addons-admin
 ```
 
 # Usage
