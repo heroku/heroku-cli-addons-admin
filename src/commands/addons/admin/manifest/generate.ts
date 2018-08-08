@@ -77,6 +77,7 @@ The file has been saved!`, ];
     }, {
       type: 'checkbox',
       name: 'regions',
+      default: ['us'],
       message: 'Choose regions to support',
       choices: regions,
       suffix: `\n  ${color.bold('<space>')} - select\n  ${color.bold('<a>')} - toggle all\n  ${color.bold('<i>')} - invert all \n  ${color.bold('↑↓')} use arrow keys to navigate\n`,
