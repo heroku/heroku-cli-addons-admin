@@ -11,7 +11,9 @@ Heroku CLI plugin to help Heroku add-on providers integrate their services with 
 <!-- [![Codecov](https://codecov.io/gh/heroku/heroku-cli-addons-admin/branch/master/graph/badge.svg)](https://codecov.io/gh/heroku/heroku-cli-addons-admin) -->
 
 <!-- toc -->
+* [Installation](#installation)
 * [Usage](#usage)
+* [Development](#development)
 * [Commands](#commands)
 <!-- tocstop -->
 
