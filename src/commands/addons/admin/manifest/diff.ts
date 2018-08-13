@@ -49,11 +49,10 @@ export default class Diff extends CommandExtension {
     .catch((err: any) => {
       if (err){
         if (slug) {
-          this.error(`Unable to fetch manifest of a slug named ${color.blue(slug)}`)
+          this.error(`Unable to fetch manifest for add-on ${color.blue(slug)}`)
         } else {
-          this.error('Please make sure you have a slug.')
+          this.error('Please make sure you have a manifest in the current directory. New manifests have no history to diff.')
         }
-        // this.error(err);
       }
     })
     cli.action.stop();

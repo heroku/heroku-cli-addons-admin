@@ -54,10 +54,10 @@ export default class Pull extends CommandExtension {
         if(manifestJSON.id) {
           slug = manifestJSON.id;
         } else {
-          this.error('No slug found.');
+          this.error('No slug found in the manifest.');
         }
       } catch (err) {
-        this.error('No manifest or slug found. Please pull with slug name.');
+        this.error('No manifest found. Please pull with slug.');
       }
     }
     const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com';
@@ -73,11 +73,10 @@ export default class Pull extends CommandExtension {
     .catch((err:any) => {
       if (err) {
         if (slug) {
-          this.error(`Unable to make get data on a slug with the name of ${color.blue(slug)}`)
+          this.error(`Unable to fetch manifest for add-on ${color.blue(slug)}`)
         } else {
-          this.error('Please make sure you have a slug.')
+          this.error('Please make sure you have a provided a slug to fetch.')
         }
-        // this.error(err)
       }
     })
     cli.action.stop();

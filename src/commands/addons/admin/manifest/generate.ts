@@ -18,7 +18,7 @@ import { generateManifest } from '../../../../utils/manifest';
 import { getEmail } from '../../../../utils/heroku';
 
 export default class Generate extends CommandExtension {
-  static description = 'generate a manifest template';
+  static description = 'generate a manifest from template';
 
   static examples = [ `$ heroku addons:admin:generate
 The file has been saved!`, ];
@@ -27,7 +27,7 @@ The file has been saved!`, ];
     help: flags.help({char: 'h'}),
     slug: flags.string({
       char: 's',
-      description: '[OPTIONAL] slugname/manifest id'
+      description: '[OPTIONAL] slug'
     }),
     addon: flags.string({
       char: 'a',
@@ -51,7 +51,6 @@ The file has been saved!`, ];
     })
     .catch((err: any) => {
       this.error('Unable to grab region data.')
-      // this.error(err);
     })
 
 
@@ -60,11 +59,11 @@ The file has been saved!`, ];
     const questions = [{
       type: 'input',
       name: 'id',
-      message: 'Enter slugname/manifest id:',
+      message: 'Enter slug:',
       default: flags.slug,
       validate: (input: any): boolean => {
         if (input.trim() === '' || !isNaN(input)) {
-          this.error('Please use a string as a slug name.')
+          this.error('Only strings are supported for slug names.')
           return false;
         }
         return true;
@@ -72,7 +71,7 @@ The file has been saved!`, ];
     }, {
       type: 'input',
       name: 'name',
-      message: 'Addon name (Name displayed to on addon dashboard):',
+      message: 'Add-on name (Name displayed to on addon dashboard):',
       default: flags.addon || 'MyAddon',
     }, {
       type: 'checkbox',
@@ -98,7 +97,7 @@ The file has been saved!`, ];
     {
       type: 'confirm',
       name: 'toWrite',
-      message: 'This prompt will create/replace addon_manifest.json. Is that okay with you?',
+      message: 'This prompt will create/replace addon_manifest.json. Proceed?',
       default: true,
     }
   ];
@@ -123,7 +122,6 @@ The file has been saved!`, ];
     const manifestObj = JSON.stringify(manifest, null, 2);
     cli.action.start('Generating addon_manifest');
     writeFile('addon_manifest.json', manifestObj , (err) => {
-      // console.log('Generating addon_manifest.json...')
       cli.action.stop(color.green('done'));
       if (err) {
         console.log(`The file ${color.green('addon_manifest.json')} has NOT been saved! \n`, err);

@@ -62,12 +62,15 @@ export default class Push extends CommandExtension {
       if (err){
         const message: string = err.response.data;
         if (message.includes('base')) {
-          this.error(`${color.red(`Looks like an issue in your manifest. Please make sure there are no issues with your ${color.addon('$base')} or ${color.addon('id')} elements. Also try pulling with slugname as such:`)} \n${color.addon('heroku addons:admin:manifest:pull [SLUG]')}`)
+          // TODO @mathias: I'm not super happy with this error message, but I
+          // agree it can be more user-friendly than what the server was
+          // returning.
+          // I'll work on it.
+          this.error(`${color.red(`Looks like an issue in your manifest. Please make sure there are no issues with your ${color.addon('$base')} or ${color.addon('id')} elements. Also try pulling the latest:`)} \n${color.addon('heroku addons:admin:manifest:pull [SLUG]')}`)
 
         } else {
-          this.error(`Following error from addons.heroku.com: ${color.red(message)}`)
+          this.error(`Error from addons.heroku.com: ${color.red(message)}`)
         }
-        // this.error(err)
       }
     })
     cli.action.stop();
