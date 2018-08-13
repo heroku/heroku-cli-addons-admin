@@ -74,7 +74,7 @@ function readManifest (this: CommandExtension) {
   try {
     manifest = readFileSync('addon_manifest.json', 'utf8');
   } catch (err) {
-    this.error(`Check if addon_manifest.json exists in root. \n ${err}`);
+    this.error(`Check if addon_manifest.json exists in current directory. \n ${err}`);
   }
   if (!manifest) {
     this.error('No manifest found. Please generate a manifest first.');
