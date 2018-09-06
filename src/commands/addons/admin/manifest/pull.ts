@@ -75,7 +75,7 @@ export default class Pull extends CommandExtension {
         if (slug) {
           this.error(`Unable to fetch manifest for add-on ${color.blue(slug)}`)
         } else {
-          this.error('Please make sure you have a provided a slug to fetch.')
+          this.error('Please make sure you have provided a slug to fetch.')
         }
       }
     })
