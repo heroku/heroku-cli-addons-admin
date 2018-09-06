@@ -36,7 +36,8 @@ Opening https://addons-next.heroku.com/addons/testing-123... done`, ];
       slug = JSON.parse(manifest).id;
     }
 
-    const url = `https://addons-next.heroku.com/addons/${slug}`
+    const host = process.env.HEROKU_ADDONS_PORTAL_HOST || 'https://addons-next.heroku.com';
+    const url = `${host}/addons/${slug}`
 
     cli.action.start(`Opening ${url}`)
     cli.open(url)
