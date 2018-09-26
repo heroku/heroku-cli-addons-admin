@@ -12,27 +12,28 @@ export default abstract class AdminBase extends Command {
       headers: {
         Authorization: '',
         'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'User-Agent': 'kensa future'
+        Accept: 'application/json'
       }
     }
+        //'User-Agent': 'kensa future'
 
     const get = async (path: string) => {
       const email = await this.email()
       const auth = `Basic ${Buffer.from(`${email}:${this.heroku.auth}`).toString('base64')}`
       options.headers.Authorization = auth
-      return client.get(path, options)
+      return client.get(`${host}/${path}`, options)
     }
 
     const post = async (path: string, body: any) => {
       const email = await this.email()
       const auth = `Basic ${Buffer.from(`${email}:${this.heroku.auth}`).toString('base64')}`
       options.headers.Authorization = auth
+      console.log(JSON.stringify(options.headers))
       let opts = {
         ...options,
         body
       }
-      return client.post(path, opts)
+      return client.post(`${host}/${path}`, opts)
     }
 
     return {

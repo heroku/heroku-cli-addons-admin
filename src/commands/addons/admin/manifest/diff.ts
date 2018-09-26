@@ -9,8 +9,8 @@ export default class Diff extends AdminBase {
 
   async run() {
     // reading current manifest
-    const manifest: string = this.readManifest.apply(this)
-    const slug: string = JSON.parse(manifest).id
+    const manifest: string = this.readManifest()
+    const slug: string = JSON.parse(manifest!).id
 
     // GET request
     cli.action.start(`Fetching add-on manifest for ${color.addon(slug)}`)

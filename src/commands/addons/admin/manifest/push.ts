@@ -7,8 +7,6 @@ import AdminBase from '../../../../admin_base'
 export default class Push extends AdminBase {
   static description = 'update remote manifest'
 
-  static flags = {}
-
   static examples = [
     `$ heroku addons:admin:manifest:push
  ...
@@ -17,30 +15,14 @@ export default class Push extends AdminBase {
   ]
 
   async run() {
-    const {args, flags} = this.parse(Push)
-
-    // getting Heroku user data
-    let email: string | undefined = await getEmail.apply(this)
-
-    const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com'
+    const {args} = this.parse(Push)
 
     // grabbing manifest data
-    const manifest: string = readManifest.apply(this)
-
-    // headers and data to sent addons API via http request
-    let defaultOptions: object = {
-      headers: {
-        Authorization: `Basic ${Buffer.from(email + ':' + this.heroku.auth).toString('base64')}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'User-Agent': 'kensa future'
-      },
-      body: JSON.parse(manifest)
-    }
+    const manifest: string = this.readManifest()
 
     // POST request
     cli.action.start('Pushing manifest')
-    let {body} = await this.addons.post('/provider/addons', JSON.parse(manifest))
+    let {body} = await this.addons.post('/provider/addons', JSON.parse(manifest!))
       // if (err) {
       //   const message: string = err.response.data
       //   if (message.includes('base')) {
