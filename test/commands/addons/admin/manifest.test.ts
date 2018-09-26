@@ -1,4 +1,4 @@
-/* tslint:disable */
+
 // import {expect, test} from '@oclif/test'
 //
 // describe('addons:admin:manifest', () => {
