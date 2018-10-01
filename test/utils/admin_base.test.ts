@@ -9,6 +9,7 @@ const test = Test.test
 const expect = Test.expect
 
 describe('base functions', () => {
+  // TODO: figure out how to call async function here:
   test
     .nock('https://api.heroku.com', (nock: any) => {
       nock
@@ -34,16 +35,12 @@ describe('manifest util functions', () => {
     })
   })
   .it('readManifest()', () => {
-    if (manifestExist) {
-      if (manifestExist) {
-        const manifest = JSON.parse(readManifest())
-        expect(manifest).to.be.a('object')
-      }
-    }
+    const manifest = JSON.parse(AdminBase.readManifest())
+    expect(manifest).to.be.a('object')
   })
 
   test
-  .it('this.generateManifest', () => {
-    expect(this.generateManifest()).to.be.a('object')
+  .it('generateManifest', () => {
+    expect(AdminBase.generateManifest()).to.be.a('object')
   })
 })
