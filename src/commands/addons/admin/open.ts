@@ -1,6 +1,7 @@
 import cli from 'cli-ux'
 
 import AdminBase from '../../../admin-base'
+import {ReadManifest} from '../../../manifest'
 
 export default class Open extends AdminBase {
   static description = 'open add-on dashboard'
@@ -24,7 +25,7 @@ Opening https://addons-next.heroku.com/addons/testing-123... done`,
     } else {
       // if not use slug specified in manifest
       cli.action.start('Checking addon_manifest.json')
-      const manifest = this.readLocalManifest!
+      const manifest = ReadManifest.run()
       cli.action.stop()
 
       slug = JSON.parse(manifest).id

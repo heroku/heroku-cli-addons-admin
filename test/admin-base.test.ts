@@ -1,6 +1,5 @@
 import {Config} from '@oclif/config'
 import {expect, test} from '@oclif/test'
-import * as fs from 'fs-extra'
 import * as path from 'path'
 
 import AdminBase from '../src/admin-base'
@@ -13,12 +12,6 @@ class Test extends AdminBase {
 const cmd = new Test([], config)
 
 describe('AdminBase', () => {
-  test
-    .stub(fs, 'readFileSync', () => 'foo')
-    .it('#readLocalManifest', () => {
-      expect(cmd.readLocalManifest).to.eq('foo')
-    })
-
   test
     .it('#addons', () => {
       expect(cmd.addons.get).to.be.a('function')

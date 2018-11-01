@@ -3,6 +3,7 @@ import cli from 'cli-ux'
 import * as fs from 'fs-extra'
 
 import AdminBase from '../../../../admin-base'
+import {ReadManifest} from '../../../../manifest'
 
 export default class Pull extends AdminBase {
   static description = 'pull a manifest for a given slug'
@@ -23,7 +24,7 @@ export default class Pull extends AdminBase {
     let slug = args.slug
     if (!args.slug) {
       try {
-        let manifest = this.readLocalManifest!
+        let manifest = ReadManifest.run()
         const manifestJSON = JSON.parse(manifest!)
         if (manifestJSON.id) {
           slug = manifestJSON.id

@@ -1,23 +1,9 @@
 import {APIClient, Command} from '@heroku-cli/command'
 import * as Heroku from '@heroku-cli/schema'
-import * as fs from 'fs-extra'
 import * as url from 'url'
 
 export default abstract class AdminBase extends Command {
   _email: string | undefined
-
-  get readLocalManifest(): string | undefined {
-    let manifest
-    try {
-      manifest = fs.readFileSync('addon_manifest.json', 'utf8')
-    } catch (err) {
-      this.error(`Check if addon_manifest.json exists in root. \n ${err}`)
-    }
-    if (!manifest) {
-      this.error('No manifest found. Please generate a manifest first.')
-    }
-    return manifest
-  }
 
   get addons() {
     const client = new APIClient(this.config, {})

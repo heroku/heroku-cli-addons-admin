@@ -1,4 +1,4 @@
-
+import * as fs from 'fs-extra'
 interface ManifestInterface {
   id: string
   name: string
@@ -59,6 +59,21 @@ export const GenerateManifest = {
     manifest.api.sso_salt = data.sso_salt || manifest.api.sso_salt
     manifest.api.regions = data.regions || manifest.api.regions
     manifest.name = data.name || manifest.name
+    return manifest
+  }
+}
+
+export const ReadManifest = {
+  run(): string {
+    let manifest
+    try {
+      manifest = fs.readFileSync('addon_manifest.json', 'utf8')
+    } catch (err) {
+      throw new Error(`Check if addon_manifest.json exists in root. \n ${err}`)
+    }
+    if (!manifest) {
+      throw new Error('No manifest found. Please generate a manifest first.')
+    }
     return manifest
   }
 }

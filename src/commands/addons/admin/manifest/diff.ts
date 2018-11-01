@@ -3,13 +3,14 @@ import cli from 'cli-ux'
 import {diffLines} from 'diff'
 
 import AdminBase from '../../../../admin-base'
+import {ReadManifest} from '../../../../manifest'
 
 export default class Diff extends AdminBase {
   static description = 'compares remote manifest to local manifest and finds differences'
 
   async run() {
     // reading current manifest
-    const manifest: string = this.readLocalManifest!
+    const manifest: string = ReadManifest.run()
     const slug: string = JSON.parse(manifest).id
 
     // GET request
