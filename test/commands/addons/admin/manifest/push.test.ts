@@ -12,7 +12,7 @@ const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com';
 describe('addons:admin:manifest:push', () => {
   const pushTest = test
   .nock(host, (api: any) => {
-    api.post('/provider/addons', manifest)
+    api.post('/provider/addons', JSON.stringify(manifest))
     .reply(200, manifest)
   });
 
@@ -27,7 +27,7 @@ describe('addons:admin:manifest:push', () => {
 
   test
   .nock(host, (api: any) => {
-    api.post('/provider/addons', manifest)
+    api.post('/provider/addons', JSON.stringify(manifest))
     .replyWithError(400)
   })
   .stdout()
