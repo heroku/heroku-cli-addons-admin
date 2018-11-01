@@ -1,15 +1,16 @@
-import color from '@heroku-cli/color'
 import cli from 'cli-ux'
+import color from '@heroku-cli/color'
+import {Command} from '@heroku-cli/command'
 import {diffLines} from 'diff'
 
 import AdminBase from '../../../../admin_base'
 
-export default class Diff extends AdminBase {
+export default class Diff extends Command {
   static description = 'compares remote manifest to local manifest and finds differences'
 
   async run() {
     // reading current manifest
-    const manifest: string = this.readManifest()
+    const manifest: string = AdminBase.readManifest()
     const slug: string = JSON.parse(manifest!).id
 
     // GET request

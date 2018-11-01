@@ -1,9 +1,9 @@
-import {APIClient, Command} from '@heroku-cli/command'
+import {APIClient} from '@heroku-cli/command'
 import * as Heroku from '@heroku-cli/schema'
 import * as fs from 'fs-extra'
 
-export default abstract class AdminBase extends Command {
-  get addons() {
+export default class AdminBase {
+  static addons() {
     const client = new APIClient(this.config)
     const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com'
 
@@ -42,12 +42,12 @@ export default abstract class AdminBase extends Command {
     }
   }
 
-  async email(): Promise<string | undefined> {
-    let {body} = await this.heroku.get<Heroku.Account>('/account', {retryAuth: false})
+  static async email(heroku): Promise<string | undefined> {
+    let {body} = await heroku.get<Heroku.Account>('/account', {retryAuth: false})
     return body.email
   }
 
-  readManifest(): string | undefined {
+  static readManifest(): string | undefined {
     let manifest
     try {
       manifest = fs.readFileSync('addon_manifest.json', 'utf8')
@@ -60,7 +60,7 @@ export default abstract class AdminBase extends Command {
     return manifest
   }
 
-  generateManifest(data: any = {}) {
+  static generateManifest(data: any = {}) {
     let manifest: ManifestInterface = {
       id: 'myaddon',
       api: {
