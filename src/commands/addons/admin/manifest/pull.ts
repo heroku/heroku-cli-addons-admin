@@ -2,7 +2,7 @@ import color from '@heroku-cli/color'
 import cli from 'cli-ux'
 import * as fs from 'fs-extra'
 
-import AdminBase from '../../../../admin_base'
+import AdminBase from '../../../../admin-base'
 
 export default class Pull extends AdminBase {
   static description = 'pull a manifest for a given slug'
@@ -23,14 +23,14 @@ export default class Pull extends AdminBase {
     let slug = args.slug
     if (!args.slug) {
       try {
-        let manifest = this.readManifest()
+        let manifest = this.readLocalManifest!
         const manifestJSON = JSON.parse(manifest!)
         if (manifestJSON.id) {
           slug = manifestJSON.id
         } else {
           this.error('No slug found.')
         }
-      } catch (err) {
+      } catch {
         this.error('No manifest or slug found. Please pull with slug name.')
       }
     }

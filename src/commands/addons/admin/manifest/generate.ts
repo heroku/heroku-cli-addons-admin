@@ -6,7 +6,8 @@ import * as fs from 'fs-extra'
 import {prompt} from 'inquirer'
 import {generate as generateString} from 'randomstring'
 
-import AdminBase from '../../../../admin_base'
+import AdminBase from '../../../../admin-base'
+import {GenerateManifest} from '../../../../manifest'
 
 export default class Generate extends AdminBase {
   static description = 'generate a manifest template'
@@ -35,7 +36,7 @@ The file has been saved!`,
     let regions = body.map((r: Heroku.Region) => r.name)
 
     // prompts for manifest
-    let manifest = this.generateManifest()
+    let manifest = GenerateManifest.run()
     const questions: any[] = [{
       type: 'input',
       name: 'id',
@@ -74,12 +75,12 @@ The file has been saved!`,
       message: 'Would you like to generate the password and sso_salt?',
       default: true,
     },
-    {
-      type: 'confirm',
-      name: 'toWrite',
-      message: 'This prompt will create/replace addon_manifest.json. Is that okay with you?',
-      default: true,
-    }
+      {
+        type: 'confirm',
+        name: 'toWrite',
+        message: 'This prompt will create/replace addon_manifest.json. Is that okay with you?',
+        default: true,
+      }
     ]
 
     // prompts begin here
@@ -91,7 +92,7 @@ The file has been saved!`,
         promptAnswers.sso_salt = generateString(32)
       }
       if (promptAnswers.toWrite) {
-        manifest = this.generateManifest(promptAnswers)
+        manifest = GenerateManifest.run(promptAnswers)
       } else {
         this.log(`${color.green.italic('addon_manifest.json')}${color.green(' will not be created. Have a good day!')}`)
         this.exit()

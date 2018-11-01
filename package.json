@@ -19,10 +19,11 @@
   },
   "devDependencies": {
     "@fancy-test/nock": "^0.1.1",
+    "@oclif/config": "^1.8.8",
     "@oclif/dev-cli": "^1",
     "@oclif/plugin-help": "^1",
     "@oclif/test": "^1.1.0",
-    "@oclif/tslint": "^1",
+    "@oclif/tslint": "^3.1.1",
     "@types/chai": "^4",
     "@types/diff": "^3.5.1",
     "@types/execa": "^0.9.0",
@@ -40,8 +41,9 @@
     "nock": "^10.0.0",
     "nyc": "^11",
     "stub": "^0.3.2",
-    "ts-node": "^6",
+    "ts-node": "^7.0.1",
     "tslint": "^5",
+    "tsutils": "2.27.2",
     "typescript": "^3.0.3"
   },
   "engines": {
