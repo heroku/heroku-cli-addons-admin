@@ -2,7 +2,8 @@ import color from '@heroku-cli/color'
 import cli from 'cli-ux'
 import * as fs from 'fs-extra'
 
-import AdminBase from '../../../../admin_base'
+import AdminBase from '../../../../admin-base'
+import {ReadManifest} from '../../../../manifest'
 
 export default class Push extends AdminBase {
   static description = 'update remote manifest'
@@ -15,10 +16,8 @@ export default class Push extends AdminBase {
   ]
 
   async run() {
-    const {args} = this.parse(Push)
-
     // grabbing manifest data
-    const manifest: string = this.readManifest()
+    const manifest: string = ReadManifest.run()
 
     // POST request
     cli.action.start('Pushing manifest')

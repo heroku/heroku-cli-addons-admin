@@ -29,56 +29,59 @@ const testManifest = {
 
 describe('addons:admin:manifest:diff', () => {
   test
-  .nock(host, (api: any) => api
-    .get('/provider/addons/testing-123')
-    .reply(200, manifest)
-  )
-  .stdout()
-  .command(['addons:admin:manifest:diff'])
-  .it('contains static stdout', (ctx: any) => {
-    expect(ctx.stdout).to.contain('testing-123')
-  })
+    .nock(host, (api: any) => api
+      .get('/provider/addons/testing-123')
+      .reply(200, manifest)
+    )
+    .stdout()
+    .stderr()
+    .command(['addons:admin:manifest:diff'])
+    .it('contains static stdout', (ctx: any) => {
+      expect(ctx.stdout).to.contain('testing-123')
+    })
 
   test
-  .nock(host, (api: any) => api
-    .get('/provider/addons/testing-123')
-    .reply(200, manifest)
-  )
-  .stdout()
-  .command(['addons:admin:manifest:diff'])
-  .it('contains all elements', (ctx: any) => {
-    manifestElements.forEach(val => {
-      expect(ctx.stdout).to.contain(val)
+    .nock(host, (api: any) => api
+      .get('/provider/addons/testing-123')
+      .reply(200, manifest)
+    )
+    .stdout()
+    .stderr()
+    .command(['addons:admin:manifest:diff'])
+    .it('contains all elements', (ctx: any) => {
+      manifestElements.forEach(val => {
+        expect(ctx.stdout).to.contain(val)
+      })
+      manifestAPIElements.forEach(val => {
+        expect(ctx.stdout).to.contain(val)
+      })
+      otherElements.forEach(val => {
+        expect(ctx.stdout).to.contain(val)
+      })
     })
-    manifestAPIElements.forEach(val => {
-      expect(ctx.stdout).to.contain(val)
-    })
-    otherElements.forEach(val => {
-      expect(ctx.stdout).to.contain(val)
-    })
-  })
 
   test
-  .nock(host, (api: any) => {
-    api.get('/provider/addons/testing-123')
-    .reply(200, {body: testManifest})
-  })
-  .stdout()
-  .command(['addons:admin:manifest:diff'])
-  .it('contains correct test API elements', (ctx: any) => {
-    expect(ctx.stdout).to.contain(`"test": "${testManifest.test}"`)
-  })
+    .nock(host, (api: any) => {
+      api.get('/provider/addons/testing-123')
+        .reply(200, {body: testManifest})
+    })
+    .stdout()
+    .stderr()
+    .command(['addons:admin:manifest:diff'])
+    .it('contains correct test API elements', (ctx: any) => {
+      expect(ctx.stdout).to.contain(`"test": "${testManifest.test}"`)
+    })
 
   test
-  .nock(host, (api: any) => {
-    api.get('/provider/addons/testing-123')
-    .replyWithError('test')
-  })
-  .stdout({print: true})
-  .stderr({print: true})
-  .command(['addons:admin:manifest:diff'])
-  .catch((err: any) => {
-    expect(err).to.be.an('error')
-  })
-  .it('error testing')
+    .nock(host, (api: any) => {
+      api.get('/provider/addons/testing-123')
+        .replyWithError('test')
+    })
+    .stdout()
+    .stderr()
+    .command(['addons:admin:manifest:diff'])
+    .catch((err: any) => {
+      expect(err).to.be.an('error')
+    })
+    .it('error testing')
 })

@@ -1,0 +1,52 @@
+import {APIClient, Command} from '@heroku-cli/command'
+import * as Heroku from '@heroku-cli/schema'
+import * as url from 'url'
+
+export default abstract class AdminBase extends Command {
+  _email: string | undefined
+
+  get addons() {
+    const client = new APIClient(this.config, {})
+    const host = process.env.HEROKU_ADDONS_HOST
+    client.defaults.host = host ? url.parse(host).host : 'addons.heroku.com'
+
+    let options = {
+      headers: {
+        Authorization: '',
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'User-Agent': 'kensa future'
+      }
+    }
+
+    const get = async (path: string) => {
+      const email = await this.email()
+      const auth = `Basic ${Buffer.from(`${email}:${this.heroku.auth}`).toString('base64')}`
+      options.headers.Authorization = auth
+      return client.get(path, options)
+    }
+
+    const post = async (path: string, body: any) => {
+      const email = await this.email()
+      const auth = `Basic ${Buffer.from(`${email}:${this.heroku.auth}`).toString('base64')}`
+      options.headers.Authorization = auth
+      let opts = {
+        ...options,
+        body
+      }
+      return client.post(path, opts)
+    }
+
+    return {
+      get,
+      post
+    }
+  }
+
+  private async email(): Promise<string | undefined> {
+    if (this._email) return this._email
+    let {body} = await this.heroku.get<Heroku.Account>('/account', {retryAuth: false})
+    this._email = body.email
+    return body.email
+  }
+}
