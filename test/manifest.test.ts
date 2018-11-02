@@ -1,6 +1,8 @@
-import {expect, test} from '@oclif/test'
+import {expect} from '@oclif/test'
 
 import {GenerateManifest, ReadManifest} from '../src/manifest'
+
+import test from './utils/test'
 
 describe('GenerateManifest', () => {
   test

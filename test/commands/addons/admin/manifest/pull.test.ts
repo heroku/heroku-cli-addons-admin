@@ -1,5 +1,4 @@
 import {expect} from '@oclif/test'
-import * as fs from 'fs-extra'
 
 import test from '../../../../utils/test'
 
@@ -13,7 +12,6 @@ describe('addons:admin:manifest:pull', () => {
   const pullTest = test
     .stdout()
     .stderr()
-    .stub(fs, 'readFileSync', () => JSON.stringify(manifest))
     .nock(host, (api: any) => api
       .get('/provider/addons/testing-123')
       .reply(200, manifest)

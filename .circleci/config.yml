@@ -20,7 +20,7 @@ jobs:
           command: curl https://cli-assets.heroku.com/install.sh | sh
       - run:
           name: Setting up plugin and manifet
-          command: yarn global add oclif && heroku plugins:link && cp test/fixture/addon_manifest.json .
+          command: yarn global add oclif && heroku plugins:link
       - run:
           name: Testing
           command: yarn test
