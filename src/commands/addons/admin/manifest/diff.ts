@@ -1,5 +1,4 @@
 import color from '@heroku-cli/color'
-import cli from 'cli-ux'
 import {diffLines} from 'diff'
 
 import AdminBase from '../../../../admin-base'
@@ -13,10 +12,7 @@ export default class Diff extends AdminBase {
     const manifest: string = ReadManifest.run()
     const slug: string = JSON.parse(manifest).id
 
-    // GET request
-    cli.action.start(`Fetching add-on manifest for ${color.addon(slug)}`)
-    let {body} = await this.addons.get(`/provider/addons/${slug}`)
-    cli.action.stop()
+    const body = await this.addons.pull(slug)
     const fetchedManifest = JSON.stringify(body, null, 2)
 
     const diff = diffLines(fetchedManifest, manifest, {newlineIsToken: true, ignoreCase: true})
