@@ -7,8 +7,8 @@ describe('addons:admin:manifest:pull', () => {
     .stdout()
     .stderr()
     .nock(host, (api: any) => api
-      .get('/provider/addons/testing-123')
-      .reply(200, manifest)
+      .get('/api/v3/addons/testing-123/current_manifest')
+      .reply(200, {contents: manifest})
     )
 
   pullTest
@@ -27,7 +27,7 @@ describe('addons:admin:manifest:pull', () => {
     .stdout()
     .stderr()
     .nock(host, (api: any) => api
-      .get('/provider/addons/fakeslug')
+      .get('/api/v3/addons/fakeslug/current_manifest')
       .replyWithError(400)
     )
     .command(['addons:admin:manifest:pull', 'fakeslug'])

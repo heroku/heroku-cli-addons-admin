@@ -15,12 +15,6 @@ fsWriteFileSync.throws('write not stubbed')
 fsWriteFileSync.withArgs('addon_manifest.json').returns(undefined)
 
 const test = oTest
-.do(() => {
-  // fancy-test verifies it was called, we just want this stubbed for all tests
-  nock('https://api.heroku.com')
-  .get('/account')
-  .reply(200, {email: 'aman@abc123.com'})
-})
 .stub(fs, 'readFileSync', fsReadFileSync)
 .stub(fs, 'writeFileSync', fsWriteFileSync)
 
