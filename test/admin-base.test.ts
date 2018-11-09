@@ -40,7 +40,7 @@ describe('AdminBase', () => {
     .catch(err => {
       expect(err.message).to.eq('A list of supported regions is required, see https://devcenter.heroku.com/articles/add-on-manifest, Something else failed')
     })
-    .it('throws an error')
+    .it('push throws an error when 422')
 
   test
     .nock(host, (api: any) => api
@@ -51,7 +51,7 @@ describe('AdminBase', () => {
     )
     .do(async () => cmd.addons.push({id: 'slug'}))
     .catch(err => { expect(err.message).to.eq('Forbidden') })
-    .it('throws an error')
+    .it('push throws an error when 401')
 
   test
     .nock(host, (api: any) => api
@@ -62,7 +62,7 @@ describe('AdminBase', () => {
     )
     .do(async () => cmd.addons.pull('slug'))
     .catch(err => { expect(err.message).to.eq('Forbidden') })
-    .it('throws an error')
+    .it('pull throws an error when 401')
 
   test
     .nock(host, (api: any) => api
