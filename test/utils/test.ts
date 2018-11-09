@@ -24,4 +24,13 @@ const test = oTest
 .stub(fs, 'readFileSync', fsReadFileSync)
 .stub(fs, 'writeFileSync', fsWriteFileSync)
 
+// host for API isolation test
+const host = (process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com')
+
 export default test
+
+export {
+  test,
+  manifest,
+  host
+}

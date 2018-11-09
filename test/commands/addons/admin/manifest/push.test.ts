@@ -1,11 +1,6 @@
 import {expect} from '@oclif/test'
 
-import test from '../../../../utils/test'
-
-// test manifest
-const manifest = require('./../../../../fixture/addon_manifest')
-// host for API isolation test
-const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com'
+import {host, manifest, test} from '../../../../utils/test'
 
 describe('addons:admin:manifest:push', () => {
   test

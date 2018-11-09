@@ -1,10 +1,7 @@
 
 import {expect} from '@oclif/test'
 
-import test from '../../../../utils/test'
-
-// test addon
-const manifest = require('./../../../../fixture/addon_manifest')
+import {host, manifest, test} from '../../../../utils/test'
 
 // mandatory elements in a single manifest document (refer to /src/utils/manifest.ts)
 const manifestElements: string[] = ['id', 'name', 'api']
@@ -21,8 +18,6 @@ const manifestAPIElements: string[] = [
 ]
 const otherElements = ['base_url', 'sso_url']
 
-// host for API isolation test
-const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com'
 const testManifest = {
   test: 'testing'
 }
