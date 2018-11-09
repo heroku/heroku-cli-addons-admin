@@ -35,6 +35,39 @@ export default abstract class AdminBase extends Command {
       }
     }
 
+    const manifests = async (slug: string) => {
+      try {
+        cli.action.start(`Fetching add-on manifests for ${color.addon(slug)}`)
+        const response = await client.get(`/api/v3/addons/${encodeURIComponent(slug)}/manifests`, options)
+        cli.action.stop()
+
+        return response.body
+      } catch (err) {
+        const error = _.get(err, 'body.error')
+        if (error) {
+          this.error(error)
+        }
+        throw err
+      }
+    }
+
+    const manifest = async (slug: string, uuid: string) => {
+      try {
+        cli.action.start(`Fetching add-on manifest for ${color.addon(slug)}`)
+        const response = await client.get(`/api/v3/addons/${encodeURIComponent(slug)}/manifests/${encodeURIComponent(uuid)}`, options)
+        const body: any = response.body
+        cli.action.stop()
+
+        return body.contents
+      } catch (err) {
+        const error = _.get(err, 'body.error')
+        if (error) {
+          this.error(error)
+        }
+        throw err
+      }
+    }
+
     const push = async (manifest: any) => {
       const requestBody = {contents: manifest}
       let opts = {
@@ -63,6 +96,8 @@ export default abstract class AdminBase extends Command {
     }
 
     return {
+      manifests,
+      manifest,
       pull,
       push
     }
