@@ -25,8 +25,8 @@ const testManifest = {
 describe('addons:admin:manifest:diff', () => {
   test
     .nock(host, (api: any) => api
-      .get('/provider/addons/testing-123')
-      .reply(200, manifest)
+      .get('/api/v3/addons/testing-123/current_manifest')
+      .reply(200, {contents: manifest})
     )
     .stdout()
     .stderr()
@@ -37,8 +37,8 @@ describe('addons:admin:manifest:diff', () => {
 
   test
     .nock(host, (api: any) => api
-      .get('/provider/addons/testing-123')
-      .reply(200, manifest)
+      .get('/api/v3/addons/testing-123/current_manifest')
+      .reply(200, {contents: manifest})
     )
     .stdout()
     .stderr()
@@ -57,8 +57,8 @@ describe('addons:admin:manifest:diff', () => {
 
   test
     .nock(host, (api: any) => {
-      api.get('/provider/addons/testing-123')
-        .reply(200, {body: testManifest})
+      api.get('/api/v3/addons/testing-123/current_manifest')
+        .reply(200, {contents: testManifest})
     })
     .stdout()
     .stderr()
@@ -69,7 +69,7 @@ describe('addons:admin:manifest:diff', () => {
 
   test
     .nock(host, (api: any) => {
-      api.get('/provider/addons/testing-123')
+      api.get('/api/v3/addons/testing-123/current_manifest')
         .replyWithError('test')
     })
     .stdout()

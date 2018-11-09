@@ -14,6 +14,7 @@
     "fs-extra": "^7.0.0",
     "inquirer": "^6.0.0",
     "jsdiff": "^1.1.1",
+    "lodash": "^4.17.11",
     "randomstring": "^1.1.5",
     "tslib": "^1"
   },

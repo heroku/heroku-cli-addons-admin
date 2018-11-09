@@ -7,8 +7,8 @@ describe('addons:admin:manifest:push', () => {
     .stdout()
     .stderr()
     .nock(host, (api: any) => {
-      api.post('/provider/addons', manifest)
-        .reply(200, manifest)
+      api.post(`/api/v3/addons/${manifest.id}/manifests`, {contents: manifest})
+        .reply(200, {contents: manifest})
     })
     .command(['addons:admin:manifest:push'])
     .it('stdout contains manifest elements', (ctx: any) => {
@@ -19,7 +19,7 @@ describe('addons:admin:manifest:push', () => {
 
   test
     .nock(host, (api: any) => {
-      api.post('/provider/addons', manifest)
+      api.post(`/api/v3/addons/${manifest.id}/manifests`, {contents: manifest})
         .replyWithError(400)
     })
     .stdout()
