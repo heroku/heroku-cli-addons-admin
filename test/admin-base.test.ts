@@ -14,8 +14,8 @@ const cmd = new Test([], config)
 describe('AdminBase', () => {
   test
     .it('#addons', () => {
-      expect(cmd.addons.get).to.be.a('function')
-      expect(cmd.addons.post).to.be.a('function')
+      expect(cmd.addons.pull).to.be.a('function')
+      expect(cmd.addons.push).to.be.a('function')
     })
 
   test

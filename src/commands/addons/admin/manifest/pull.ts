@@ -36,17 +36,7 @@ export default class Pull extends AdminBase {
       }
     }
 
-    // GET request
-    cli.action.start(`Fetching add-on manifest for ${color.addon(slug)}`)
-    let {body} = await this.addons.get(`/provider/addons/${slug}`)
-      // if (err) {
-      //   if (slug) {
-      //     this.error(`Unable to make get data on a slug with the name of ${color.blue(slug)}`)
-      //   } else {
-      //     this.error('Please make sure you have a slug.')
-      //   }
-      // }
-    cli.action.stop()
+    const body = await this.addons.pull(slug)
 
     // writing addon_manifest.json
     const newManifest = {

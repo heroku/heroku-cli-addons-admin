@@ -19,20 +19,7 @@ export default class Push extends AdminBase {
     // grabbing manifest data
     const manifest: string = ReadManifest.run()
 
-    // POST request
-    cli.action.start('Pushing manifest')
-    let {body} = await this.addons.post('/provider/addons', JSON.parse(manifest!))
-      // if (err) {
-      //   const message: string = err.response.data
-      //   if (message.includes('base')) {
-      //     this.error(`${color.red(`Looks like an issue in your manifest. Please make sure there are no issues with your ${color.addon('$base')} or ${color.addon('id')} elements. Also try pulling with slugname as such:`)} \n${color.addon('heroku addons:admin:manifest:pull [SLUG]')}`)
-
-      //   } else {
-      //     this.error(`Following error from addons.heroku.com: ${color.red(message)}`)
-      //   }
-      //   // this.error(err)
-      // }
-    cli.action.stop()
+    let body = await this.addons.push(JSON.parse(manifest!))
 
     // writing addon_manifest.json
     const newManifest = {
