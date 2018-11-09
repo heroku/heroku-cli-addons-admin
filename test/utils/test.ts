@@ -1,7 +1,6 @@
 import {test as oTest} from '@oclif/test'
 
 import * as fs from 'fs-extra'
-import * as nock from 'nock'
 import * as sinon from 'sinon'
 
 const manifest = require('./../fixture/addon_manifest')

@@ -1,8 +1,8 @@
 import color from '@heroku-cli/color'
 import {APIClient, Command} from '@heroku-cli/command'
 import cli from 'cli-ux'
-import * as url from 'url'
 import * as _ from 'lodash'
+import * as url from 'url'
 
 export default abstract class AdminBase extends Command {
   get addons() {
@@ -26,7 +26,7 @@ export default abstract class AdminBase extends Command {
         cli.action.stop()
 
         return body.contents
-      } catch(err) {
+      } catch (err) {
         const error = _.get(err, 'body.error')
         if (error) {
           this.error(error)
@@ -49,10 +49,10 @@ export default abstract class AdminBase extends Command {
         cli.action.stop()
 
         return body.contents
-      } catch(err) {
+      } catch (err) {
         const baseErrors = _.get(err, 'body.error.base')
         if (baseErrors) {
-          this.error(baseErrors.join(", "))
+          this.error(baseErrors.join(', '))
         }
         const error = _.get(err, 'body.error')
         if (error) {
