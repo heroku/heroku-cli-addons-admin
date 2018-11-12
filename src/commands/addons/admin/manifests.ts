@@ -5,7 +5,7 @@ import AdminBase from '../../../admin-base'
 import {ReadManifest} from '../../../manifest'
 
 export default class AddonsAdminManifests extends AdminBase {
-  static description = 'show history manifest listing'
+  static description = 'list manifest history'
 
   async run() {
     let body: any = await this.addons.manifests(ReadManifest.json().id)

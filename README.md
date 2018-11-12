@@ -157,7 +157,7 @@ _See code: [src/commands/addons/admin/manifest/push.ts](https://github.com/herok
 
 ## `heroku addons:admin:manifests`
 
-show history manifest listing
+list manifest history
 
 ```
 USAGE
@@ -171,7 +171,7 @@ _See code: [src/commands/addons/admin/manifests.ts](https://github.com/heroku/he
 
 ## `heroku addons:admin:manifests:info manifest`
 
-show an individual historical manifest
+show an individual history manifest
 
 ```
 USAGE
