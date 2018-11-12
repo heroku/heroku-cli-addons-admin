@@ -25,10 +25,8 @@ Opening https://addons-next.heroku.com/addons/testing-123... done`,
     } else {
       // if not use slug specified in manifest
       cli.action.start('Checking addon_manifest.json')
-      const manifest = ReadManifest.run()
+      slug = ReadManifest.json().id
       cli.action.stop()
-
-      slug = JSON.parse(manifest).id
     }
 
     const url = `https://addons-next.heroku.com/addons/${slug}`

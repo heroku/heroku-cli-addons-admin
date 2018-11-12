@@ -23,17 +23,7 @@ export default class Pull extends AdminBase {
     // allows users to pull without declaring slug
     let slug = args.slug
     if (!args.slug) {
-      try {
-        let manifest = ReadManifest.run()
-        const manifestJSON = JSON.parse(manifest!)
-        if (manifestJSON.id) {
-          slug = manifestJSON.id
-        } else {
-          this.error('No slug found.')
-        }
-      } catch {
-        this.error('No manifest or slug found. Please pull with slug name.')
-      }
+      slug = ReadManifest.json().id
     }
 
     const body = await this.addons.pull(slug)
