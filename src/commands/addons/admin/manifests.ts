@@ -8,7 +8,7 @@ export default class AddonsAdminManifests extends AdminBase {
 
   async run() {
     const body: any = await this.addons.manifests(ReadManifest.json().id)
-    body.sort((a: any, b: any) => a.created_at < b.created_at)
+    body.sort((a: any, b: any) => Date.parse(a.created_at) < Date.parse(b.created_at))
 
     const columns = [
       {label: 'Manfiest', key: 'id'},
