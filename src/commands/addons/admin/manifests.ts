@@ -1,4 +1,5 @@
 import cli from 'cli-ux'
+import * as _ from 'lodash'
 
 import AdminBase from '../../../admin-base'
 import {ReadManifest} from '../../../manifest'
@@ -7,14 +8,13 @@ export default class AddonsAdminManifests extends AdminBase {
   static description = 'show history manifest listing'
 
   async run() {
-    const body: any = await this.addons.manifests(ReadManifest.json().id)
-    body.sort((a: any, b: any) => Date.parse(a.created_at) < Date.parse(b.created_at))
+    let body: any = await this.addons.manifests(ReadManifest.json().id)
 
     const columns = [
       {label: 'Manfiest', key: 'id'},
       {label: 'Created At', key: 'created_at'}
     ]
 
-    cli.table(body, {columns})
+    cli.table(_.orderBy(body, 'created_at', 'desc'), {columns})
   }
 }
