@@ -43,41 +43,11 @@ Follow the [Developing CLI Plugins](https://devcenter.heroku.com/articles/develo
 
 # Commands
 <!-- commands -->
-* [`heroku addons:admin`](#heroku-addonsadmin)
-* [`heroku addons:admin:manifest`](#heroku-addonsadminmanifest)
 * [`heroku addons:admin:manifest:diff`](#heroku-addonsadminmanifestdiff)
 * [`heroku addons:admin:manifest:generate`](#heroku-addonsadminmanifestgenerate)
 * [`heroku addons:admin:manifest:pull [SLUG]`](#heroku-addonsadminmanifestpull-slug)
 * [`heroku addons:admin:manifest:push`](#heroku-addonsadminmanifestpush)
 * [`heroku addons:admin:open [SLUG]`](#heroku-addonsadminopen-slug)
-
-## `heroku addons:admin`
-
-create and manage add-ons
-
-```
-USAGE
-  $ heroku addons:admin
-
-OPTIONS
-  -h, --help  show CLI help
-```
-
-_See code: [src/commands/addons/admin.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v1.0.0/src/commands/addons/admin.ts)_
-
-## `heroku addons:admin:manifest`
-
-manage add-on manifests
-
-```
-USAGE
-  $ heroku addons:admin:manifest
-
-OPTIONS
-  -h, --help  show CLI help
-```
-
-_See code: [src/commands/addons/admin/manifest.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v1.0.0/src/commands/addons/admin/manifest.ts)_
 
 ## `heroku addons:admin:manifest:diff`
 
@@ -99,9 +69,8 @@ USAGE
   $ heroku addons:admin:manifest:generate
 
 OPTIONS
-  -a, --addon=addon  [OPTIONAL] add-on name (name displayed on addon dashboard)
-  -h, --help         show CLI help
-  -s, --slug=slug    [OPTIONAL] slugname/manifest id
+  -a, --addon=addon  add-on name (name displayed on addon dashboard)
+  -s, --slug=slug    slugname/manifest id
 
 EXAMPLE
   $ heroku addons:admin:generate
@@ -121,9 +90,6 @@ USAGE
 ARGUMENTS
   SLUG  slug name of add-on
 
-OPTIONS
-  -h, --help  show CLI help
-
 EXAMPLE
   $ heroku addons:admin:manifest:pull testing-123
     ...
@@ -140,9 +106,6 @@ update remote manifest
 ```
 USAGE
   $ heroku addons:admin:manifest:push
-
-OPTIONS
-  -h, --help  show CLI help
 
 EXAMPLE
   $ heroku addons:admin:manifest:push
