@@ -1,46 +1,38 @@
-/* tslint:disable */
-import {expect} from '@oclif/test';
-import { readFileSync, writeFileSync } from 'fs';
+import {expect} from '@oclif/test'
 
-import test from '../../../../utils/test';
-
-// test addon
-const manifest = require('./../../../../fixture/addon_manifest');
-
-// host for API isolation test
-const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com';
+import {host, manifest, test} from '../../../../utils/test'
 
 describe('addons:admin:manifest:pull', () => {
   const pullTest = test
-  .nock(host, (api: any) => api
-    .get('/provider/addons/testing-123')
-    .reply(200, manifest)
-  );
+    .stdout()
+    .stderr()
+    .nock(host, (api: any) => api
+      .get('/api/v3/addons/testing-123/current_manifest')
+      .reply(200, {contents: manifest})
+    )
 
   pullTest
-  .stdout()
-  .command(['addons:admin:manifest:pull', 'testing-123'])
-  .it('stdout contains manifest elements', (ctx:any) => {
-    Object.keys(manifest).forEach(key => {
-      if(key !== 'api') expect(ctx.stdout).to.contain(manifest[key])
+    .command(['addons:admin:manifest:pull', 'testing-123'])
+    .it('stdout contains manifest elements', (ctx: any) => {
+      Object.keys(manifest).forEach(key => {
+        if (key !== 'api') expect(ctx.stdout).to.contain(manifest[key])
+      })
     })
-  });
 
   pullTest
-  .stdout()
-  .stderr()
-  .command(['addons:admin:manifest:pull'])
-  .it('pull grabs slug from manifest')
+    .command(['addons:admin:manifest:pull', 'testing-123'])
+    .it('pull grabs slug from manifest')
 
   test
-  .nock(host, (api: any) => api
-    .get('/provider/addons/fakeslug')
-    .replyWithError(400)
-  )
-  .stdout()
-  .command(['addons:admin:manifest:pull', 'fakeslug'])
-  .catch(err => {
-    expect(err).to.be.an('error');
-  })
-  .it('errors for fake slugs')
+    .stdout()
+    .stderr()
+    .nock(host, (api: any) => api
+      .get('/api/v3/addons/fakeslug/current_manifest')
+      .replyWithError(400)
+    )
+    .command(['addons:admin:manifest:pull', 'fakeslug'])
+    .catch(err => {
+      expect(err).to.be.an('error')
+    })
+    .it('errors for fake slugs')
 })

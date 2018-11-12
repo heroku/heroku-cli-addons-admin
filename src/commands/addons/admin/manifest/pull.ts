@@ -1,94 +1,50 @@
-/* tslint:disable */
-// CommandExtension
-import CommandExtension from '../../../../CommandExtension';
+import color from '@heroku-cli/color'
+import cli from 'cli-ux'
+import * as fs from 'fs-extra'
 
-// heroku-cli
-import {Command, flags} from '@heroku-cli/command';
-import * as Heroku from '@heroku-cli/schema';
-import color from '@heroku-cli/color';
+import AdminBase from '../../../../admin-base'
+import {ReadManifest} from '../../../../manifest'
 
-// other packages
-import cli from 'cli-ux';
-import { readFileSync, writeFileSync } from 'fs';
-
-// utilities
-import { getEmail } from '../../../../utils/heroku';
-import { readManifest } from '../../../../utils/manifest';
-
-export default class Pull extends CommandExtension {
-  static description = 'pull a manifest for a given slug';
+export default class Pull extends AdminBase {
+  static description = 'pull a manifest for a given slug'
 
   static examples = [
     `$ heroku addons:admin:manifest:pull testing-123
  ...
  Fetching add-on manifest for testing-123... done
- Updating addon_manifest.json... done`, ];
+ Updating addon_manifest.json... done`,
+  ]
 
-  static flags = {
-    help: flags.help({char: 'h'}),
-  };
-
-  static args = [{name: 'slug',  description: 'slug name of add-on'}];
+  static args = [{name: 'slug', description: 'slug name of add-on'}]
 
   async run() {
-    const {args, flags} = this.parse(Pull);
+    const {args} = this.parse(Pull)
 
-    // getting Heroku user data
-    let email: string | undefined = await getEmail.apply(this);
-
-    // headers and data to sent addons API via http request
-    let defaultOptions = {
-      headers: {
-        'Authorization': `Basic ${Buffer.from(email + ':' + this.heroku.auth).toString('base64')}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'User-Agent': 'kensa future'
-      }
-    };
     // allows users to pull without declaring slug
-    let slug = args.slug;
+    let slug = args.slug
     if (!args.slug) {
       try {
-        let manifest: string = readManifest.apply(this);
-        const manifestJSON = JSON.parse(manifest);
-        if(manifestJSON.id) {
-          slug = manifestJSON.id;
+        let manifest = ReadManifest.run()
+        const manifestJSON = JSON.parse(manifest!)
+        if (manifestJSON.id) {
+          slug = manifestJSON.id
         } else {
-          this.error('No slug found.');
+          this.error('No slug found.')
         }
-      } catch (err) {
-        this.error('No manifest or slug found. Please pull with slug name.');
+      } catch {
+        this.error('No manifest or slug found. Please pull with slug name.')
       }
     }
-    const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com';
 
-    // GET request
-    cli.action.start(`Fetching add-on manifest for ${color.addon(slug)}`);
-
-    let body: any;
-    await this.axios.get(`${host}/provider/addons/${slug}`, defaultOptions)
-    .then((res: any) => {
-      body = res.data;
-    })
-    .catch((err:any) => {
-      if (err) {
-        if (slug) {
-          this.error(`Unable to make get data on a slug with the name of ${color.blue(slug)}`)
-        } else {
-          this.error('Please make sure you have a slug.')
-        }
-        // this.error(err)
-      }
-    })
-    cli.action.stop();
+    const body = await this.addons.pull(slug)
 
     // writing addon_manifest.json
-    const newManifest: object = {
+    const newManifest = {
       ...body
-    };
-    console.log(color.bold(JSON.stringify(newManifest, null, 1)));
-    cli.action.start(`Updating ${color.blue('addon_manifest.json')}`);
-    writeFileSync('addon_manifest.json', JSON.stringify(newManifest, null, 2));
-    cli.action.stop();
+    }
+    this.log(color.bold(JSON.stringify(newManifest, null, 1)))
+    cli.action.start(`Updating ${color.blue('addon_manifest.json')}`)
+    fs.writeFileSync('addon_manifest.json', JSON.stringify(newManifest, null, 2))
+    cli.action.stop()
   }
 }

@@ -1,78 +1,34 @@
-/* tslint:disable */
-// CommandExtension
-import CommandExtension from '../../../../CommandExtension';
+import color from '@heroku-cli/color'
+import {diffLines} from 'diff'
 
-// heroku-cli
-import color from '@heroku-cli/color';
-import { Command } from '@heroku-cli/command';
-import * as Heroku from '@heroku-cli/schema';
+import AdminBase from '../../../../admin-base'
+import {ReadManifest} from '../../../../manifest'
 
-// other packages
-import cli from 'cli-ux';
-import { readFileSync } from 'fs';
-import { prompt } from 'inquirer';
-import { diffLines } from 'diff';
-
-// utilities
-import { getEmail } from '../../../../utils/heroku';
-import { readManifest } from '../../../../utils/manifest';
-
-
-export default class Diff extends CommandExtension {
+export default class Diff extends AdminBase {
   static description = 'compares remote manifest to local manifest and finds differences'
 
   async run() {
-    const {flags} = this.parse(Diff)
-    const email = await getEmail.apply(this);
-
     // reading current manifest
-    const manifest: string = readManifest.apply(this);
-    const slug: string = JSON.parse(manifest).id;
+    const manifest: string = ReadManifest.run()
+    const slug: string = JSON.parse(manifest).id
 
-    // GET request
-    cli.action.start(`Fetching add-on manifest for ${color.addon(slug)}`);
-    const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com';
-    let defaultOptions = {
-      headers: {
-        'Authorization': `Basic ${Buffer.from(email + ':' + this.heroku.auth).toString('base64')}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'User-Agent': 'kensa future'
-      }
-    };
-
-    let body: any = undefined;
-    await this.axios.get(`${host}/provider/addons/${slug}`, defaultOptions)
-    .then((res: any) => {
-      body = res.data
-    })
-    .catch((err: any) => {
-      if (err){
-        if (slug) {
-          this.error(`Unable to fetch manifest of a slug named ${color.blue(slug)}`)
-        } else {
-          this.error('Please make sure you have a slug.')
-        }
-        // this.error(err);
-      }
-    })
-    cli.action.stop();
+    const body = await this.addons.pull(slug)
     const fetchedManifest = JSON.stringify(body, null, 2)
 
-    const diff = diffLines(fetchedManifest,manifest, { newlineIsToken: true, ignoreCase: true });
+    const diff = diffLines(fetchedManifest, manifest, {newlineIsToken: true, ignoreCase: true})
 
     diff.forEach((substr: any) => {
-      let outputColor: 'white' | 'green' | 'red' = 'white';
+      let outputColor: 'white' | 'green' | 'red' = 'white'
       if (substr.added) {
-        outputColor = 'green'; // this is supposed to be a bold green (chalk.green.bold)
+        outputColor = 'green' // this is supposed to be a bold green (chalk.green.bold)
       } else if (substr.removed) {
-        outputColor = 'red';
+        outputColor = 'red'
       }
-      let message: string = color[outputColor](substr.value);
+      let message: string = color[outputColor](substr.value)
       if (outputColor === 'green') {
-        message = color.italic.bold(message);
+        message = color.italic.bold(message)
       }
-      this.log(message);
+      this.log(message)
     })
   }
 }

@@ -1,84 +1,33 @@
-/* tslint:disable */
-// CommandExtension
-import CommandExtension from '../../../../CommandExtension';
+import color from '@heroku-cli/color'
+import cli from 'cli-ux'
+import * as fs from 'fs-extra'
 
-// heroku-cli
-import {Command, flags} from '@heroku-cli/command';
-import * as Heroku from '@heroku-cli/schema';
-import color from '@heroku-cli/color';
+import AdminBase from '../../../../admin-base'
+import {ReadManifest} from '../../../../manifest'
 
-// other packages
-import cli from 'cli-ux';
-import { readFileSync, writeFileSync } from 'fs';
-
-// utilities
-import { getEmail } from '../../../../utils/heroku';
-import { readManifest } from '../../../../utils/manifest';
-
-export default class Push extends CommandExtension {
-  static description = 'update remote manifest';
-
-  static flags = {
-    help: flags.help({char: 'h'}),
-  };
+export default class Push extends AdminBase {
+  static description = 'update remote manifest'
 
   static examples = [
     `$ heroku addons:admin:manifest:push
  ...
  Pushing manifest... done
- Updating addon_manifest.json... done`, ];
-
+ Updating addon_manifest.json... done`,
+  ]
 
   async run() {
-    const {args, flags} = this.parse(Push);
-
-    // getting Heroku user data
-    let email: string | undefined = await getEmail.apply(this)
-
-    const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com';
-
     // grabbing manifest data
-    const manifest: string = readManifest.apply(this);
+    const manifest: string = ReadManifest.run()
 
-    // headers and data to sent addons API via http request
-    let defaultOptions: object = {
-      headers: {
-        'Authorization': `Basic ${Buffer.from(email + ':' + this.heroku.auth).toString('base64')}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'User-Agent': 'kensa future'
-      },
-      body: JSON.parse(manifest)
-    };
-
-    // POST request
-    cli.action.start(`Pushing manifest`);
-    let body: any = undefined;
-    await this.axios.post(`${host}/provider/addons`, JSON.parse(manifest), defaultOptions)
-    .then((res: any) => {
-      body = res.data;
-    })
-    .catch((err: any) => {
-      if (err){
-        const message: string = err.response.data;
-        if (message.includes('base')) {
-          this.error(`${color.red(`Looks like an issue in your manifest. Please make sure there are no issues with your ${color.addon('$base')} or ${color.addon('id')} elements. Also try pulling with slugname as such:`)} \n${color.addon('heroku addons:admin:manifest:pull [SLUG]')}`)
-
-        } else {
-          this.error(`Following error from addons.heroku.com: ${color.red(message)}`)
-        }
-        // this.error(err)
-      }
-    })
-    cli.action.stop();
+    let body = await this.addons.push(JSON.parse(manifest!))
 
     // writing addon_manifest.json
-    const newManifest: object = {
+    const newManifest = {
       ...body
-    };
-    console.log(color.bold(JSON.stringify(newManifest, null, 1)));
-    cli.action.start(`Updating ${color.blue('addon_manifest.json')}`);
-    writeFileSync('addon_manifest.json', JSON.stringify(newManifest, null, 2));
-    cli.action.stop();
+    }
+    this.log(color.bold(JSON.stringify(newManifest, null, 1)))
+    cli.action.start(`Updating ${color.blue('addon_manifest.json')}`)
+    fs.writeFileSync('addon_manifest.json', JSON.stringify(newManifest, null, 2))
+    cli.action.stop()
   }
 }
