@@ -85,5 +85,13 @@ export const ReadManifest = {
       cli.error('No slug found in manifest')
     }
     return JSON.parse(this.run())
+  },
+
+  slug(slugArg: string): string {
+    // allows users to pull without declaring slug
+    if (slugArg) {
+      return slugArg
+    }
+    return ReadManifest.json().id
   }
 }

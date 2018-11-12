@@ -7,8 +7,14 @@ import {ReadManifest} from '../../../manifest'
 export default class AddonsAdminManifests extends AdminBase {
   static description = 'list manifest history'
 
+  static args = [{name: 'slug'}]
+
   async run() {
-    let body: any = await this.addons.manifests(ReadManifest.json().id)
+    const {args} = this.parse(AddonsAdminManifests)
+
+    const slug = ReadManifest.slug(args.slug)
+
+    const body: any = await this.addons.manifests(slug)
 
     const columns = [
       {label: 'Manfiest', key: 'id'},
