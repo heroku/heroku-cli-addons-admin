@@ -1,4 +1,6 @@
+import cli from 'cli-ux'
 import * as fs from 'fs-extra'
+
 interface ManifestInterface {
   id: string
   name: string
@@ -75,5 +77,13 @@ export const ReadManifest = {
       throw new Error('No manifest found. Please generate a manifest first.')
     }
     return manifest
+  },
+
+  json(): ManifestInterface {
+    const json = JSON.parse(this.run())
+    if (!json.id) {
+      cli.error('No slug found in manifest')
+    }
+    return JSON.parse(this.run())
   }
 }

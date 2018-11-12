@@ -9,13 +9,10 @@ export default class Diff extends AdminBase {
 
   async run() {
     // reading current manifest
-    const manifest: string = ReadManifest.run()
-    const slug: string = JSON.parse(manifest).id
-
-    const body = await this.addons.pull(slug)
+    const body = await this.addons.pull(ReadManifest.json().id)
     const fetchedManifest = JSON.stringify(body, null, 2)
 
-    const diff = diffLines(fetchedManifest, manifest, {newlineIsToken: true, ignoreCase: true})
+    const diff = diffLines(fetchedManifest, ReadManifest.run(), {newlineIsToken: true, ignoreCase: true})
 
     diff.forEach((substr: any) => {
       let outputColor: 'white' | 'green' | 'red' = 'white'

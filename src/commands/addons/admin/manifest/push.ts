@@ -17,9 +17,7 @@ export default class Push extends AdminBase {
 
   async run() {
     // grabbing manifest data
-    const manifest: string = ReadManifest.run()
-
-    let body = await this.addons.push(JSON.parse(manifest!))
+    let body = await this.addons.push(ReadManifest.json())
 
     // writing addon_manifest.json
     const newManifest = {
