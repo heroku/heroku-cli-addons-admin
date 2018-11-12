@@ -17,17 +17,7 @@ Opening https://addons-next.heroku.com/addons/testing-123... done`,
   async run() {
     const {args} = this.parse(Open)
 
-    let slug: string
-
-    // check if user gave slug argument
-    if (args.slug) {
-      slug = args.slug
-    } else {
-      // if not use slug specified in manifest
-      cli.action.start('Checking addon_manifest.json')
-      slug = ReadManifest.json().id
-      cli.action.stop()
-    }
+    const slug = ReadManifest.slug(args.slug)
 
     const url = `https://addons-next.heroku.com/addons/${slug}`
 

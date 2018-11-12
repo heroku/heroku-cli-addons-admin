@@ -55,6 +55,28 @@ describe('AdminBase', () => {
 
   test
     .nock(host, (api: any) => api
+      .get('/api/v3/addons/slug/manifests')
+      .reply(401, {
+        error: 'Forbidden',
+      })
+    )
+    .do(async () => cmd.addons.manifests('slug'))
+    .catch(err => { expect(err.message).to.eq('Forbidden') })
+    .it('throws an error')
+
+  test
+    .nock(host, (api: any) => api
+      .get('/api/v3/addons/slug/manifests/uuid')
+      .reply(401, {
+        error: 'Forbidden',
+      })
+    )
+    .do(async () => cmd.addons.manifest('slug', 'uuid'))
+    .catch(err => { expect(err.message).to.eq('Forbidden') })
+    .it('throws an error')
+
+  test
+    .nock(host, (api: any) => api
       .get('/api/v3/addons/slug/current_manifest')
       .reply(401, {
         error: 'Forbidden',

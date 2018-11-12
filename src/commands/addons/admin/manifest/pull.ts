@@ -21,11 +21,7 @@ export default class Pull extends AdminBase {
     const {args} = this.parse(Pull)
 
     // allows users to pull without declaring slug
-    let slug = args.slug
-    if (!args.slug) {
-      slug = ReadManifest.json().id
-    }
-
+    const slug = ReadManifest.slug(args.slug)
     const body = await this.addons.pull(slug)
 
     // writing addon_manifest.json
