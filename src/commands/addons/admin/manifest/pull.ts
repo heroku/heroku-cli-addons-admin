@@ -1,9 +1,5 @@
-import color from '@heroku-cli/color'
-import cli from 'cli-ux'
-import * as fs from 'fs-extra'
-
 import AdminBase from '../../../../admin-base'
-import {ReadManifest} from '../../../../manifest'
+import {LogManifest, ReadManifest, WriteManifest} from '../../../../manifest'
 
 export default class Pull extends AdminBase {
   static description = 'pull a manifest for a given slug'
@@ -24,13 +20,8 @@ export default class Pull extends AdminBase {
     const slug = ReadManifest.slug(args.slug)
     const body = await this.addons.pull(slug)
 
-    // writing addon_manifest.json
-    const newManifest = {
-      ...body
-    }
-    this.log(color.bold(JSON.stringify(newManifest, null, 1)))
-    cli.action.start(`Updating ${color.blue('addon_manifest.json')}`)
-    fs.writeFileSync('addon_manifest.json', JSON.stringify(newManifest, null, 2))
-    cli.action.stop()
+    LogManifest.run(body)
+
+    WriteManifest.run(body)
   }
 }

@@ -2,7 +2,7 @@ import {expect} from '@oclif/test'
 import * as fs from 'fs-extra'
 import * as sinon from 'sinon'
 
-import {GenerateManifest, ReadManifest} from '../src/manifest'
+import {GenerateManifest, LogManifest, ReadManifest, WriteManifest} from '../src/manifest'
 
 import {manifest, test} from './utils/test'
 
@@ -32,4 +32,33 @@ describe('ReadManifest', () => {
       expect(err.message).to.eq('No slug found in manifest')
     })
     .it('.json throws error when no slug')
+})
+
+const writeManifest = `{
+  "id": "slug"
+}`
+
+const fsWriteFileSync = sinon.stub()
+fsWriteFileSync.throws('write not stubbed')
+fsWriteFileSync.withArgs('addon_manifest.json', writeManifest).returns(undefined)
+
+describe('WriteManifest', () => {
+  test
+    .stub(fs, 'writeFileSync', fsWriteFileSync)
+    .it('.run', () => {
+      expect(WriteManifest.run(JSON.parse(writeManifest))).to.be.a('undefined')
+      expect(fsWriteFileSync.called).to.eq(true)
+    })
+})
+
+describe('LogManifest', () => {
+  test
+    .stdout()
+    .it('.run', ctx => {
+      expect(LogManifest.run({id: 'slug'})).to.be.a('undefined')
+      expect(ctx.stdout).to.deep.equal(`{
+ "id": "slug"
+}
+`)
+    })
 })

@@ -16,6 +16,8 @@ fsWriteFileSync.withArgs('addon_manifest.json').returns(undefined)
 const test = oTest
 .stub(fs, 'readFileSync', fsReadFileSync)
 .stub(fs, 'writeFileSync', fsWriteFileSync)
+.stdout()
+.stderr()
 
 // host for API isolation test
 const host = (process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com')

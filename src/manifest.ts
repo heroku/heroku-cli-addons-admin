@@ -1,3 +1,4 @@
+import color from '@heroku-cli/color'
 import cli from 'cli-ux'
 import * as fs from 'fs-extra'
 
@@ -93,5 +94,19 @@ export const ReadManifest = {
       return slugArg
     }
     return ReadManifest.json().id
+  }
+}
+
+export const WriteManifest = {
+  run(newManifest: any): void {
+    cli.action.start(`Updating ${color.blue('addon_manifest.json')}`)
+    fs.writeFileSync('addon_manifest.json', JSON.stringify(newManifest, null, 2))
+    cli.action.stop()
+  }
+}
+
+export const LogManifest = {
+  run(manifest: any): void {
+    cli.log(color.bold(JSON.stringify(manifest, null, 1)))
   }
 }
