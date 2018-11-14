@@ -1,4 +1,6 @@
 import {expect} from '@oclif/test'
+import * as fs from 'fs-extra'
+import * as sinon from 'sinon'
 
 import {host, manifest, test} from '../../../../utils/test'
 
@@ -35,4 +37,15 @@ describe('addons:admin:manifest:pull', () => {
       expect(err).to.be.an('error')
     })
     .it('errors for fake slugs')
+
+  const fsWriteFileSync = sinon.stub()
+  fsWriteFileSync.throws('write not stubbed')
+  fsWriteFileSync.withArgs('addon_manifest.json', JSON.stringify(manifest, null, 2)).returns(undefined)
+
+  pullTest
+    .stub(fs, 'writeFileSync', fsWriteFileSync)
+    .command(['addons:admin:manifest:pull', 'testing-123'])
+    .it('writes to the manifest file', () => {
+      expect(fsWriteFileSync.called).to.eq(true)
+    })
 })

@@ -1,15 +1,19 @@
 import {expect} from '@oclif/test'
+import * as fs from 'fs-extra'
+import * as sinon from 'sinon'
 
 import {host, manifest, test} from '../../../../utils/test'
 
 describe('addons:admin:manifest:push', () => {
-  test
+  const pushTest = test
     .stdout()
     .stderr()
     .nock(host, (api: any) => {
       api.post(`/api/v3/addons/${manifest.id}/manifests`, {contents: manifest})
         .reply(200, {contents: manifest})
     })
+
+  pushTest
     .command(['addons:admin:manifest:push'])
     .it('stdout contains manifest elements', (ctx: any) => {
       Object.keys(manifest).forEach(key => {
@@ -29,4 +33,15 @@ describe('addons:admin:manifest:push', () => {
       expect(err).to.be.an('error')
     })
     .it('error testing')
+
+  const fsWriteFileSync = sinon.stub()
+  fsWriteFileSync.throws('write not stubbed')
+  fsWriteFileSync.withArgs('addon_manifest.json', JSON.stringify(manifest, null, 2)).returns(undefined)
+
+  pushTest
+    .stub(fs, 'writeFileSync', fsWriteFileSync)
+    .command(['addons:admin:manifest:push'])
+    .it('writes to the manifest file', () => {
+      expect(fsWriteFileSync.called).to.eq(true)
+    })
 })
