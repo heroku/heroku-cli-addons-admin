@@ -33,11 +33,16 @@ The file has been saved!`,
 
     // grab region data
     let {body} = await this.heroku.get<Heroku.Region[]>('/regions')
-    let regions = body.map((r: Heroku.Region) => r.name)
+    let regions = body.map((r: Heroku.Region) => r.name) as string[]
 
     // prompts for manifest
-    let manifest = GenerateManifest.run()
-    const questions: any[] = [{
+    const promptAnswers = await this.askQuestions(flags, regions)
+    const manifest = GenerateManifest.run(promptAnswers)
+    await this.writeManifest(manifest)
+  }
+
+  private slugQuestion(flags: any) {
+    return {
       type: 'input',
       name: 'id',
       message: 'Enter slugname/manifest id:',
@@ -48,13 +53,21 @@ The file has been saved!`,
           return false
         }
         return true
-      },
-    }, {
+      }
+    }
+  }
+
+  private nameQuestion(flags: any) {
+    return {
       type: 'input',
       name: 'name',
       message: 'Addon name (Name displayed to on addon dashboard):',
       default: flags.addon || 'MyAddon',
-    }, {
+    }
+  }
+
+  private regionsQuestion(regions: string[]) {
+    return {
       type: 'checkbox',
       name: 'regions',
       default: ['us'],
@@ -68,37 +81,52 @@ The file has been saved!`,
           return false
         }
         return true
-      },
-    }, {
+      }
+    }
+  }
+
+  private generateQuestion() {
+    return {
       type: 'confirm',
       name: 'toGenerate',
       message: 'Would you like to generate the password and sso_salt?',
       default: true,
-    },
-      {
-        type: 'confirm',
-        name: 'toWrite',
-        message: 'This prompt will create/replace addon_manifest.json. Is that okay with you?',
-        default: true,
-      }
+    }
+  }
+
+  private writeQuestion() {
+    return {
+      type: 'confirm',
+      name: 'toWrite',
+      message: 'This prompt will create/replace addon_manifest.json. Is that okay with you?',
+      default: true
+    }
+  }
+
+  private async askQuestions(flags: any, regions: string[]): Promise<any> {
+    const questions: any[] = [
+      this.slugQuestion(flags),
+      this.nameQuestion(flags),
+      this.regionsQuestion(regions),
+      this.generateQuestion(),
+      this.writeQuestion()
     ]
 
     // prompts begin here
     this.log(color.green('Input manifest information below: '))
-    await prompt(questions).then((answers: any) => {
-      const promptAnswers = answers as any // asserts type to answers param
-      if (promptAnswers.toGenerate) {
-        promptAnswers.password = generateString(32)
-        promptAnswers.sso_salt = generateString(32)
-      }
-      if (promptAnswers.toWrite) {
-        manifest = GenerateManifest.run(promptAnswers)
-      } else {
-        this.log(`${color.green.italic('addon_manifest.json')}${color.green(' will not be created. Have a good day!')}`)
-        this.exit()
-      }
-    })
+    const promptAnswers: any = await prompt(questions)
+    if (promptAnswers.toGenerate) {
+      promptAnswers.password = generateString(32)
+      promptAnswers.sso_salt = generateString(32)
+    }
+    if (!promptAnswers.toWrite) {
+      this.log(`${color.green.italic('addon_manifest.json')}${color.green(' will not be created. Have a good day!')}`)
+      this.exit()
+    }
+    return promptAnswers
+  }
 
+  private async writeManifest(manifest: any) {
     // generating manifest
     const manifestObj = JSON.stringify(manifest, null, 2)
     cli.action.start('Generating addon_manifest')
