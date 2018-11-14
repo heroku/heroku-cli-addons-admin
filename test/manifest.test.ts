@@ -55,9 +55,32 @@ describe('LogManifest', () => {
   test
     .stdout()
     .it('.run', ctx => {
-      expect(LogManifest.run({id: 'slug'})).to.be.a('undefined')
+      expect(LogManifest.run(manifest)).to.be.a('undefined')
       expect(ctx.stdout).to.deep.equal(`{
- "id": "slug"
+ "id": "testing-123",
+ "name": "MyAddon",
+ "api": {
+  "config_vars_prefix": "MYADDON",
+  "config_vars": [
+   "MYADDON_URL"
+  ],
+  "password": "bv95AM7726CwVQ7cHUSKuOb3tTREDdVn",
+  "sso_salt": "KtdFl80yzJvkEvq7bmJuQkuXKtV2nx6T",
+  "regions": [
+   "us",
+   "eu"
+  ],
+  "requires": [],
+  "production": {
+   "base_url": "https://myaddon.com/heroku/resources",
+   "sso_url": "https://myaddon.com/sso/login"
+  },
+  "test": {
+   "base_url": "http://localhost:4567/heroku/resources",
+   "sso_url": "http://localhost:4567/sso/login"
+  },
+  "version": "3"
+ }
 }
 `)
     })

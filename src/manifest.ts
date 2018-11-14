@@ -98,7 +98,7 @@ export const ReadManifest = {
 }
 
 export const WriteManifest = {
-  run(newManifest: any): void {
+  run(newManifest: ManifestInterface): void {
     cli.action.start(`Updating ${color.blue('addon_manifest.json')}`)
     fs.writeFileSync('addon_manifest.json', JSON.stringify(newManifest, null, 2))
     cli.action.stop()
@@ -106,7 +106,7 @@ export const WriteManifest = {
 }
 
 export const LogManifest = {
-  run(manifest: any): void {
+  run(manifest: ManifestInterface): void {
     cli.log(color.bold(JSON.stringify(manifest, null, 1)))
   }
 }
