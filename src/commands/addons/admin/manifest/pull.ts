@@ -1,7 +1,8 @@
-import AdminBase from '../../../../admin-base'
-import {LogManifest, ReadManifest, WriteManifest} from '../../../../manifest'
+import {Command} from '@heroku-cli/command'
 
-export default class Pull extends AdminBase {
+import Addon from '../../../../addon'
+
+export default class Pull extends Command {
   static description = 'pull a manifest for a given slug'
 
   static examples = [
@@ -16,12 +17,10 @@ export default class Pull extends AdminBase {
   async run() {
     const {args} = this.parse(Pull)
 
-    // allows users to pull without declaring slug
-    const slug = ReadManifest.slug(args.slug)
-    const body = await this.addons.pull(slug)
+    const addon = new Addon(this.config, args.slug)
+    const manifest = addon.local()
 
-    LogManifest.run(body)
-
-    WriteManifest.run(body)
+    await manifest.set(await addon.remote().get())
+    await manifest.log()
   }
 }

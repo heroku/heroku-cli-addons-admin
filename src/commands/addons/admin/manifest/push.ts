@@ -1,7 +1,8 @@
-import AdminBase from '../../../../admin-base'
-import {LogManifest, ReadManifest, WriteManifest} from '../../../../manifest'
+import {Command} from '@heroku-cli/command'
 
-export default class Push extends AdminBase {
+import Addon from '../../../../addon'
+
+export default class Push extends Command {
   static description = 'update remote manifest'
 
   static examples = [
@@ -12,11 +13,13 @@ export default class Push extends AdminBase {
   ]
 
   async run() {
-    // grabbing manifest data
-    const body = await this.addons.push(ReadManifest.json())
+    const addon = new Addon(this.config)
+    const manifest = addon.local()
 
-    LogManifest.run(body)
+    const remoteManifest = addon.remote()
+    await remoteManifest.set(await manifest.get())
 
-    WriteManifest.run(body)
+    await manifest.set(await remoteManifest.get())
+    await manifest.log()
   }
 }

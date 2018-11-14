@@ -2,7 +2,9 @@ import {expect} from '@oclif/test'
 import * as fs from 'fs-extra'
 import * as sinon from 'sinon'
 
-import {host, manifest, test} from '../../../../utils/test'
+import {host, manifest as localManifest, test} from '../../../../utils/test'
+
+const manifest = {remote: true, ...localManifest}
 
 describe('addons:admin:manifest:pull', () => {
   const pullTest = test

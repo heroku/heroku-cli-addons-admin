@@ -1,9 +1,8 @@
-import {flags} from '@heroku-cli/command'
+import {Command, flags} from '@heroku-cli/command'
 
-import AdminBase from '../../../../admin-base'
-import {ReadManifest} from '../../../../manifest'
+import Addon from '../../../../addon'
 
-export default class AddonsAdminManifestsInfo extends AdminBase {
+export default class AddonsAdminManifestsInfo extends Command {
   static description = 'show an individual history manifest'
 
   static args = [{name: 'slug'}]
@@ -19,8 +18,9 @@ export default class AddonsAdminManifestsInfo extends AdminBase {
   async run() {
     const {args, flags} = this.parse(AddonsAdminManifestsInfo)
 
-    const slug = ReadManifest.slug(args.slug)
-    const body: any = await this.addons.manifest(slug, flags.manifest)
+    const addon = new Addon(this.config, args.slug)
+
+    const body: any = await addon.manifest(flags.manifest)
 
     this.log(JSON.stringify(body, null, 2))
   }
