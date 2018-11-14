@@ -2,16 +2,9 @@ import {expect} from '@oclif/test'
 import * as fs from 'fs-extra'
 import * as sinon from 'sinon'
 
-import {GenerateManifest, LogManifest, ReadManifest, WriteManifest} from '../src/manifest'
+import {LogManifest, ReadManifest, WriteManifest} from '../src/manifest'
 
 import {manifest, test} from './utils/test'
-
-describe('GenerateManifest', () => {
-  test
-    .it('.run', () => {
-      expect(GenerateManifest.run()).to.be.a('object')
-    })
-})
 
 const manifestMissingSlug = sinon.stub()
 manifestMissingSlug.withArgs('addon_manifest.json').returns(JSON.stringify({}))
