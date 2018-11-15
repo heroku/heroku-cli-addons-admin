@@ -7,11 +7,11 @@ const manifest = require('./../fixture/addon_manifest')
 
 const fsReadFileSync = sinon.stub()
 fsReadFileSync.throws('read not stubbed')
-fsReadFileSync.withArgs('addon_manifest.json').returns(JSON.stringify(manifest))
+fsReadFileSync.withArgs('addon-manifest.json').returns(JSON.stringify(manifest))
 
 const fsWriteFileSync = sinon.stub()
 fsWriteFileSync.throws('write not stubbed')
-fsWriteFileSync.withArgs('addon_manifest.json').returns(undefined)
+fsWriteFileSync.withArgs('addon-manifest.json').returns(undefined)
 
 const test = oTest
 .stub(fs, 'readFileSync', fsReadFileSync)

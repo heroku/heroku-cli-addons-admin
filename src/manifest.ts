@@ -50,12 +50,24 @@ export abstract class Manifest {
 }
 
 export class ManifestLocal extends Manifest {
+  _filename: string
+
+  constructor() {
+    super()
+    if (fs.existsSync('addon_manifest.json')) {
+      cli.warn('Using addon_manifest.json was a bug, please rename to addon-manifest.json')
+      this._filename = 'addon_manifest.json'
+    } else {
+      this._filename = 'addon-manifest.json'
+    }
+  }
+
   async _get(): Promise<ManifestInterface> {
     let manifest
     try {
-      manifest = fs.readFileSync('addon_manifest.json', 'utf8')
+      manifest = fs.readFileSync(this.filename(), 'utf8')
     } catch (err) {
-      throw new Error(`Check if addon_manifest.json exists in root. \n ${err}`)
+      throw new Error(`Check if ${this.filename()} exists in root. \n ${err}`)
     }
 
     if (!manifest) {
@@ -66,14 +78,18 @@ export class ManifestLocal extends Manifest {
   }
 
   async _set(manifest: ManifestInterface): Promise<ManifestInterface> {
-    cli.action.start(`Updating ${color.blue('addon_manifest.json')}`)
-    fs.writeFileSync('addon_manifest.json', JSON.stringify(manifest, null, 2))
+    cli.action.start(`Updating ${color.blue(this.filename())}`)
+    fs.writeFileSync(this.filename(), JSON.stringify(manifest, null, 2))
     cli.action.stop()
     return manifest
   }
 
   async log(): Promise<void> {
     cli.log(color.bold(JSON.stringify(await this.get(), null, 1)))
+  }
+
+  filename(): string {
+    return this._filename
   }
 }
 
