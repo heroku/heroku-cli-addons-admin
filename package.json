@@ -9,6 +9,7 @@
     "@heroku-cli/command": "^8.1.26",
     "@heroku-cli/schema": "^1.0.3",
     "@oclif/command": "^1.5.4",
+    "@oclif/config": "^1.8.8",
     "@types/fs-extra": "^5.0.4",
     "cli-ux": "^4.7.3",
     "diff": "^3.5.0",
