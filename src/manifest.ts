@@ -85,7 +85,7 @@ export class ManifestLocal extends Manifest {
   }
 
   async log(): Promise<void> {
-    cli.log(color.bold(JSON.stringify(await this.get(), null, 1)))
+    cli.log(color.bold(JSON.stringify(await this.get(), null, 2)))
   }
 
   filename(): string {

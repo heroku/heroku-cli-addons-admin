@@ -63,30 +63,30 @@ describe('ManifestLocal (addon_manifest.json)', () => {
       await localManifest.set(manifest)
       expect(await localManifest.log()).to.be.a('undefined')
       expect(ctx.stdout).to.deep.equal(`{
- "id": "testing-123",
- "name": "MyAddon",
- "api": {
-  "config_vars_prefix": "MYADDON",
-  "config_vars": [
-   "MYADDON_URL"
-  ],
-  "password": "bv95AM7726CwVQ7cHUSKuOb3tTREDdVn",
-  "sso_salt": "KtdFl80yzJvkEvq7bmJuQkuXKtV2nx6T",
-  "regions": [
-   "us",
-   "eu"
-  ],
-  "requires": [],
-  "production": {
-   "base_url": "https://myaddon.com/heroku/resources",
-   "sso_url": "https://myaddon.com/sso/login"
-  },
-  "test": {
-   "base_url": "http://localhost:4567/heroku/resources",
-   "sso_url": "http://localhost:4567/sso/login"
-  },
-  "version": "3"
- }
+  "id": "testing-123",
+  "name": "MyAddon",
+  "api": {
+    "config_vars_prefix": "MYADDON",
+    "config_vars": [
+      "MYADDON_URL"
+    ],
+    "password": "bv95AM7726CwVQ7cHUSKuOb3tTREDdVn",
+    "sso_salt": "KtdFl80yzJvkEvq7bmJuQkuXKtV2nx6T",
+    "regions": [
+      "us",
+      "eu"
+    ],
+    "requires": [],
+    "production": {
+      "base_url": "https://myaddon.com/heroku/resources",
+      "sso_url": "https://myaddon.com/sso/login"
+    },
+    "test": {
+      "base_url": "http://localhost:4567/heroku/resources",
+      "sso_url": "http://localhost:4567/sso/login"
+    },
+    "version": "3"
+  }
 }
 `)
     })
@@ -141,30 +141,30 @@ describe('ManifestLocal (addon-manifest.json)', () => {
       await localManifest.set(manifest)
       expect(await localManifest.log()).to.be.a('undefined')
       expect(ctx.stdout).to.deep.equal(`{
- "id": "testing-123",
- "name": "MyAddon",
- "api": {
-  "config_vars_prefix": "MYADDON",
-  "config_vars": [
-   "MYADDON_URL"
-  ],
-  "password": "bv95AM7726CwVQ7cHUSKuOb3tTREDdVn",
-  "sso_salt": "KtdFl80yzJvkEvq7bmJuQkuXKtV2nx6T",
-  "regions": [
-   "us",
-   "eu"
-  ],
-  "requires": [],
-  "production": {
-   "base_url": "https://myaddon.com/heroku/resources",
-   "sso_url": "https://myaddon.com/sso/login"
-  },
-  "test": {
-   "base_url": "http://localhost:4567/heroku/resources",
-   "sso_url": "http://localhost:4567/sso/login"
-  },
-  "version": "3"
- }
+  "id": "testing-123",
+  "name": "MyAddon",
+  "api": {
+    "config_vars_prefix": "MYADDON",
+    "config_vars": [
+      "MYADDON_URL"
+    ],
+    "password": "bv95AM7726CwVQ7cHUSKuOb3tTREDdVn",
+    "sso_salt": "KtdFl80yzJvkEvq7bmJuQkuXKtV2nx6T",
+    "regions": [
+      "us",
+      "eu"
+    ],
+    "requires": [],
+    "production": {
+      "base_url": "https://myaddon.com/heroku/resources",
+      "sso_url": "https://myaddon.com/sso/login"
+    },
+    "test": {
+      "base_url": "http://localhost:4567/heroku/resources",
+      "sso_url": "http://localhost:4567/sso/login"
+    },
+    "version": "3"
+  }
 }
 `)
     })
@@ -220,30 +220,30 @@ describe('ManifestLocal (null)', () => {
       await localManifest.set(manifest)
       expect(await localManifest.log()).to.be.a('undefined')
       expect(ctx.stdout).to.deep.equal(`{
- "id": "testing-123",
- "name": "MyAddon",
- "api": {
-  "config_vars_prefix": "MYADDON",
-  "config_vars": [
-   "MYADDON_URL"
-  ],
-  "password": "bv95AM7726CwVQ7cHUSKuOb3tTREDdVn",
-  "sso_salt": "KtdFl80yzJvkEvq7bmJuQkuXKtV2nx6T",
-  "regions": [
-   "us",
-   "eu"
-  ],
-  "requires": [],
-  "production": {
-   "base_url": "https://myaddon.com/heroku/resources",
-   "sso_url": "https://myaddon.com/sso/login"
-  },
-  "test": {
-   "base_url": "http://localhost:4567/heroku/resources",
-   "sso_url": "http://localhost:4567/sso/login"
-  },
-  "version": "3"
- }
+  "id": "testing-123",
+  "name": "MyAddon",
+  "api": {
+    "config_vars_prefix": "MYADDON",
+    "config_vars": [
+      "MYADDON_URL"
+    ],
+    "password": "bv95AM7726CwVQ7cHUSKuOb3tTREDdVn",
+    "sso_salt": "KtdFl80yzJvkEvq7bmJuQkuXKtV2nx6T",
+    "regions": [
+      "us",
+      "eu"
+    ],
+    "requires": [],
+    "production": {
+      "base_url": "https://myaddon.com/heroku/resources",
+      "sso_url": "https://myaddon.com/sso/login"
+    },
+    "test": {
+      "base_url": "http://localhost:4567/heroku/resources",
+      "sso_url": "http://localhost:4567/sso/login"
+    },
+    "version": "3"
+  }
 }
 `)
     })
