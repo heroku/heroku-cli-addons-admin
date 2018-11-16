@@ -10,7 +10,7 @@ export default class Open extends Command {
 
   static examples = [
     `$ heroku addons:admin:open
-Checking addon_manifest.json... done
+Checking addon-manifest.json... done
 Opening https://addons-next.heroku.com/addons/testing-123... done`,
   ]
 

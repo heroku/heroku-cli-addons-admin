@@ -42,7 +42,7 @@ describe('addons:admin:manifest:pull', () => {
 
   const fsWriteFileSync = sinon.stub()
   fsWriteFileSync.throws('write not stubbed')
-  fsWriteFileSync.withArgs('addon_manifest.json', JSON.stringify(manifest, null, 2)).returns(undefined)
+  fsWriteFileSync.withArgs('addon-manifest.json', JSON.stringify(manifest, null, 2)).returns(undefined)
 
   pullTest
     .stub(fs, 'writeFileSync', fsWriteFileSync)

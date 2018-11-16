@@ -9,7 +9,7 @@ export default class Push extends Command {
     `$ heroku addons:admin:manifest:push
  ...
  Pushing manifest... done
- Updating addon_manifest.json... done`,
+ Updating addon-manifest.json... done`,
   ]
 
   async run() {

@@ -9,7 +9,7 @@ export default class Pull extends Command {
     `$ heroku addons:admin:manifest:pull testing-123
  ...
  Fetching add-on manifest for testing-123... done
- Updating addon_manifest.json... done`,
+ Updating addon-manifest.json... done`,
   ]
 
   static args = [{name: 'slug', description: 'slug name of add-on'}]

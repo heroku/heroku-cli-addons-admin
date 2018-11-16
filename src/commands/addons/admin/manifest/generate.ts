@@ -6,6 +6,7 @@ import * as fs from 'fs-extra'
 import {prompt} from 'inquirer'
 import {generate as generateString} from 'randomstring'
 
+import Addon from '../../../../addon'
 import {ManifestInterface} from '../../../../manifest'
 
 export default class Generate extends Command {
@@ -35,9 +36,10 @@ The file has been saved!`,
     let regions = body.map((r: Heroku.Region) => r.name) as string[]
 
     // prompts for manifest
-    const promptAnswers = await this.askQuestions(flags, regions)
+    const filename = new Addon(this.config).local().filename()
+    const promptAnswers = await this.askQuestions(filename, flags, regions)
     const manifest = this.generate(promptAnswers)
-    await this.writeManifest(manifest)
+    await this.writeManifest(filename, manifest)
   }
 
   private slugQuestion(flags: any) {
@@ -93,22 +95,22 @@ The file has been saved!`,
     }
   }
 
-  private writeQuestion() {
+  private writeQuestion(filename: string) {
     return {
       type: 'confirm',
       name: 'toWrite',
-      message: 'This prompt will create/replace addon_manifest.json. Is that okay with you?',
+      message: `This prompt will create/replace ${filename}. Is that okay with you?`,
       default: true
     }
   }
 
-  private async askQuestions(flags: any, regions: string[]): Promise<any> {
+  private async askQuestions(filename: string, flags: any, regions: string[]): Promise<any> {
     const questions: any[] = [
       this.slugQuestion(flags),
       this.nameQuestion(flags),
       this.regionsQuestion(regions),
       this.generateQuestion(),
-      this.writeQuestion()
+      this.writeQuestion(filename)
     ]
 
     // prompts begin here
@@ -119,23 +121,23 @@ The file has been saved!`,
       promptAnswers.sso_salt = generateString(32)
     }
     if (!promptAnswers.toWrite) {
-      this.log(`${color.green.italic('addon_manifest.json')}${color.green(' will not be created. Have a good day!')}`)
+      this.log(`${color.green.italic(filename)} ${color.green('will not be created. Have a good day!')}`)
       this.exit()
     }
     return promptAnswers
   }
 
-  private async writeManifest(manifest: any) {
+  private async writeManifest(filename: string, manifest: any) {
     // generating manifest
     const manifestObj = JSON.stringify(manifest, null, 2)
-    cli.action.start('Generating addon_manifest')
-    await fs.writeFile('addon_manifest.json', manifestObj, err => {
+    cli.action.start('Generating add-on manifest')
+    await fs.writeFile(filename, manifestObj, err => {
       cli.action.stop(color.green('done'))
       if (err) {
-        this.log(`The file ${color.green('addon_manifest.json')} has NOT been saved! \n`, err)
+        this.log(`The file ${color.green(filename)} has NOT been saved! \n`, err)
         return
       }
-      this.log(`The file ${color.green('addon_manifest.json')} has been saved!`)
+      this.log(`The file ${color.green(filename)} has been saved!`)
     })
   }
 

@@ -9,7 +9,7 @@ import {manifest} from '../../../../utils/test'
 describe('addons:admin:manifest:generate', () => {
   const fsWriteFileSync = sinon.stub()
   fsWriteFileSync.throws('write not stubbed')
-  fsWriteFileSync.withArgs('addon_manifest.json', JSON.stringify(manifest, null, 2)).returns(undefined)
+  fsWriteFileSync.withArgs('addon-manifest.json', JSON.stringify(manifest, null, 2)).returns(undefined)
 
   const fsWriteFileNotCalled = sinon.stub()
   fsWriteFileNotCalled.throws('write not stubbed')
@@ -34,7 +34,7 @@ describe('addons:admin:manifest:generate', () => {
     .command(['addons:admin:manifest:generate'])
     .catch(() => {})
     .it('runs', ctx => {
-      expect(ctx.stdout).to.contain('addon_manifest.json will not be created. Have a good day!')
+      expect(ctx.stdout).to.contain('addon-manifest.json will not be created. Have a good day!')
     })
 
   const promptGenerateFalse = sinon.stub()
@@ -82,9 +82,9 @@ describe('addons:admin:manifest:generate', () => {
     .stub(inquirer, 'prompt', promptGenerateFalse)
     .command(['addons:admin:manifest:generate'])
     .it('runs', ctx => {
-      expect(mock.filename).to.eq('addon_manifest.json')
+      expect(mock.filename).to.eq('addon-manifest.json')
       expect(mock.manifest).to.eq(defaultManifest)
-      expect(ctx.stdout).to.contain('The file addon_manifest.json has been saved!')
+      expect(ctx.stdout).to.contain('The file addon-manifest.json has been saved!')
     })
 
   const promptGenerateTrue = sinon.stub()
@@ -131,9 +131,9 @@ describe('addons:admin:manifest:generate', () => {
     .stub(randomstring, 'generate', randomMock)
     .command(['addons:admin:manifest:generate'])
     .it('runs', ctx => {
-      expect(mock.filename).to.eq('addon_manifest.json')
+      expect(mock.filename).to.eq('addon-manifest.json')
       expect(mock.manifest).to.eq(generatedManifest)
-      expect(ctx.stdout).to.contain('The file addon_manifest.json has been saved!')
+      expect(ctx.stdout).to.contain('The file addon-manifest.json has been saved!')
     })
 
   const promptGenerateOptions = sinon.stub()
@@ -179,7 +179,7 @@ describe('addons:admin:manifest:generate', () => {
     .stub(inquirer, 'prompt', promptGenerateOptions)
     .command(['addons:admin:manifest:generate'])
     .it('runs', () => {
-      expect(mock.filename).to.eq('addon_manifest.json')
+      expect(mock.filename).to.eq('addon-manifest.json')
       expect(mock.manifest).to.eq(optionsManifest)
     })
 })
