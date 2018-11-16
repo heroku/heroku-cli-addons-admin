@@ -1,9 +1,9 @@
+import {Command} from '@heroku-cli/command'
 import cli from 'cli-ux'
 
-import AdminBase from '../../../admin-base'
-import {ReadManifest} from '../../../manifest'
+import Addon from '../../../addon'
 
-export default class Open extends AdminBase {
+export default class Open extends Command {
   static description = 'open add-on dashboard'
 
   static args = [{name: 'slug', description: 'slug name of add-on'}]
@@ -17,8 +17,8 @@ Opening https://addons-next.heroku.com/addons/testing-123... done`,
   async run() {
     const {args} = this.parse(Open)
 
-    const slug = ReadManifest.slug(args.slug)
-
+    const addon = new Addon(this.config, args.slug)
+    const slug = await addon.slug()
     const url = `https://addons-next.heroku.com/addons/${slug}`
 
     cli.action.start(`Opening ${url}`)

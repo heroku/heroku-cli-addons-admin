@@ -1,15 +1,14 @@
 import color from '@heroku-cli/color'
-import {flags} from '@heroku-cli/command'
+import {Command, flags} from '@heroku-cli/command'
 import * as Heroku from '@heroku-cli/schema'
 import cli from 'cli-ux'
 import * as fs from 'fs-extra'
 import {prompt} from 'inquirer'
 import {generate as generateString} from 'randomstring'
 
-import AdminBase from '../../../../admin-base'
 import {ManifestInterface} from '../../../../manifest'
 
-export default class Generate extends AdminBase {
+export default class Generate extends Command {
   static description = 'generate a manifest template'
 
   static examples = [

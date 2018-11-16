@@ -1,10 +1,10 @@
+import {Command} from '@heroku-cli/command'
 import cli from 'cli-ux'
 import * as _ from 'lodash'
 
-import AdminBase from '../../../admin-base'
-import {ReadManifest} from '../../../manifest'
+import Addon from '../../../addon'
 
-export default class AddonsAdminManifests extends AdminBase {
+export default class AddonsAdminManifests extends Command {
   static description = 'list manifest history'
 
   static args = [{name: 'slug'}]
@@ -12,9 +12,9 @@ export default class AddonsAdminManifests extends AdminBase {
   async run() {
     const {args} = this.parse(AddonsAdminManifests)
 
-    const slug = ReadManifest.slug(args.slug)
+    const addon = new Addon(this.config, args.slug)
 
-    const body: any = await this.addons.manifests(slug)
+    const body = await addon.manifests()
 
     const columns = [
       {label: 'Manfiest', key: 'id'},
