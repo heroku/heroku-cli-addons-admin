@@ -37,7 +37,7 @@ describe('ManifestLocal (addon_manifest.json)', () => {
       const localManifest = new ManifestLocal()
       expect(await localManifest.get()).to.be.a('object')
       expect(await localManifest.get()).to.deep.equal(manifest)
-      expect(ctx.stderr).to.contain('Using addon_manifest.json was a bug, please rename to addon-manifest.json')
+      expect(ctx.stderr).to.contain('Using addon_manifest.json was a bug')
     })
 
   underTest
