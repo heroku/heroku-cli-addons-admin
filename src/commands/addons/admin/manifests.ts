@@ -17,7 +17,7 @@ export default class AddonsAdminManifests extends Command {
     const body = await addon.manifests()
 
     const columns = [
-      {label: 'Manfiest', key: 'id'},
+      {label: 'Manifest', key: 'id'},
       {label: 'Created At', key: 'created_at'}
     ]
 
