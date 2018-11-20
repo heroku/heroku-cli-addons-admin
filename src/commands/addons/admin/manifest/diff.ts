@@ -8,6 +8,8 @@ export default class Diff extends Command {
   static description = 'compares remote manifest to local manifest and finds differences'
 
   async run() {
+    this.parse(Diff)
+
     const addon = new Addon(this.config)
 
     // reading current manifest
