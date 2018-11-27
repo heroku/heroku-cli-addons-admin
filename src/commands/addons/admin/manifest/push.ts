@@ -13,6 +13,8 @@ export default class Push extends Command {
   ]
 
   async run() {
+    this.parse(Push)
+
     const addon = new Addon(this.config)
     const manifest = addon.local()
 
