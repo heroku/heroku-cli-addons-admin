@@ -31,7 +31,7 @@ describe('addons:admin:manifests', () => {
     .command(['addons:admin:manifests'])
     .it('prints a list of manifests', ctx => {
       expect(ctx.stdout).to.equal(
-`Manfiest                              Created At
+`Manifest                              Created At
 ────────────────────────────────────  ────────────────────────
 80d90dfb-049f-436b-9543-24cc7b691352  2017-07-19T21:47:25.894Z
 1a2e3c33-c949-4599-97d9-4ed684c35c2f  2017-07-18T21:47:25.894Z
@@ -47,7 +47,7 @@ describe('addons:admin:manifests', () => {
     .command(['addons:admin:manifests', 'arg-slug'])
     .it('prints a list of manifests', ctx => {
       expect(ctx.stdout).to.equal(
-`Manfiest                              Created At
+`Manifest                              Created At
 ────────────────────────────────────  ────────────────────────
 80d90dfb-049f-436b-9543-24cc7b691352  2017-07-19T21:47:25.894Z
 1a2e3c33-c949-4599-97d9-4ed684c35c2f  2017-07-18T21:47:25.894Z
