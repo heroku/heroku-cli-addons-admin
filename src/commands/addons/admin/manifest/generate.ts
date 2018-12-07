@@ -157,12 +157,6 @@ The file has been saved!`,
           base_url: 'https://myaddon.com/heroku/resources',
           sso_url: 'https://myaddon.com/sso/login'
         },
-        test: {
-          // tslint:disable-next-line:no-http-string
-          base_url: 'http://localhost:4567/heroku/resources',
-          // tslint:disable-next-line:no-http-string
-          sso_url: 'http://localhost:4567/sso/login'
-        },
         version: '3'
       },
       name: 'MyAddon',

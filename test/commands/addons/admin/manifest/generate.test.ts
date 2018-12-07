@@ -61,10 +61,6 @@ describe('addons:admin:manifest:generate', () => {
       "base_url": "https://myaddon.com/heroku/resources",
       "sso_url": "https://myaddon.com/sso/login"
     },
-    "test": {
-      "base_url": "http://localhost:4567/heroku/resources",
-      "sso_url": "http://localhost:4567/sso/login"
-    },
     "version": "3"
   },
   "name": "MyAddon"
@@ -110,10 +106,6 @@ describe('addons:admin:manifest:generate', () => {
     "production": {
       "base_url": "https://myaddon.com/heroku/resources",
       "sso_url": "https://myaddon.com/sso/login"
-    },
-    "test": {
-      "base_url": "http://localhost:4567/heroku/resources",
-      "sso_url": "http://localhost:4567/sso/login"
     },
     "version": "3"
   },
@@ -163,10 +155,6 @@ describe('addons:admin:manifest:generate', () => {
     "production": {
       "base_url": "https://myaddon.com/heroku/resources",
       "sso_url": "https://myaddon.com/sso/login"
-    },
-    "test": {
-      "base_url": "http://localhost:4567/heroku/resources",
-      "sso_url": "http://localhost:4567/sso/login"
     },
     "version": "3"
   },

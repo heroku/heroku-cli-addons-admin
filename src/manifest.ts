@@ -22,10 +22,6 @@ interface ManifestAPIInterface {
     base_url: string
     sso_url: string
   }
-  test: {
-    base_url: string
-    sso_url: string
-  }
   version: string
 }
 
