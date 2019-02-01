@@ -170,4 +170,44 @@ describe('addons:admin:manifest:generate', () => {
       expect(mock.filename).to.eq('addon-manifest.json')
       expect(mock.manifest).to.eq(optionsManifest)
     })
+
+  const promptGenerateDashOptions = sinon.stub()
+  promptGenerateDashOptions.returns(Promise.resolve({
+    id: 'slug-with-dash',
+    name: 'name',
+    regions: ['us'],
+    toGenerate: false,
+    toWrite: true
+  }))
+
+  const optionsDashManifest = `{
+  "id": "slug-with-dash",
+  "api": {
+    "config_vars_prefix": "SLUG_WITH_DASH",
+    "config_vars": [
+      "SLUG_WITH_DASH_URL"
+    ],
+    "password": "CHANGEME",
+    "sso_salt": "CHANGEME",
+    "regions": [
+      "us"
+    ],
+    "requires": [],
+    "production": {
+      "base_url": "https://myaddon.com/heroku/resources",
+      "sso_url": "https://myaddon.com/sso/login"
+    },
+    "version": "3"
+  },
+  "name": "name"
+}`
+
+  generateTest
+    .stdout()
+    .stub(fs, 'writeFile', mock)
+    .stub(inquirer, 'prompt', promptGenerateDashOptions)
+    .command(['addons:admin:manifest:generate'])
+    .it('runs', () => {
+      expect(mock.manifest).to.eq(optionsDashManifest)
+    })
 })
