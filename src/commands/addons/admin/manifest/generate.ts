@@ -162,7 +162,7 @@ The file has been saved!`,
       name: 'MyAddon',
     }
 
-    let configVarsPrefix = data.id ? data.id.toUpperCase().replace(/-/g, '_') : null
+    let configVarsPrefix = data.id && data.id.toUpperCase().replace(/-/g, '_')
 
     manifest.id = data.id || manifest.id
     manifest.api.config_vars_prefix = (configVarsPrefix ? configVarsPrefix : manifest.api.config_vars_prefix)
