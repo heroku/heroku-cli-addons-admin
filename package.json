@@ -18,7 +18,8 @@
     "jsdiff": "^1.1.1",
     "lodash": "^4.17.11",
     "randomstring": "^1.1.5",
-    "tslib": "^1"
+    "tslib": "^1",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "@fancy-test/nock": "^0.1.1",
@@ -77,6 +78,9 @@
     "posttest": "tsc -p test --noEmit && tslint -p test -t stylish",
     "prepack": "rm -rf lib && tsc && oclif-dev manifest && oclif-dev readme",
     "test": "nyc mocha --forbid-only \"test/**/*.test.ts\"",
-    "version": "oclif-dev readme && git add README.md"
-  }
+    "version": "oclif-dev readme && git add README.md",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }
