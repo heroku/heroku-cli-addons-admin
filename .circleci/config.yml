@@ -3,7 +3,7 @@ version: 2
 jobs:
   node-latest: &test
     docker:
-      - image: node:latest
+      - image: node:14
     working_directory: ~/cli
     steps:
       - checkout
@@ -36,14 +36,14 @@ jobs:
             - ~/cli/node_modules
             - /usr/local/share/.cache/yarn
             - /usr/local/share/.config/yarn
-  node-8:
+  node-12:
     <<: *test
     docker:
-      - image: node:8
+      - image: node:12
 
 workflows:
   version: 2
   "@heroku-cli/addons-admin":
     jobs:
       - node-latest
-      - node-8
+      - node-12
