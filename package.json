@@ -13,7 +13,7 @@
     "@types/fs-extra": "^5.0.4",
     "cli-ux": "^4.7.3",
     "diff": "^3.5.0",
-    "fs-extra": "^7.0.0",
+    "fs-extra": "^8.0.0",
     "inquirer": "^6.0.0",
     "jsdiff": "^1.1.1",
     "lodash": "^4.17.11",
