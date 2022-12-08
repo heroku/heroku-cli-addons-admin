@@ -1,0 +1,35 @@
+name: Node CI Suite
+
+on:
+  push
+
+defaults:
+  run:
+    working-directory: ~/cli
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, lts/*]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: ../../.circleci/greenkeeper
+      - run: ./bin/run --help
+      - name: Installing Heroku CLI
+        run: curl https://cli-assets.heroku.com/install.sh | sh
+      - name: Setting up plugin and manifet
+        run: yarn global add oclif && heroku plugins:link
+      - run: yarn --frozen-lockfile
+      - name: Testing
+        run: yarn test
+      - name: Running nyc code coverage
+        run: ./node_modules/.bin/nyc report --reporter text-lcov > coverage.lcov
