@@ -17,8 +17,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install dependencies
-        run: ./circleci/greenkeeper
+      #- name: Install dependencies
+      #  run: ./circleci/greenkeeper
       - run: ./bin/run --help
       - name: Installing Heroku CLI
         run: curl https://cli-assets.heroku.com/install.sh | sh
