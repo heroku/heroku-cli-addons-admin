@@ -3,10 +3,6 @@ name: Node CI Suite
 on:
   push
 
-defaults:
-  run:
-    working-directory: ~/cli
-
 jobs:
   test:
     runs-on: ubuntu-latest
