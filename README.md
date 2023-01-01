@@ -160,3 +160,4 @@ EXAMPLE
 
 _See code: [src/commands/addons/admin/open.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.2.1/src/commands/addons/admin/open.ts)_
 <!-- commandsstop -->
+test
