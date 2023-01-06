@@ -7,19 +7,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [14.x, lts/*]
-
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 14
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-      #- name: Install dependencies
-      #  run: ./circleci/greenkeeper
-      # - run: ./bin/run --help
+          node-version: 14
       - name: Installing Heroku CLI
         run: curl https://cli-assets.heroku.com/install.sh | sh
       - name: Setting up plugin and manifet
