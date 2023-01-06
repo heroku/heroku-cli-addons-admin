@@ -5,17 +5,13 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node-version: [lts/erbium, lts/fermium]
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Use Nodejs ${{matrix.node-version}}
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 14
     - name: Installing Heroku CLI
       run: curl https://cli-assets.heroku.com/install.sh | sh
     - name: Setting up plugin and manifest
