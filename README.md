@@ -4,7 +4,6 @@
 Heroku CLI plugin to help Heroku add-on providers integrate their services with Heroku.
 
 [![Version](https://img.shields.io/npm/v/@heroku-cli/plugin-addons-admin.svg)](https://www.npmjs.com/package/@heroku-cli/plugin-addons-admin)
-[![CircleCI](https://circleci.com/gh/heroku/heroku-cli-addons-admin/tree/master.svg?style=svg&circle-token=db696925a68c516a4f432c64530c5df9ba305b16)](https://circleci.com/gh/heroku/heroku-cli-addons-admin/tree/master)
 [![Downloads/week](https://img.shields.io/npm/dw/@heroku-cli/plugin-addons-admin.svg)](https://npmjs.org/package/@heroku-cli/plugin-addons-admin)
 [![License](https://img.shields.io/npm/l/@heroku-cli/plugin-addons-admin.svg)](https://github.com/heroku/heroku-cli-addons-admin/blob/master/package.json)
 
