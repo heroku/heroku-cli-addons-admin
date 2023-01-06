@@ -1,0 +1,24 @@
+name: Node CI Suite
+
+on:
+  push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Nodejs 14
+      uses: actions/setup-node@v3
+      with:
+        node-version: 14.x
+    - name: Installing Heroku CLI
+      run: curl https://cli-assets.heroku.com/install.sh | sh
+    - name: Setting up plugin and manifest
+      run: yarn global add oclif && heroku plugins:link
+    - name: Install dependencies
+      run: yarn --frozen-lockfile
+    - name: Testing
+      run: yarn test
+    - name: Run nyc code coverage report
+      run: ./node_modules/.bin/nyc report --reporter text-lcov > coverage.lcov
