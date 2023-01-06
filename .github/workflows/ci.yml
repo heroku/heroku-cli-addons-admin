@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, lts/*]
+        node-version: [14.x, lts/*]
 
     steps:
       - uses: actions/checkout@v3
@@ -19,7 +19,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       #- name: Install dependencies
       #  run: ./circleci/greenkeeper
-      # - run: ./bin/run --help
+      - run: ./bin/run --help
       - name: Installing Heroku CLI
         run: curl https://cli-assets.heroku.com/install.sh | sh
       - name: Setting up plugin and manifet
