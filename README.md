@@ -1,5 +1,4 @@
-@heroku-cli/plugin-addons-admin
-========================
+# Heroku CLI Addons Admin Plugin
 
 Heroku CLI plugin to help Heroku add-on providers integrate their services with Heroku.
 
