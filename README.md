@@ -15,7 +15,7 @@ Heroku CLI plugin to help Heroku add-on providers integrate their services with 
 
 # Installation
 ```sh-session
-$ heroku plugins:install addons-admin
+$ heroku plugins:install @heroku-cli/plugin-addons-admin
 ```
 
 # Usage
