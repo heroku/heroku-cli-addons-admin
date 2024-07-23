@@ -11,7 +11,7 @@ jobs:
     - name: Use Nodejs 14
       uses: actions/setup-node@v3
       with:
-        node-version: 14.x
+        node-version: 16.x
     - name: Installing Heroku CLI
       run: curl https://cli-assets.heroku.com/install.sh | sh
     - name: Setting up plugin and manifest
