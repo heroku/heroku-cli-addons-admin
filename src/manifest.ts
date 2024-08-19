@@ -27,8 +27,8 @@ interface ManifestAPIInterface {
 
 export abstract class Manifest {
   manifest?: ManifestInterface
-  abstract async _get(): Promise<ManifestInterface>
-  abstract async _set(manifest: ManifestInterface): Promise<ManifestInterface>
+  abstract _get(): Promise<ManifestInterface>
+  abstract _set(manifest: ManifestInterface): Promise<ManifestInterface>
 
   async get(): Promise<ManifestInterface> {
     if (this.manifest) {
