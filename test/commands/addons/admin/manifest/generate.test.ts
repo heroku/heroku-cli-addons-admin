@@ -1,8 +1,9 @@
 import {expect, test} from '@oclif/test'
 import * as fs from 'fs-extra'
-const inquirer = require('inquirer')
+import * as inquirer from 'inquirer'
 import * as randomstring from 'randomstring'
 import * as sinon from 'sinon'
+
 import {manifest} from '../../../../utils/test'
 
 describe('addons:admin:manifest:generate', () => {
