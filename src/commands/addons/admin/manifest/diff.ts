@@ -26,10 +26,12 @@ export default class Diff extends Command {
       } else if (substr.removed) {
         outputColor = 'red'
       }
+
       let message: string = color[outputColor](substr.value)
       if (outputColor === 'green') {
         message = color.italic.bold(message)
       }
+
       this.log(message)
     })
   }

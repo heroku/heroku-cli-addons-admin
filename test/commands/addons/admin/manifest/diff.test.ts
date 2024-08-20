@@ -14,12 +14,12 @@ const manifestAPIElements: string[] = [
   'requires',
   'production',
   'test',
-  'version'
+  'version',
 ]
 const otherElements = ['base_url', 'sso_url']
 
 const testManifest = {
-  test: 'testing'
+  test: 'testing',
 }
 
 describe('addons:admin:manifest:diff', () => {
@@ -75,8 +75,8 @@ describe('addons:admin:manifest:diff', () => {
     .stdout()
     .stderr()
     .command(['addons:admin:manifest:diff'])
-    .catch((err: any) => {
-      expect(err).to.be.an('error')
+    .catch(error => {
+      expect(error).to.be.an('error')
     })
     .it('error testing')
 })

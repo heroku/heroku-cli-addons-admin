@@ -28,8 +28,8 @@ describe('Addon', () => {
     .do(async () => {
       await addon().slug()
     })
-    .catch(err => {
-      expect(err.message).to.eq('No slug found in manifest')
+    .catch(error => {
+      expect(error.message).to.eq('No slug found in manifest')
     })
     .it('.slug throws error when no slug')
   test
@@ -42,7 +42,9 @@ describe('Addon', () => {
     .do(async () => {
       await addon().manifests()
     })
-    .catch(err => { expect(err.message).to.eq('Forbidden') })
+    .catch(error => {
+      expect(error.message).to.eq('Forbidden')
+    })
     .it('manifests() throws an error')
   test
     .nock(host, (api: any) => api
@@ -54,6 +56,8 @@ describe('Addon', () => {
     .do(async () => {
       await addon().manifest('uuid')
     })
-    .catch(err => { expect(err.message).to.eq('Forbidden') })
+    .catch(error => {
+      expect(error.message).to.eq('Forbidden')
+    })
     .it('manifest() throws an error')
 })

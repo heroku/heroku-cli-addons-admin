@@ -31,8 +31,8 @@ describe('addons:admin:manifest:push', () => {
     .stdout()
     .stderr()
     .command(['addons:admin:manifest:push'])
-    .catch((err: any) => {
-      expect(err).to.be.an('error')
+    .catch(error => {
+      expect(error).to.be.an('error')
     })
     .it('error testing')
 

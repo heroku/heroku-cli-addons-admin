@@ -25,14 +25,16 @@ describe('addons:admin:manifest:generate', () => {
   const promptWriteFalse = sinon.stub()
   promptWriteFalse.returns(Promise.resolve({
     toGenerate: false,
-    toWrite: false
+    toWrite: false,
   }))
 
   generateTest
     .stub(inquirer, 'prompt', promptWriteFalse)
     .stdout()
     .command(['addons:admin:manifest:generate'])
-    .catch(() => {})
+    .catch(() => {
+      // do nothing
+    })
     .it('runs', ctx => {
       expect(ctx.stdout).to.contain('addon-manifest.json will not be created. Have a good day!')
     })
@@ -40,7 +42,7 @@ describe('addons:admin:manifest:generate', () => {
   const promptGenerateFalse = sinon.stub()
   promptGenerateFalse.returns(Promise.resolve({
     toGenerate: false,
-    toWrite: true
+    toWrite: true,
   }))
 
   const defaultManifest = `{
@@ -86,7 +88,7 @@ describe('addons:admin:manifest:generate', () => {
   const promptGenerateTrue = sinon.stub()
   promptGenerateTrue.returns(Promise.resolve({
     toGenerate: true,
-    toWrite: true
+    toWrite: true,
   }))
 
   const generatedManifest = `{
@@ -134,7 +136,7 @@ describe('addons:admin:manifest:generate', () => {
     name: 'name',
     regions: ['us', 'eu', 'dublin'],
     toGenerate: false,
-    toWrite: true
+    toWrite: true,
   }))
 
   const optionsManifest = `{
@@ -177,7 +179,7 @@ describe('addons:admin:manifest:generate', () => {
     name: 'name',
     regions: ['us'],
     toGenerate: false,
-    toWrite: true
+    toWrite: true,
   }))
 
   const optionsDashManifest = `{
