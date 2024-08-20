@@ -7,6 +7,7 @@ Heroku CLI plugin to help Heroku add-on providers integrate their services with 
 [![License](https://img.shields.io/npm/l/@heroku-cli/plugin-addons-admin.svg)](https://github.com/heroku/heroku-cli-addons-admin/blob/master/package.json)
 
 <!-- toc -->
+* [Heroku CLI Addons Admin Plugin](#heroku-cli-addons-admin-plugin)
 * [Installation](#installation)
 * [Usage](#usage)
 * [Development](#development)
@@ -25,7 +26,7 @@ $ npm install -g @heroku-cli/plugin-addons-admin
 $ heroku COMMAND
 running command...
 $ heroku (-v|--version|version)
-@heroku-cli/plugin-addons-admin/2.2.1 linux-x64 node-v11.1.0
+@heroku-cli/plugin-addons-admin/2.3.0 darwin-x64 node-v16.20.2
 $ heroku --help [COMMAND]
 USAGE
   $ heroku COMMAND
@@ -56,7 +57,7 @@ USAGE
   $ heroku addons:admin:manifest:diff
 ```
 
-_See code: [src/commands/addons/admin/manifest/diff.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.2.1/src/commands/addons/admin/manifest/diff.ts)_
+_See code: [src/commands/addons/admin/manifest/diff.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.3.0/src/commands/addons/admin/manifest/diff.ts)_
 
 ## `heroku addons:admin:manifest:generate`
 
@@ -75,7 +76,7 @@ EXAMPLE
   The file has been saved!
 ```
 
-_See code: [src/commands/addons/admin/manifest/generate.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.2.1/src/commands/addons/admin/manifest/generate.ts)_
+_See code: [src/commands/addons/admin/manifest/generate.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.3.0/src/commands/addons/admin/manifest/generate.ts)_
 
 ## `heroku addons:admin:manifest:pull [SLUG]`
 
@@ -95,7 +96,7 @@ EXAMPLE
     Updating addon-manifest.json... done
 ```
 
-_See code: [src/commands/addons/admin/manifest/pull.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.2.1/src/commands/addons/admin/manifest/pull.ts)_
+_See code: [src/commands/addons/admin/manifest/pull.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.3.0/src/commands/addons/admin/manifest/pull.ts)_
 
 ## `heroku addons:admin:manifest:push`
 
@@ -112,7 +113,7 @@ EXAMPLE
     Updating addon-manifest.json... done
 ```
 
-_See code: [src/commands/addons/admin/manifest/push.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.2.1/src/commands/addons/admin/manifest/push.ts)_
+_See code: [src/commands/addons/admin/manifest/push.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.3.0/src/commands/addons/admin/manifest/push.ts)_
 
 ## `heroku addons:admin:manifests [SLUG]`
 
@@ -123,7 +124,7 @@ USAGE
   $ heroku addons:admin:manifests [SLUG]
 ```
 
-_See code: [src/commands/addons/admin/manifests.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.2.1/src/commands/addons/admin/manifests.ts)_
+_See code: [src/commands/addons/admin/manifests.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.3.0/src/commands/addons/admin/manifests.ts)_
 
 ## `heroku addons:admin:manifests:info [SLUG]`
 
@@ -137,7 +138,7 @@ OPTIONS
   -m, --manifest=manifest  (required) manifest history id
 ```
 
-_See code: [src/commands/addons/admin/manifests/info.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.2.1/src/commands/addons/admin/manifests/info.ts)_
+_See code: [src/commands/addons/admin/manifests/info.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.3.0/src/commands/addons/admin/manifests/info.ts)_
 
 ## `heroku addons:admin:open [SLUG]`
 
@@ -156,5 +157,5 @@ EXAMPLE
   Opening https://addons-next.heroku.com/addons/testing-123... done
 ```
 
-_See code: [src/commands/addons/admin/open.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.2.1/src/commands/addons/admin/open.ts)_
+_See code: [src/commands/addons/admin/open.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.3.0/src/commands/addons/admin/open.ts)_
 <!-- commandsstop -->

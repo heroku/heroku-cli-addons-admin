@@ -1,7 +1,7 @@
 {
   "name": "@heroku-cli/plugin-addons-admin",
   "description": "Heroku CLI plugin to help Heroku add-on providers integrate their services with Heroku.",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "author": "Heroku",
   "bugs": "https://github.com/heroku/heroku-cli-addons-admin/issues",
   "dependencies": {
