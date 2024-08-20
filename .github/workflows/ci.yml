@@ -5,20 +5,21 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+
+    runs-on: ${{ matrix.os }}
+    name: Node Tests
+
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
+        os: [ ubuntu-24.04, pub-hk-ubuntu-24.04-arm-small ]
+
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Nodejs 14
-      uses: actions/setup-node@v3
-      with:
-        node-version: 14.x
-    - name: Installing Heroku CLI
-      run: curl https://cli-assets.heroku.com/install.sh | sh
-    - name: Setting up plugin and manifest
-      run: yarn global add oclif && heroku plugins:link
-    - name: Install dependencies
-      run: yarn --frozen-lockfile
-    - name: Testing
-      run: yarn test
-    - name: Run nyc code coverage report
-      run: ./node_modules/.bin/nyc report --reporter text-lcov > coverage.lcov
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install -g yarn
+      - run: yarn --frozen-lockfile --ignore-engines
+      - run: yarn test
