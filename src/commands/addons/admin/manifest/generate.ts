@@ -20,20 +20,20 @@ The file has been saved!`,
   static flags = {
     slug: flags.string({
       char: 's',
-      description: 'slugname/manifest id'
+      description: 'slugname/manifest id',
     }),
     addon: flags.string({
       char: 'a',
       description: 'add-on name (name displayed on addon dashboard)',
-    })
+    }),
   }
 
   async run() {
     const {flags} = this.parse(Generate)
 
     // grab region data
-    let {body} = await this.heroku.get<Heroku.Region[]>('/regions')
-    let regions = body.map((r: Heroku.Region) => r.name) as string[]
+    const {body} = await this.heroku.get<Heroku.Region[]>('/regions')
+    const regions = body.map((r: Heroku.Region) => r.name) as string[]
 
     // prompts for manifest
     const filename = new Addon(this.config).local().filename()
@@ -49,12 +49,13 @@ The file has been saved!`,
       message: 'Enter slugname/manifest id:',
       default: flags.slug,
       validate: (input: any): boolean => {
-        if (input.trim() === '' || !isNaN(input)) {
+        if (input.trim() === '' || !Number.isNaN(input)) {
           this.error('Please use a string as a slug name.')
           return false
         }
+
         return true
-      }
+      },
     }
   }
 
@@ -77,12 +78,13 @@ The file has been saved!`,
       choices: regions,
       suffix: `\n  ${color.bold('<space>')} - select\n  ${color.bold('<a>')} - toggle all\n  ${color.bold('<i>')} - invert all \n  ${color.bold('↑↓')} use arrow keys to navigate\n`,
       validate: (input: any): boolean => {
-        if (input.length < 1) {
+        if (input.length === 0) {
           this.error('Please select at least one region.')
           return false
         }
+
         return true
-      }
+      },
     }
   }
 
@@ -100,7 +102,7 @@ The file has been saved!`,
       type: 'confirm',
       name: 'toWrite',
       message: `This prompt will create/replace ${filename}. Is that okay with you?`,
-      default: true
+      default: true,
     }
   }
 
@@ -110,7 +112,7 @@ The file has been saved!`,
       this.nameQuestion(flags),
       this.regionsQuestion(regions),
       this.generateQuestion(),
-      this.writeQuestion(filename)
+      this.writeQuestion(filename),
     ]
 
     // prompts begin here
@@ -120,10 +122,12 @@ The file has been saved!`,
       promptAnswers.password = generateString(32)
       promptAnswers.sso_salt = generateString(32)
     }
+
     if (!promptAnswers.toWrite) {
       this.log(`${color.green.italic(filename)} ${color.green('will not be created. Have a good day!')}`)
       this.exit()
     }
+
     return promptAnswers
   }
 
@@ -137,17 +141,18 @@ The file has been saved!`,
         this.log(`The file ${color.green(filename)} has NOT been saved! \n`, err)
         return
       }
+
       this.log(`The file ${color.green(filename)} has been saved!`)
     })
   }
 
   private generate(data: any = {}): ManifestInterface {
-    let manifest: ManifestInterface = {
+    const manifest: ManifestInterface = {
       id: 'myaddon',
       api: {
         config_vars_prefix: 'MYADDON',
         config_vars: [
-          'MYADDON_URL'
+          'MYADDON_URL',
         ],
         password: 'CHANGEME',
         sso_salt: 'CHANGEME',
@@ -155,14 +160,14 @@ The file has been saved!`,
         requires: [],
         production: {
           base_url: 'https://myaddon.com/heroku/resources',
-          sso_url: 'https://myaddon.com/sso/login'
+          sso_url: 'https://myaddon.com/sso/login',
         },
-        version: '3'
+        version: '3',
       },
       name: 'MyAddon',
     }
 
-    let configVarsPrefix = data.id && data.id.toUpperCase().replace(/-/g, '_')
+    const configVarsPrefix = data.id && data.id.toUpperCase().replace(/-/g, '_')
 
     manifest.id = data.id || manifest.id
     manifest.api.config_vars_prefix = (configVarsPrefix ? configVarsPrefix : manifest.api.config_vars_prefix)

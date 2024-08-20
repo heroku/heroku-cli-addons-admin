@@ -34,10 +34,12 @@ export default class Addon {
     if (this.argsSlug) {
       return this.argsSlug
     }
+
     const manifest = await this.local().get()
     if (!manifest.id) {
       cli.error('No slug found in manifest')
     }
+
     return manifest.id
   }
 
@@ -49,12 +51,13 @@ export default class Addon {
       cli.action.stop()
 
       return body
-    } catch (err) {
-      const error = _.get(err, 'body.error')
-      if (error) {
-        cli.error(error)
+    } catch (error) {
+      const errorBody = _.get(error, 'body.error')
+      if (errorBody) {
+        cli.error(errorBody)
       }
-      throw err
+
+      throw error
     }
   }
 

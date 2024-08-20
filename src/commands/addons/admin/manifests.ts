@@ -18,7 +18,7 @@ export default class AddonsAdminManifests extends Command {
 
     const columns = [
       {label: 'Manifest', key: 'id'},
-      {label: 'Created At', key: 'created_at'}
+      {label: 'Created At', key: 'created_at'},
     ]
 
     cli.table(_.orderBy(body, 'created_at', 'desc'), {columns})

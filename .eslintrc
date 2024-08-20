@@ -1,0 +1,24 @@
+{
+  "extends": [
+    "oclif",
+    "oclif-typescript"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "modules": true
+    }
+  },
+  "rules": {
+    "camelcase":"off",
+    "indent": ["error", 2, {"MemberExpression": 1}],
+    "node/no-deprecated-api": "warn",
+    "node/no-missing-import": "off",
+    "unicorn/no-array-for-each": "off",
+    "unicorn/no-useless-undefined": "warn",
+    "unicorn/prefer-node-protocol": "warn"
+    
+  }
+
+}

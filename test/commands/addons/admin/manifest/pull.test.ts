@@ -35,8 +35,8 @@ describe('addons:admin:manifest:pull', () => {
       .replyWithError(400)
     )
     .command(['addons:admin:manifest:pull', 'fakeslug'])
-    .catch(err => {
-      expect(err).to.be.an('error')
+    .catch(error => {
+      expect(error).to.be.an('error')
     })
     .it('errors for fake slugs')
 

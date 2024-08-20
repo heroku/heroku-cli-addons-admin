@@ -277,7 +277,9 @@ describe('ManifestRemote', () => {
     .do(async () => {
       await addon().remote().get()
     })
-    .catch(err => { expect(err.message).to.eq('Forbidden') })
+    .catch(error => {
+      expect(error.message).to.eq('Forbidden')
+    })
     .it('get() throws an error')
 
   test
@@ -287,16 +289,16 @@ describe('ManifestRemote', () => {
         error: {
           base: [
             'A list of supported regions is required, see https://devcenter.heroku.com/articles/add-on-manifest',
-            'Something else failed'
-          ]
-        }
+            'Something else failed',
+          ],
+        },
       })
     )
     .do(async () => {
       await addon().remote().set({id: 'testing-123'} as ManifestInterface)
     })
-    .catch(err => {
-      expect(err.message).to.eq('A list of supported regions is required, see https://devcenter.heroku.com/articles/add-on-manifest, Something else failed')
+    .catch(error => {
+      expect(error.message).to.eq('A list of supported regions is required, see https://devcenter.heroku.com/articles/add-on-manifest, Something else failed')
     })
     .it('.set() throws an error when 422')
 
@@ -310,7 +312,9 @@ describe('ManifestRemote', () => {
     .do(async () => {
       await addon().remote().set({id: 'testing-123'} as ManifestInterface)
     })
-    .catch(err => { expect(err.message).to.eq('Forbidden') })
+    .catch(error => {
+      expect(error.message).to.eq('Forbidden')
+    })
     .it('set() throws an error when 401')
 
   test

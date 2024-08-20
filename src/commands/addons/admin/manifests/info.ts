@@ -11,8 +11,8 @@ export default class AddonsAdminManifestsInfo extends Command {
     manifest: flags.string({
       char: 'm',
       required: true,
-      description: 'manifest history id'
-    })
+      description: 'manifest history id',
+    }),
   }
 
   async run() {

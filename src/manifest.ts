@@ -62,8 +62,8 @@ export class ManifestLocal extends Manifest {
     let manifest
     try {
       manifest = fs.readFileSync(this.filename(), 'utf8')
-    } catch (err) {
-      throw new Error(`Check if ${this.filename()} exists in root. \n ${err}`)
+    } catch (error) {
+      throw new Error(`Check if ${this.filename()} exists in root. \n ${error}`)
     }
 
     if (!manifest) {

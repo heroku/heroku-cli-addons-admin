@@ -10,8 +10,8 @@ export default class AddonClient {
     headers: {
       'Content-Type': 'application/json',
       'User-Agent': 'kensa future',
-      Accept: 'application/json'
-    }
+      Accept: 'application/json',
+    },
   }
 
   constructor(config: any) {
@@ -26,33 +26,36 @@ export default class AddonClient {
     try {
       const response = await this.client.get(path, this.options)
       return response.body
-    } catch (err) {
-      const error = _.get(err, 'body.error')
-      if (error) {
-        cli.error(error)
+    } catch (error) {
+      const errorBody = _.get(error, 'body.error')
+      if (errorBody) {
+        cli.error(errorBody)
       }
-      throw err
+
+      throw error
     }
   }
 
   async post(path: string, requestBody: any): Promise<any> {
     try {
-      let opts = {
+      const opts = {
         ...this.options,
-        body: requestBody
+        body: requestBody,
       }
       const response = await this.client.post(path, opts)
       return response.body
-    } catch (err) {
-      const baseErrors = _.get(err, 'body.error.base')
+    } catch (error) {
+      const baseErrors = _.get(error, 'body.error.base')
       if (baseErrors) {
         cli.error(baseErrors.join(', '))
       }
-      const error = _.get(err, 'body.error')
-      if (error) {
-        cli.error(error)
+
+      const errorBody = _.get(error, 'body.error')
+      if (errorBody) {
+        cli.error(errorBody)
       }
-      throw err
+
+      throw error
     }
   }
 }
