@@ -16,11 +16,14 @@ export default class AddonsAdminManifests extends Command {
 
     const body = await addon.manifests()
 
-    const columns = [
-      {label: 'Manifest', key: 'id'},
-      {label: 'Created At', key: 'created_at'},
-    ]
-
-    cli.table(_.orderBy(body, 'created_at', 'desc'), {columns})
+    const manifests = _.orderBy(body, 'created_at', 'desc')
+    cli.table(manifests, {
+      Manifest: {
+        get: (row: any) => row.id,
+      },
+      'Created At': {
+        get: (row: any) => row.created_at,
+      },
+    })
   }
 }

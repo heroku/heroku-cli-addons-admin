@@ -1,5 +1,5 @@
 import {expect} from '@oclif/test'
-
+import heredoc from 'tsheredoc'
 import test from '../../../utils/test'
 
 const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com'
@@ -30,13 +30,11 @@ describe('addons:admin:manifests', () => {
     .stdout()
     .command(['addons:admin:manifests'])
     .it('prints a list of manifests', ctx => {
-      expect(ctx.stdout).to.equal(
-      // eslint-disable-next-line indent
-`Manifest                              Created At
-────────────────────────────────────  ────────────────────────
-80d90dfb-049f-436b-9543-24cc7b691352  2017-07-19T21:47:25.894Z
-1a2e3c33-c949-4599-97d9-4ed684c35c2f  2017-07-18T21:47:25.894Z
-`)
+      expect(ctx.stdout.trim()).to.eq(heredoc(`
+        Manifest                             Created at               
+         ──────────────────────────────────── ──────────────────────── 
+         80d90dfb-049f-436b-9543-24cc7b691352 2017-07-19T21:47:25.894Z 
+         1a2e3c33-c949-4599-97d9-4ed684c35c2f 2017-07-18T21:47:25.894Z`))
     })
 
   test
@@ -47,12 +45,10 @@ describe('addons:admin:manifests', () => {
     .stdout()
     .command(['addons:admin:manifests', 'arg-slug'])
     .it('prints a list of manifests', ctx => {
-      expect(ctx.stdout).to.equal(
-      // eslint-disable-next-line indent
-`Manifest                              Created At
-────────────────────────────────────  ────────────────────────
-80d90dfb-049f-436b-9543-24cc7b691352  2017-07-19T21:47:25.894Z
-1a2e3c33-c949-4599-97d9-4ed684c35c2f  2017-07-18T21:47:25.894Z
-`)
+      expect(ctx.stdout.trim()).to.eq(heredoc(`
+        Manifest                             Created at               
+         ──────────────────────────────────── ──────────────────────── 
+         80d90dfb-049f-436b-9543-24cc7b691352 2017-07-19T21:47:25.894Z 
+         1a2e3c33-c949-4599-97d9-4ed684c35c2f 2017-07-18T21:47:25.894Z`))
     })
 })
