@@ -2,7 +2,7 @@ import cli from 'cli-ux'
 
 import color from '@heroku-cli/color'
 import {IConfig} from '@oclif/config'
-import * as _ from 'lodash'
+import {HTTPError} from 'http-call'
 
 import AddonClient from './addon-client'
 import {ManifestInterface, ManifestLocal, ManifestRemote} from './manifest'
@@ -44,21 +44,19 @@ export default class Addon {
   }
 
   async manifests(): Promise<ManifestInterface[]> {
-    try {
-      const slug = await this.slug()
-      cli.action.start(`Fetching add-on manifests for ${color.addon(slug)}`)
-      const body = await this._client.get(`/api/v3/addons/${encodeURIComponent(slug)}/manifests`)
-      cli.action.stop()
-
-      return body
-    } catch (error) {
-      const errorBody = _.get(error, 'body.error')
+    const slug = await this.slug()
+    cli.action.start(`Fetching add-on manifests for ${color.addon(slug)}`)
+    const body = await this._client.get(`/api/v3/addons/${encodeURIComponent(slug)}/manifests`).catch((error: HTTPError) => {
+      const errorBody = error?.body?.error
       if (errorBody) {
         cli.error(errorBody)
       }
 
       throw error
-    }
+    })
+
+    cli.action.stop()
+    return body
   }
 
   async manifest(uuid: string): Promise<ManifestInterface> {

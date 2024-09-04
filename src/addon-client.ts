@@ -1,7 +1,7 @@
 import {APIClient} from '@heroku-cli/command'
 import cli from 'cli-ux'
-import * as _ from 'lodash'
 import * as url from 'url'
+import {HTTPError} from 'http-call'
 
 export default class AddonClient {
   private readonly client: APIClient
@@ -23,39 +23,35 @@ export default class AddonClient {
   }
 
   async get(path: string): Promise<any> {
-    try {
-      const response = await this.client.get(path, this.options)
-      return response.body
-    } catch (error) {
-      const errorBody = _.get(error, 'body.error')
+    const response = await this.client.get(path, this.options).catch((error: HTTPError) => {
+      const errorBody = error?.body?.error
       if (errorBody) {
         cli.error(errorBody)
       }
 
       throw error
-    }
+    })
+    return response.body
   }
 
-  async post(path: string, requestBody: any): Promise<any> {
-    try {
-      const opts = {
-        ...this.options,
-        body: requestBody,
-      }
-      const response = await this.client.post(path, opts)
-      return response.body
-    } catch (error) {
-      const baseErrors = _.get(error, 'body.error.base')
+  async post(path: string, requestBody: unknown): Promise<any> {
+    const opts = {
+      ...this.options,
+      body: requestBody,
+    }
+    const response = await this.client.post(path, opts).catch((error: HTTPError) => {
+      const baseErrors = error?.body?.error?.base
       if (baseErrors) {
         cli.error(baseErrors.join(', '))
       }
 
-      const errorBody = _.get(error, 'body.error')
+      const errorBody = error?.body?.error
       if (errorBody) {
         cli.error(errorBody)
       }
 
       throw error
-    }
+    })
+    return response.body
   }
 }
