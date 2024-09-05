@@ -49,7 +49,7 @@ The file has been saved!`,
       message: 'Enter slugname/manifest id:',
       default: flags.slug,
       validate: (input: any): boolean => {
-        if (input.trim() === '' || !Number.isNaN(input)) {
+        if (input.trim() === '' || !isNaN(input)) {
           this.error('Please use a string as a slug name.')
           return false
         }
