@@ -11,7 +11,7 @@ export default class Open extends Command {
   static examples = [
     `$ heroku addons:admin:open
 Checking addon-manifest.json... done
-Opening https://addons-next.heroku.com/addons/testing-123... done`,
+Opening https://addons-next.${process.env.HEROKU_HOST || 'heroku.com'}/addons/testing-123... done`,
   ]
 
   async run() {
@@ -19,7 +19,8 @@ Opening https://addons-next.heroku.com/addons/testing-123... done`,
 
     const addon = new Addon(this.config, args.slug)
     const slug = await addon.slug()
-    const url = `https://addons-next.heroku.com/addons/${slug}`
+    const herokuHost = process.env.HEROKU_HOST || 'heroku.com'
+    const url = `https://addons-next.${herokuHost}/addons/${slug}`
 
     cli.action.start(`Opening ${url}`)
     await cli.open(url)

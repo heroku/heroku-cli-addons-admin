@@ -17,7 +17,8 @@ export default class AddonClient {
   constructor(config: any) {
     const client = new APIClient(config, {})
     const host = process.env.HEROKU_ADDONS_HOST
-    client.defaults.host = host ? url.parse(host).host : 'addons.heroku.com'
+    const herokuHost = process.env.HEROKU_HOST || 'heroku.com'
+    client.defaults.host = host ? url.parse(host).host : `addons.${herokuHost}`
 
     this.client = client
   }
