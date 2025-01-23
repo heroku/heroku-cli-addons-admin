@@ -1,5 +1,6 @@
-# Lines starting with '#' are comments.
-# Each line is a file pattern followed by one or more owners.
-# These owners will be the default owners for everything in the repo.
-* @heroku/front-end
+# All files require review from the Dev Tools team
+
+* @heroku/frontend-dev-tooling
+
+#GUSINFO:Heroku Front End Dept (FE Infra & Arch),Heroku CLI
 #ECCN:Open Source

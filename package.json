@@ -83,8 +83,9 @@
   "repository": "heroku/heroku-cli-addons-admin",
   "scripts": {
     "clean:branch": "./bin/clean-branch.sh",
+    "lint": "eslint . --ext .ts --config .eslintrc",
     "postpack": "rm -f oclif.manifest.json",
-    "posttest": "tsc -p test --noEmit && eslint .",
+    "posttest": "tsc -p test --noEmit",
     "prepack": "rm -rf lib && tsc && oclif-dev manifest && oclif-dev readme",
     "test": "nyc mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif-dev readme && git add README.md"
