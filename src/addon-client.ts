@@ -1,16 +1,16 @@
+import {HTTPError} from '@heroku/http-call'
 import {APIClient} from '@heroku-cli/command'
 import {ux} from '@oclif/core'
-import * as url from 'url'
-import {HTTPError} from '@heroku/http-call'
+import {URL} from 'node:url'
 
 export default class AddonClient {
   private readonly client: APIClient
 
   private readonly options: any = {
     headers: {
+      Accept: 'application/json',
       'Content-Type': 'application/json',
       'User-Agent': 'kensa future',
-      Accept: 'application/json',
     },
   }
 
@@ -18,7 +18,7 @@ export default class AddonClient {
     const client = new APIClient(config, {})
     const host = process.env.HEROKU_ADDONS_HOST
     const herokuHost = process.env.HEROKU_HOST || 'heroku.com'
-    client.defaults.host = host ? url.parse(host).host : `addons.${herokuHost}`
+    client.defaults.host = host ? new URL(host).host : `addons.${herokuHost}`
 
     this.client = client
   }

@@ -18,9 +18,9 @@ export default class Diff extends Command {
     const fetchedManifest = JSON.stringify(body, null, 2)
     const localManifest = JSON.stringify(addon.local().get(), null, 2)
 
-    const diff = diffLines(fetchedManifest, localManifest, {newlineIsToken: true, ignoreCase: true})
+    const diff = diffLines(fetchedManifest, localManifest, {ignoreCase: true, newlineIsToken: true})
     diff.forEach((substr: any) => {
-      let outputColor: 'white' | 'green' | 'red' = 'white'
+      let outputColor: 'green' | 'red' | 'white' = 'white'
       if (substr.added) {
         outputColor = 'green' // this is supposed to be a bold green (chalk.green.bold)
       } else if (substr.removed) {

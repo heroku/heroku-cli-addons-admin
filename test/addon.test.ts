@@ -4,15 +4,12 @@ import * as fs from 'fs-extra'
 import * as sinon from 'sinon'
 
 import Addon from '../src/addon'
-
 import {host, test} from './utils/test'
 
 const manifestMissingSlug = sinon.stub()
 manifestMissingSlug.withArgs('addon-manifest.json').returns(JSON.stringify({}))
 
-const addon = (slug?: string) => {
-  return new Addon({} as Config, slug)
-}
+const addon = (slug?: string) => new Addon({} as Config, slug)
 
 describe('Addon', () => {
   test

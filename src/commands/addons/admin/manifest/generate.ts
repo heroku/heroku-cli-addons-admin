@@ -1,7 +1,7 @@
 import color from '@heroku-cli/color'
 import {Command, flags} from '@heroku-cli/command'
-import {ux} from '@oclif/core'
 import * as Heroku from '@heroku-cli/schema'
+import {ux} from '@oclif/core'
 import * as fs from 'fs-extra'
 import {prompt} from 'inquirer'
 import {generate as generateString} from 'randomstring'
@@ -18,13 +18,13 @@ The file has been saved!`,
   ]
 
   static flags = {
-    slug: flags.string({
-      char: 's',
-      description: 'slugname/manifest id',
-    }),
     addon: flags.string({
       char: 'a',
       description: 'add-on name (name displayed on addon dashboard)',
+    }),
+    slug: flags.string({
+      char: 's',
+      description: 'slugname/manifest id',
     }),
   }
 
@@ -40,70 +40,6 @@ The file has been saved!`,
     const promptAnswers = await this.askQuestions(filename, flags, regions)
     const manifest = this.generate(promptAnswers)
     await this.writeManifest(filename, manifest)
-  }
-
-  private slugQuestion(flags: any) {
-    return {
-      type: 'input',
-      name: 'id',
-      message: 'Enter slugname/manifest id:',
-      default: flags.slug,
-      validate: (input: any): boolean => {
-        if (input.trim() === '' || !isNaN(input)) {
-          this.error('Please use a string as a slug name.')
-          return false
-        }
-
-        return true
-      },
-    }
-  }
-
-  private nameQuestion(flags: any) {
-    return {
-      type: 'input',
-      name: 'name',
-      message: 'Addon name (Name displayed to on addon dashboard):',
-      default: flags.addon || 'MyAddon',
-    }
-  }
-
-  private regionsQuestion(regions: string[]) {
-    return {
-      type: 'checkbox',
-      name: 'regions',
-      default: ['us'],
-      pageSize: regions.length,
-      message: 'Choose regions to support',
-      choices: regions,
-      suffix: `\n  ${color.bold('<space>')} - select\n  ${color.bold('<a>')} - toggle all\n  ${color.bold('<i>')} - invert all \n  ${color.bold('↑↓')} use arrow keys to navigate\n`,
-      validate: (input: any): boolean => {
-        if (input.length === 0) {
-          this.error('Please select at least one region.')
-          return false
-        }
-
-        return true
-      },
-    }
-  }
-
-  private generateQuestion() {
-    return {
-      type: 'confirm',
-      name: 'toGenerate',
-      message: 'Would you like to generate the password and sso_salt?',
-      default: true,
-    }
-  }
-
-  private writeQuestion(filename: string) {
-    return {
-      type: 'confirm',
-      name: 'toWrite',
-      message: `This prompt will create/replace ${filename}. Is that okay with you?`,
-      default: true,
-    }
   }
 
   private async askQuestions(filename: string, flags: any, regions: string[]): Promise<any> {
@@ -131,21 +67,6 @@ The file has been saved!`,
     return promptAnswers
   }
 
-  private async writeManifest(filename: string, manifest: any) {
-    // generating manifest
-    const manifestObj = JSON.stringify(manifest, null, 2)
-    ux.action.start('Generating add-on manifest')
-    await fs.writeFile(filename, manifestObj, err => {
-      ux.action.stop(color.green('done'))
-      if (err) {
-        this.log(`The file ${color.green(filename)} has NOT been saved! \n`, err)
-        return
-      }
-
-      this.log(`The file ${color.green(filename)} has been saved!`)
-    })
-  }
-
   private generate(data: any = {}): ManifestInterface {
     const manifest: ManifestInterface = {
       id: 'myaddon',
@@ -167,15 +88,94 @@ The file has been saved!`,
       name: 'MyAddon',
     }
 
-    const configVarsPrefix = data.id && data.id.toUpperCase().replace(/-/g, '_')
+    const configVarsPrefix = data.id && data.id.toUpperCase().replaceAll('-', '_')
 
     manifest.id = data.id || manifest.id
-    manifest.api.config_vars_prefix = (configVarsPrefix ? configVarsPrefix : manifest.api.config_vars_prefix)
+    manifest.api.config_vars_prefix = (configVarsPrefix ?? manifest.api.config_vars_prefix)
     manifest.api.config_vars = (configVarsPrefix ? [`${configVarsPrefix}_URL`] : manifest.api.config_vars)
     manifest.api.password = data.password || manifest.api.password
     manifest.api.sso_salt = data.sso_salt || manifest.api.sso_salt
     manifest.api.regions = data.regions || manifest.api.regions
     manifest.name = data.name || manifest.name
     return manifest
+  }
+
+  private generateQuestion() {
+    return {
+      default: true,
+      message: 'Would you like to generate the password and sso_salt?',
+      name: 'toGenerate',
+      type: 'confirm',
+    }
+  }
+
+  private nameQuestion(flags: any) {
+    return {
+      default: flags.addon || 'MyAddon',
+      message: 'Addon name (Name displayed to on addon dashboard):',
+      name: 'name',
+      type: 'input',
+    }
+  }
+
+  private regionsQuestion(regions: string[]) {
+    return {
+      choices: regions,
+      default: ['us'],
+      message: 'Choose regions to support',
+      name: 'regions',
+      pageSize: regions.length,
+      suffix: `\n  ${color.bold('<space>')} - select\n  ${color.bold('<a>')} - toggle all\n  ${color.bold('<i>')} - invert all \n  ${color.bold('↑↓')} use arrow keys to navigate\n`,
+      type: 'checkbox',
+      validate: (input: any): boolean => {
+        if (input.length === 0) {
+          this.error('Please select at least one region.')
+          return false
+        }
+
+        return true
+      },
+    }
+  }
+
+  private slugQuestion(flags: any) {
+    return {
+      default: flags.slug,
+      message: 'Enter slugname/manifest id:',
+      name: 'id',
+      type: 'input',
+      validate: (input: any): boolean => {
+        if (input.trim() === '' || !isNaN(input)) {
+          this.error('Please use a string as a slug name.')
+          return false
+        }
+
+        return true
+      },
+    }
+  }
+
+  private async writeManifest(filename: string, manifest: any) {
+    // generating manifest
+    const manifestObj = JSON.stringify(manifest, null, 2)
+    ux.action.start('Generating add-on manifest')
+    await fs.writeFile(filename, manifestObj, err => {
+      ux.action.stop(color.green('done'))
+      if (err) {
+        this.log(`The file ${color.green(filename)} has NOT been saved! \n`, err)
+        return
+      }
+
+      this.log(`The file ${color.green(filename)} has been saved!`)
+    })
+  }
+
+  private writeQuestion(filename: string) {
+    return {
+      default: true,
+      message: `This prompt will create/replace ${filename}. Is that okay with you?`,
+      name: 'toWrite',
+      type: 'confirm',
+    }
   }
 }

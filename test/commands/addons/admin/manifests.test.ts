@@ -1,23 +1,24 @@
 import {expect} from '@oclif/test'
 import heredoc from 'tsheredoc'
+
 import test from '../../../utils/test'
 
 const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com'
 
 const manifests = [
   {
-    id: '1a2e3c33-c949-4599-97d9-4ed684c35c2f',
-    created_at: '2017-07-18T21:47:25.894Z',
     contents: {
       foo: 'bar',
     },
+    created_at: '2017-07-18T21:47:25.894Z',
+    id: '1a2e3c33-c949-4599-97d9-4ed684c35c2f',
   },
   {
-    id: '80d90dfb-049f-436b-9543-24cc7b691352',
-    created_at: '2017-07-19T21:47:25.894Z',
     contents: {
       biz: 'baz',
     },
+    created_at: '2017-07-19T21:47:25.894Z',
+    id: '80d90dfb-049f-436b-9543-24cc7b691352',
   },
 ]
 

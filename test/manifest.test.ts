@@ -5,7 +5,6 @@ import * as sinon from 'sinon'
 
 import Addon from '../src/addon'
 import {ManifestInterface, ManifestLocal} from '../src/manifest'
-
 import {host, manifest, test} from './utils/test'
 
 const underExists = sinon.stub()
@@ -254,9 +253,7 @@ describe('ManifestLocal (null)', () => {
     })
 })
 
-const addon = () => {
-  return new Addon({} as Config)
-}
+const addon = () => new Addon({} as Config)
 
 describe('ManifestRemote', () => {
   test
@@ -320,12 +317,12 @@ describe('ManifestRemote', () => {
   test
     .nock(host, (api: any) => api
       .post('/api/v3/addons/testing-123/manifests', {contents: {id: 'testing-123'}})
-      .reply(200, {contents: {id: 'testing-123', $base: 1234}})
+      .reply(200, {contents: {$base: 1234, id: 'testing-123'}})
     )
     .it('set() pushes the manifest contents', async () => {
       const remoteManifest = addon().remote()
       const manifest = await remoteManifest.set({id: 'testing-123'} as ManifestInterface)
-      expect(manifest).to.deep.equal({id: 'testing-123', $base: 1234})
-      expect(await remoteManifest.get()).to.deep.equal({id: 'testing-123', $base: 1234})
+      expect(manifest).to.deep.equal({$base: 1234, id: 'testing-123'})
+      expect(await remoteManifest.get()).to.deep.equal({$base: 1234, id: 'testing-123'})
     })
 })

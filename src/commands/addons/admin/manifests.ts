@@ -5,12 +5,12 @@ import * as _ from 'lodash'
 import Addon from '../../../addon'
 
 export default class AddonsAdminManifests extends Command {
-  static description = 'list manifest history'
-
   static args = {
     slug: Args.string({description: 'slug name of add-on'}),
   }
-  
+
+  static description = 'list manifest history'
+
   async run() {
     const {args} = await this.parse(AddonsAdminManifests)
 
@@ -23,6 +23,7 @@ export default class AddonsAdminManifests extends Command {
       Manifest: {
         get: (row: any) => row.id,
       },
+      // eslint-disable-next-line perfectionist/sort-objects
       'Created At': {
         get: (row: any) => row.created_at,
       },

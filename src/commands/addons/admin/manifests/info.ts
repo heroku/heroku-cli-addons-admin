@@ -13,8 +13,8 @@ export default class AddonsAdminManifestsInfo extends Command {
   static flags = {
     manifest: flags.string({
       char: 'm',
-      required: true,
       description: 'manifest history id',
+      required: true,
     }),
   }
 

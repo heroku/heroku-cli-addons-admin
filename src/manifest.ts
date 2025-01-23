@@ -5,31 +5,28 @@ import * as fs from 'fs-extra'
 import Addon from './addon'
 
 export interface ManifestInterface {
+  $base?: string
+  api: ManifestAPIInterface
   id: string
   name: string
-  api: ManifestAPIInterface
-  $base?: string
 }
 
 interface ManifestAPIInterface {
-  config_vars_prefix: string
   config_vars: string[]
+  config_vars_prefix: string
   password: string
-  sso_salt: string
-  regions: string[]
-  requires: string[]
   production: {
     base_url: string
     sso_url: string
   }
+  regions: string[]
+  requires: string[]
+  sso_salt: string
   version: string
 }
 
 export abstract class Manifest {
   manifest?: ManifestInterface
-  abstract _get(): Promise<ManifestInterface>
-  abstract _set(manifest: ManifestInterface): Promise<ManifestInterface>
-
   async get(): Promise<ManifestInterface> {
     if (this.manifest) {
       return this.manifest!
@@ -43,6 +40,10 @@ export abstract class Manifest {
     this.manifest = await this._set(manifest)
     return this.manifest
   }
+
+  abstract _get(): Promise<ManifestInterface>
+
+  abstract _set(manifest: ManifestInterface): Promise<ManifestInterface>
 }
 
 export class ManifestLocal extends Manifest {
@@ -56,6 +57,14 @@ export class ManifestLocal extends Manifest {
     } else {
       this._filename = 'addon-manifest.json'
     }
+  }
+
+  filename(): string {
+    return this._filename
+  }
+
+  async log(): Promise<void> {
+    ux.log(color.bold(JSON.stringify(await this.get(), null, 2)))
   }
 
   async _get(): Promise<ManifestInterface> {
@@ -78,14 +87,6 @@ export class ManifestLocal extends Manifest {
     fs.writeFileSync(this.filename(), JSON.stringify(manifest, null, 2))
     ux.action.stop()
     return manifest
-  }
-
-  async log(): Promise<void> {
-    ux.log(color.bold(JSON.stringify(await this.get(), null, 2)))
-  }
-
-  filename(): string {
-    return this._filename
   }
 }
 

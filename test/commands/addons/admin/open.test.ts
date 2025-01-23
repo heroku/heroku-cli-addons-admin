@@ -1,8 +1,8 @@
-import * as open from 'open'
-import * as sinon from 'sinon'
 import {expect} from '@oclif/test'
-import {test} from '../../../utils/test'
+import * as sinon from 'sinon'
+
 import Cmd from '../../../../src/commands/addons/admin/open'
+import {test} from '../../../utils/test'
 
 describe('addons:admin:open', () => {
   const openArg = sinon.stub()

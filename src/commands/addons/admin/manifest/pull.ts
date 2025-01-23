@@ -6,8 +6,8 @@ import Addon from '../../../../addon'
 export default class Pull extends Command {
   static args = {
     slug: Args.string({
-      required: true,
       description: 'slug name of add-on',
+      required: true,
     }),
   }
 
@@ -19,7 +19,6 @@ export default class Pull extends Command {
  Fetching add-on manifest for testing-123... done
  Updating addon-manifest.json... done`,
   ]
-
 
   async run() {
     const {args} = await this.parse(Pull)
