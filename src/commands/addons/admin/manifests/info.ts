@@ -1,11 +1,14 @@
 import {Command, flags} from '@heroku-cli/command'
+import {Args} from '@oclif/core'
 
 import Addon from '../../../../addon'
 
 export default class AddonsAdminManifestsInfo extends Command {
-  static description = 'show an individual history manifest'
+  static args = {
+    slug: Args.string({description: 'slug name of add-on'}),
+  }
 
-  static args = [{name: 'slug'}]
+  static description = 'show an individual history manifest'
 
   static flags = {
     manifest: flags.string({
@@ -16,7 +19,7 @@ export default class AddonsAdminManifestsInfo extends Command {
   }
 
   async run() {
-    const {args, flags} = this.parse(AddonsAdminManifestsInfo)
+    const {args, flags} = await this.parse(AddonsAdminManifestsInfo)
 
     const addon = new Addon(this.config, args.slug)
 

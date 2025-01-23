@@ -1,8 +1,8 @@
-import cli from 'cli-ux'
+import {ux} from '@oclif/core'
 
 import color from '@heroku-cli/color'
-import {IConfig} from '@oclif/config'
-import {HTTPError} from 'http-call'
+import {Config} from '@oclif/core'
+import {HTTPError} from '@heroku/http-call'
 
 import AddonClient from './addon-client'
 import {ManifestInterface, ManifestLocal, ManifestRemote} from './manifest'
@@ -13,7 +13,7 @@ export default class Addon {
   private readonly _remote: ManifestRemote
   private readonly _client: AddonClient
 
-  constructor(config: IConfig, argsSlug?: string) {
+  constructor(config: Config, argsSlug?: string) {
     this.argsSlug = argsSlug
     this._local = new ManifestLocal()
     this._remote = new ManifestRemote(this)
@@ -37,7 +37,7 @@ export default class Addon {
 
     const manifest = await this.local().get()
     if (!manifest.id) {
-      cli.error('No slug found in manifest')
+      ux.error('No slug found in manifest')
     }
 
     return manifest.id
@@ -45,25 +45,25 @@ export default class Addon {
 
   async manifests(): Promise<ManifestInterface[]> {
     const slug = await this.slug()
-    cli.action.start(`Fetching add-on manifests for ${color.addon(slug)}`)
+    ux.action.start(`Fetching add-on manifests for ${color.addon(slug)}`)
     const body = await this._client.get(`/api/v3/addons/${encodeURIComponent(slug)}/manifests`).catch((error: HTTPError) => {
       const errorBody = error?.body?.error
       if (errorBody) {
-        cli.error(errorBody)
+        ux.error(errorBody)
       }
 
       throw error
     })
 
-    cli.action.stop()
+    ux.action.stop()
     return body
   }
 
   async manifest(uuid: string): Promise<ManifestInterface> {
     const slug = await this.slug()
-    cli.action.start(`Fetching add-on manifest for ${color.addon(slug)}`)
+    ux.action.start(`Fetching add-on manifest for ${color.addon(slug)}`)
     const body = await this._client.get(`/api/v3/addons/${encodeURIComponent(slug)}/manifests/${encodeURIComponent(uuid)}`)
-    cli.action.stop()
+    ux.action.stop()
 
     return body.contents
   }

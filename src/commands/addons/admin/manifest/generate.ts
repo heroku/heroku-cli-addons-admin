@@ -1,7 +1,7 @@
 import color from '@heroku-cli/color'
 import {Command, flags} from '@heroku-cli/command'
+import {ux} from '@oclif/core'
 import * as Heroku from '@heroku-cli/schema'
-import cli from 'cli-ux'
 import * as fs from 'fs-extra'
 import {prompt} from 'inquirer'
 import {generate as generateString} from 'randomstring'
@@ -29,7 +29,7 @@ The file has been saved!`,
   }
 
   async run() {
-    const {flags} = this.parse(Generate)
+    const {flags} = await this.parse(Generate)
 
     // grab region data
     const {body} = await this.heroku.get<Heroku.Region[]>('/regions')
@@ -134,9 +134,9 @@ The file has been saved!`,
   private async writeManifest(filename: string, manifest: any) {
     // generating manifest
     const manifestObj = JSON.stringify(manifest, null, 2)
-    cli.action.start('Generating add-on manifest')
+    ux.action.start('Generating add-on manifest')
     await fs.writeFile(filename, manifestObj, err => {
-      cli.action.stop(color.green('done'))
+      ux.action.stop(color.green('done'))
       if (err) {
         this.log(`The file ${color.green(filename)} has NOT been saved! \n`, err)
         return

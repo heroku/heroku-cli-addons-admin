@@ -1,4 +1,4 @@
-import {IConfig} from '@oclif/config'
+import {Config} from '@oclif/core'
 import {expect} from '@oclif/test'
 import * as fs from 'fs-extra'
 import * as sinon from 'sinon'
@@ -255,7 +255,7 @@ describe('ManifestLocal (null)', () => {
 })
 
 const addon = () => {
-  return new Addon({} as IConfig)
+  return new Addon({} as Config)
 }
 
 describe('ManifestRemote', () => {
