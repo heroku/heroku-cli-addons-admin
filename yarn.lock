@@ -526,10 +526,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/diff@^4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@types/diff/-/diff-4.0.2.tgz#2e9bb89f9acc3ab0108f0f3dc4dbdcf2fff8a99c"
-  integrity sha512-mIenTfsIe586/yzsyfql69KRnA75S8SVXQbTLpDejRrjH0QSJcpu3AUOi/Vjnt9IOsXKxPhJfGpQUNMueIU1fQ==
+"@types/diff@^5.2.1":
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/@types/diff/-/diff-5.2.3.tgz#dcdcfa40df9f011f9465180e0196dfbd921971d9"
+  integrity sha512-K0Oqlrq3kQMaO2RhfrNQX5trmt+XLyom88zS0u84nnIcLvFnRUMRRHmrGny5GSM+kNO9IZLARsdQHDzkhAgmrQ==
 
 "@types/fs-extra@^9.0.13":
   version "9.0.13"
@@ -1455,7 +1455,7 @@ define-properties@^1.2.1:
     has-property-descriptors "^1.0.0"
     object-keys "^1.1.1"
 
-diff@^4.0.1, diff@^4.0.2:
+diff@^4.0.1:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/diff/-/diff-4.0.2.tgz#60f3aecb89d5fae520c11aa19efc2bb982aade7d"
   integrity sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==
