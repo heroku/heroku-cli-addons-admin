@@ -36,6 +36,7 @@
     "mocha": "^10.7.3",
     "nock": "^13.5.6",
     "nyc": "^17.1.0",
+    "oclif": "4.14.36",
     "sinon": "^18.0.0",
     "ts-node": "^10.9.2",
     "tsheredoc": "^1.0.1",
@@ -79,9 +80,9 @@
     "lint": "eslint . --ext .ts --config .eslintrc",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "tsc -p test --noEmit",
-    "prepack": "yarn build && oclif-dev manifest && oclif-dev readme",
+    "prepack": "yarn build && oclif manifest && oclif readme",
     "pretest": "yarn build",
     "test": "nyc mocha --forbid-only \"test/**/*.test.ts\"",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "oclif readme && git add README.md"
   }
 }
