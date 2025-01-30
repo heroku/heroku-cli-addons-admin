@@ -1,5 +1,4 @@
 import {test as oTest} from '@oclif/test'
-
 import * as fs from 'fs-extra'
 import * as sinon from 'sinon'
 
@@ -25,7 +24,7 @@ const host = (process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com')
 export default test
 
 export {
-  test,
-  manifest,
   host,
+  manifest,
+  test,
 }

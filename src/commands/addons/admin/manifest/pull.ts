@@ -1,8 +1,16 @@
 import {Command} from '@heroku-cli/command'
+import {Args} from '@oclif/core'
 
 import Addon from '../../../../addon'
 
 export default class Pull extends Command {
+  static args = {
+    slug: Args.string({
+      description: 'slug name of add-on',
+      required: true,
+    }),
+  }
+
   static description = 'pull a manifest for a given slug'
 
   static examples = [
@@ -12,10 +20,8 @@ export default class Pull extends Command {
  Updating addon-manifest.json... done`,
   ]
 
-  static args = [{name: 'slug', description: 'slug name of add-on'}]
-
   async run() {
-    const {args} = this.parse(Pull)
+    const {args} = await this.parse(Pull)
 
     const addon = new Addon(this.config, args.slug)
     const manifest = addon.local()

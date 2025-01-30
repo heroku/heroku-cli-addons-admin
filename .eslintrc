@@ -11,10 +11,13 @@
     }
   },
   "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
     "camelcase":"off",
+    "import/namespace": "off",
     "indent": ["error", 2, {"MemberExpression": 1}],
-    "node/no-deprecated-api": "warn",
     "node/no-missing-import": "off",
+    "n/shebang": "warn",
+    "perfectionist/sort-objects": "warn",
     "unicorn/no-array-for-each": "off",
     "unicorn/no-useless-undefined": "warn",
     "unicorn/prefer-node-protocol": "warn",

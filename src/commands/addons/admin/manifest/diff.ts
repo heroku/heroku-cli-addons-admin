@@ -8,19 +8,17 @@ export default class Diff extends Command {
   static description = 'compares remote manifest to local manifest and finds differences'
 
   async run() {
-    this.parse(Diff)
-
     const addon = new Addon(this.config)
 
     // reading current manifest
     const body = await addon.remote().get()
 
     const fetchedManifest = JSON.stringify(body, null, 2)
-    const localManifest = JSON.stringify(addon.local().get(), null, 2)
-
-    const diff = diffLines(fetchedManifest, localManifest, {newlineIsToken: true, ignoreCase: true})
+    const localManifest = await addon.local().get()
+    const localManifestString = JSON.stringify(localManifest, null, 2)
+    const diff = diffLines(fetchedManifest, localManifestString, {ignoreCase: true, newlineIsToken: true})
     diff.forEach((substr: any) => {
-      let outputColor: 'white' | 'green' | 'red' = 'white'
+      let outputColor: 'green' | 'red' | 'white' = 'white'
       if (substr.added) {
         outputColor = 'green' // this is supposed to be a bold green (chalk.green.bold)
       } else if (substr.removed) {

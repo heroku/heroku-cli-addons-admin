@@ -1,8 +1,7 @@
 import {expect} from '@oclif/test'
-
-import cli from 'cli-ux'
 import * as sinon from 'sinon'
 
+import Cmd from '../../../../src/commands/addons/admin/open'
 import {test} from '../../../utils/test'
 
 describe('addons:admin:open', () => {
@@ -11,7 +10,7 @@ describe('addons:admin:open', () => {
   openArg.withArgs('https://addons-next.heroku.com/addons/arg-slug').returns(undefined)
 
   test
-    .stub(cli, 'open', () => openArg)
+    .stub(Cmd, 'urlOpener', openArg)
     .command(['addons:admin:open', 'arg-slug'])
     .it('opens slug in args', () => {
       expect(openArg.called).to.eq(true)
@@ -22,7 +21,7 @@ describe('addons:admin:open', () => {
   openManifest.withArgs('https://addons-next.heroku.com/addons/testing-123').returns(undefined)
 
   test
-    .stub(cli, 'open', () => openManifest)
+    .stub(Cmd, 'urlOpener', openManifest)
     .command(['addons:admin:open'])
     .it('opens slug in args', () => {
       expect(openManifest.called).to.eq(true)

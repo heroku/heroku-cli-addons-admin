@@ -1,16 +1,16 @@
+import {HTTPError} from '@heroku/http-call'
 import {APIClient} from '@heroku-cli/command'
-import cli from 'cli-ux'
-import * as url from 'url'
-import {HTTPError} from 'http-call'
+import {ux} from '@oclif/core'
+import {URL} from 'node:url'
 
 export default class AddonClient {
   private readonly client: APIClient
 
   private readonly options: any = {
     headers: {
+      Accept: 'application/json',
       'Content-Type': 'application/json',
       'User-Agent': 'kensa future',
-      Accept: 'application/json',
     },
   }
 
@@ -18,7 +18,7 @@ export default class AddonClient {
     const client = new APIClient(config, {})
     const host = process.env.HEROKU_ADDONS_HOST
     const herokuHost = process.env.HEROKU_HOST || 'heroku.com'
-    client.defaults.host = host ? url.parse(host).host : `addons.${herokuHost}`
+    client.defaults.host = host ? new URL(host).host : `addons.${herokuHost}`
 
     this.client = client
   }
@@ -27,7 +27,7 @@ export default class AddonClient {
     const response = await this.client.get(path, this.options).catch((error: HTTPError) => {
       const errorBody = error?.body?.error
       if (errorBody) {
-        cli.error(errorBody)
+        ux.error(errorBody)
       }
 
       throw error
@@ -43,12 +43,12 @@ export default class AddonClient {
     const response = await this.client.post(path, opts).catch((error: HTTPError) => {
       const baseErrors = error?.body?.error?.base
       if (baseErrors) {
-        cli.error(baseErrors.join(', '))
+        ux.error(baseErrors.join(', '))
       }
 
       const errorBody = error?.body?.error
       if (errorBody) {
-        cli.error(errorBody)
+        ux.error(errorBody)
       }
 
       throw error
