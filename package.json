@@ -79,9 +79,9 @@
     "lint": "eslint . --ext .ts --config .eslintrc",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "tsc -p test --noEmit",
-    "prepack": "yarn build && oclif-dev manifest && oclif-dev readme",
+    "prepack": "yarn build && oclif manifest && oclif readme",
     "pretest": "yarn build",
     "test": "nyc mocha --forbid-only \"test/**/*.test.ts\"",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "oclif readme && git add README.md"
   }
 }
