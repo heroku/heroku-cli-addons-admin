@@ -48,7 +48,8 @@
   },
   "files": [
     "/lib",
-    "/oclif.manifest.json"
+    "/oclif.manifest.json",
+    "/yarn.lock"
   ],
   "homepage": "https://github.com/heroku/heroku-cli-addons-admin",
   "keywords": [
