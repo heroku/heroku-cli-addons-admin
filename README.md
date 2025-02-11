@@ -25,8 +25,8 @@ $ heroku plugins:install @heroku-cli/plugin-addons-admin
 $ npm install -g @heroku-cli/plugin-addons-admin
 $ heroku COMMAND
 running command...
-$ heroku (-v|--version|version)
-@heroku-cli/plugin-addons-admin/2.4.0 darwin-x64 node-v16.20.2
+$ heroku (--version)
+@heroku-cli/plugin-addons-admin/2.4.0 darwin-x64 node-v20.18.2
 $ heroku --help [COMMAND]
 USAGE
   $ heroku COMMAND
@@ -42,7 +42,7 @@ Follow the [Developing CLI Plugins](https://devcenter.heroku.com/articles/develo
 <!-- commands -->
 * [`heroku addons:admin:manifest:diff`](#heroku-addonsadminmanifestdiff)
 * [`heroku addons:admin:manifest:generate`](#heroku-addonsadminmanifestgenerate)
-* [`heroku addons:admin:manifest:pull [SLUG]`](#heroku-addonsadminmanifestpull-slug)
+* [`heroku addons:admin:manifest:pull SLUG`](#heroku-addonsadminmanifestpull-slug)
 * [`heroku addons:admin:manifest:push`](#heroku-addonsadminmanifestpush)
 * [`heroku addons:admin:manifests [SLUG]`](#heroku-addonsadminmanifests-slug)
 * [`heroku addons:admin:manifests:info [SLUG]`](#heroku-addonsadminmanifestsinfo-slug)
@@ -55,6 +55,9 @@ compares remote manifest to local manifest and finds differences
 ```
 USAGE
   $ heroku addons:admin:manifest:diff
+
+DESCRIPTION
+  compares remote manifest to local manifest and finds differences
 ```
 
 _See code: [src/commands/addons/admin/manifest/diff.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.4.0/src/commands/addons/admin/manifest/diff.ts)_
@@ -65,31 +68,37 @@ generate a manifest template
 
 ```
 USAGE
-  $ heroku addons:admin:manifest:generate
+  $ heroku addons:admin:manifest:generate [-a <value>] [-s <value>]
 
-OPTIONS
-  -a, --addon=addon  add-on name (name displayed on addon dashboard)
-  -s, --slug=slug    slugname/manifest id
+FLAGS
+  -a, --addon=<value>  add-on name (name displayed on addon dashboard)
+  -s, --slug=<value>   slugname/manifest id
 
-EXAMPLE
+DESCRIPTION
+  generate a manifest template
+
+EXAMPLES
   $ heroku addons:admin:generate
   The file has been saved!
 ```
 
 _See code: [src/commands/addons/admin/manifest/generate.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.4.0/src/commands/addons/admin/manifest/generate.ts)_
 
-## `heroku addons:admin:manifest:pull [SLUG]`
+## `heroku addons:admin:manifest:pull SLUG`
 
 pull a manifest for a given slug
 
 ```
 USAGE
-  $ heroku addons:admin:manifest:pull [SLUG]
+  $ heroku addons:admin:manifest:pull SLUG
 
 ARGUMENTS
   SLUG  slug name of add-on
 
-EXAMPLE
+DESCRIPTION
+  pull a manifest for a given slug
+
+EXAMPLES
   $ heroku addons:admin:manifest:pull testing-123
    ...
    Fetching add-on manifest for testing-123... done
@@ -106,7 +115,10 @@ update remote manifest
 USAGE
   $ heroku addons:admin:manifest:push
 
-EXAMPLE
+DESCRIPTION
+  update remote manifest
+
+EXAMPLES
   $ heroku addons:admin:manifest:push
    ...
    Pushing manifest... done
@@ -122,6 +134,12 @@ list manifest history
 ```
 USAGE
   $ heroku addons:admin:manifests [SLUG]
+
+ARGUMENTS
+  SLUG  slug name of add-on
+
+DESCRIPTION
+  list manifest history
 ```
 
 _See code: [src/commands/addons/admin/manifests.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.4.0/src/commands/addons/admin/manifests.ts)_
@@ -132,10 +150,16 @@ show an individual history manifest
 
 ```
 USAGE
-  $ heroku addons:admin:manifests:info [SLUG]
+  $ heroku addons:admin:manifests:info [SLUG] -m <value>
 
-OPTIONS
-  -m, --manifest=manifest  (required) manifest history id
+ARGUMENTS
+  SLUG  slug name of add-on
+
+FLAGS
+  -m, --manifest=<value>  (required) manifest history id
+
+DESCRIPTION
+  show an individual history manifest
 ```
 
 _See code: [src/commands/addons/admin/manifests/info.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.4.0/src/commands/addons/admin/manifests/info.ts)_
@@ -151,10 +175,13 @@ USAGE
 ARGUMENTS
   SLUG  slug name of add-on
 
-EXAMPLE
+DESCRIPTION
+  open add-on dashboard
+
+EXAMPLES
   $ heroku addons:admin:open
-  Checking addon-manifest.json... done
-  Opening https://addons-next.heroku.com/addons/testing-123... done
+      Checking addon-manifest.json... done
+      Opening https://addons-next.heroku.com/addons/testing-123... done
 ```
 
 _See code: [src/commands/addons/admin/open.ts](https://github.com/heroku/heroku-cli-addons-admin/blob/v2.4.0/src/commands/addons/admin/open.ts)_
