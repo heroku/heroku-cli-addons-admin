@@ -48,8 +48,9 @@
   },
   "files": [
     "/lib",
+    "/npm-shrinkwrap.json",
     "/oclif.manifest.json",
-    "/yarn.lock"
+    "/oclif.lock"
   ],
   "homepage": "https://github.com/heroku/heroku-cli-addons-admin",
   "keywords": [
@@ -79,9 +80,9 @@
     "build": "rm -rf lib && tsc",
     "clean:branch": "./bin/clean-branch.sh",
     "lint": "eslint . --ext .ts --config .eslintrc",
-    "postpack": "rm -f oclif.manifest.json",
+    "prepack": "rm -rf lib && tsc -b && oclif manifest && oclif readme && oclif lock && npm shrinkwrap",
+    "postpack": "rm -f oclif.manifest.json oclif.lock npm-shrinkwrap.json",
     "posttest": "tsc -p test --noEmit",
-    "prepack": "yarn build && oclif manifest && oclif readme",
     "pretest": "yarn build",
     "test": "nyc mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif readme && git add README.md"

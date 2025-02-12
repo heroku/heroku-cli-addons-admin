@@ -6,4 +6,6 @@
 /package-lock.json
 /tmp
 node_modules
+npm-shrinkwrap.json
+oclif.lock
 oclif.manifest.json
