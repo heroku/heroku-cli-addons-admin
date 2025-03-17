@@ -9,7 +9,7 @@
     "@heroku-cli/command": "^11.4.0",
     "@heroku-cli/schema": "^1.0.25",
     "@heroku/http-call": "5.4.0",
-    "@oclif/core": "^2.16.0",
+    "@oclif/core": "^4.2.10",
     "diff": "^5.2.0",
     "fs-extra": "^9.1.0",
     "inquirer": "^8.2.6",
