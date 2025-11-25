@@ -35,7 +35,6 @@
     "eslint-config-oclif-typescript": "^3.0.26",
     "mocha": "^10.7.3",
     "nock": "^13.5.6",
-    "np": "^10.2.0",
     "nyc": "^17.1.0",
     "oclif": "4.14.36",
     "sinon": "^18.0.0",
