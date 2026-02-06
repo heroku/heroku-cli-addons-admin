@@ -10,7 +10,7 @@
     "@heroku-cli/schema": "^1.0.25",
     "@heroku/http-call": "5.4.0",
     "@oclif/core": "^2.16.0",
-    "diff": "^5.2.0",
+    "diff": "^5.2.2",
     "fs-extra": "^11.3.0",
     "inquirer": "^8.2.6",
     "lodash": "^4.17.21",
@@ -73,6 +73,7 @@
     ]
   },
   "repository": "heroku/heroku-cli-addons-admin",
+ 
   "scripts": {
     "build": "rm -rf lib && tsc",
     "clean:branch": "./bin/clean-branch.sh",
