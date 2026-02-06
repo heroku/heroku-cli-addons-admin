@@ -1,7 +1,7 @@
 {
   "name": "@heroku-cli/plugin-addons-admin",
   "description": "Heroku CLI plugin to help Heroku add-on providers integrate their services with Heroku.",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "author": "Heroku",
   "bugs": "https://github.com/heroku/heroku-cli-addons-admin/issues",
   "dependencies": {
@@ -73,7 +73,6 @@
     ]
   },
   "repository": "heroku/heroku-cli-addons-admin",
- 
   "scripts": {
     "build": "rm -rf lib && tsc",
     "clean:branch": "./bin/clean-branch.sh",
