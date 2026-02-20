@@ -73,7 +73,6 @@
     ]
   },
   "repository": "heroku/heroku-cli-addons-admin",
- 
   "scripts": {
     "build": "rm -rf lib && tsc",
     "clean:branch": "./bin/clean-branch.sh",
