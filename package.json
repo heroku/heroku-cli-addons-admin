@@ -29,21 +29,21 @@
     "@types/node": "^22.8.7",
     "@types/randomstring": "^1.3.0",
     "@types/supports-color": "^8.1.3",
-    "chai": "^6",
+    "c8": "^10.1.3",
+    "chai": "^5.1.2",
     "eslint": "^9",
     "eslint-config-oclif": "^6.0.144",
     "eslint-plugin-mocha": "^11.2.0",
     "mocha": "^11",
-    "nock": "^13.5.6",
-    "nyc": "^17.1.0",
+    "nock": "^14.0.1",
     "oclif": "^4.22.81",
     "sinon": "^18.0.0",
     "ts-node": "^10.9.2",
     "tsheredoc": "^1.0.1",
-    "typescript": "5.7.3"
+    "typescript": "5.9.3"
   },
   "engines": {
-    "node": ">= 20.0"
+    "node": ">= 22.0"
   },
   "files": [
     "/lib",
@@ -79,12 +79,12 @@
     "lint": "eslint .",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "tsc -p test --noEmit",
-    "prepack": "yarn build && oclif manifest && oclif readme",
-    "pretest": "yarn build",
-    "test": "nyc mocha --forbid-only \"test/**/*.test.ts\"",
+    "prepack": "npm run build && oclif manifest && oclif readme",
+    "pretest": "npm run build",
+    "test": "c8 mocha --forbid-only \"test/**/*.test.ts\"",
     "version": "oclif readme && git add README.md"
   },
-  "resolutions": {
+  "overrides": {
     "serialize-javascript": "^7.0.3"
   }
 }
