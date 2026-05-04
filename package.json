@@ -37,7 +37,6 @@
     "eslint": "^9",
     "eslint-config-oclif": "^6.0.144",
     "eslint-plugin-mocha": "^11.2.0",
-    "esmock": "^2.7.4",
     "mocha": "^11",
     "nock": "^14.0.1",
     "oclif": "^4.22.81",
