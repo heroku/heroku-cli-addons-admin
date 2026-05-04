@@ -1,6 +1,6 @@
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {stderr, stdout} from 'stdout-stderr'
+import {stderr} from 'stdout-stderr'
 
 import Cmd from '../../../../src/commands/addons/admin/open.js'
 import {runCommand} from '../../../run-command.js'
