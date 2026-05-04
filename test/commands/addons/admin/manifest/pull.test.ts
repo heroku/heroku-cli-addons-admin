@@ -1,53 +1,76 @@
-import {expect} from '@oclif/test'
-import * as fs from 'fs-extra'
-import * as sinon from 'sinon'
+import {expect} from 'chai'
+import {readFileSync} from 'node:fs'
+import {join} from 'node:path'
+import nock from 'nock'
+import {stdout} from 'stdout-stderr'
 
-import {host, manifest as localManifest, test} from '../../../../utils/test'
+import Cmd from '../../../../../src/commands/addons/admin/manifest/pull.js'
+import {runCommand} from '../../../../run-command.js'
+import {
+  createTestManifest, host, manifest as localManifest,
+} from '../../../../utils/test.js'
 
 const manifest = {remote: true, ...localManifest}
 
 describe('addons:admin:manifest:pull', () => {
-  const pullTest = test
-    .stdout()
-    .stderr()
-    .nock(host, (api: any) => api
-      .get('/api/v3/addons/testing-123/current_manifest')
-      .reply(200, {contents: manifest})
-    )
+  let originalCwd: string
+  let cleanup: () => void
 
-  pullTest
-    .command(['addons:admin:manifest:pull', 'testing-123'])
-    .it('stdout contains manifest elements', (ctx: any) => {
-      Object.keys(manifest).forEach(key => {
-        if (key !== 'api') expect(ctx.stdout).to.contain(manifest[key])
-      })
+  beforeEach(() => {
+    const {cleanup: cleanupFn, testDir} = createTestManifest()
+    cleanup = cleanupFn
+    originalCwd = process.cwd()
+    process.chdir(testDir)
+  })
+
+  afterEach(() => {
+    nock.cleanAll()
+    process.chdir(originalCwd)
+    cleanup()
+  })
+
+  it('stdout contains manifest elements', async () => {
+    nock(host)
+    .get('/api/v3/addons/testing-123/current_manifest')
+    .reply(200, {contents: manifest})
+
+    await runCommand(Cmd, ['testing-123'])
+
+    Object.keys(manifest).forEach(key => {
+      if (key !== 'api') expect(stdout.output).to.contain(manifest[key])
     })
+  })
 
-  pullTest
-    .command(['addons:admin:manifest:pull', 'testing-123'])
-    .it('pull grabs slug from manifest')
+  it('pull grabs slug from manifest', async () => {
+    nock(host)
+    .get('/api/v3/addons/testing-123/current_manifest')
+    .reply(200, {contents: manifest})
 
-  test
-    .stdout()
-    .stderr()
-    .nock(host, (api: any) => api
-      .get('/api/v3/addons/fakeslug/current_manifest')
-      .replyWithError(400)
-    )
-    .command(['addons:admin:manifest:pull', 'fakeslug'])
-    .catch(error => {
+    await runCommand(Cmd, ['testing-123'])
+  })
+
+  it('errors for fake slugs', async () => {
+    nock(host)
+    .get('/api/v3/addons/fakeslug/current_manifest')
+    .replyWithError('400')
+
+    try {
+      await runCommand(Cmd, ['fakeslug'])
+      expect.fail('Should have thrown an error')
+    } catch (error) {
       expect(error).to.be.an('error')
-    })
-    .it('errors for fake slugs')
+    }
+  })
 
-  const fsWriteFileSync = sinon.stub()
-  fsWriteFileSync.throws('write not stubbed')
-  fsWriteFileSync.withArgs('addon-manifest.json', JSON.stringify(manifest, null, 2)).returns(undefined)
+  it('writes to the manifest file', async () => {
+    nock(host)
+    .get('/api/v3/addons/testing-123/current_manifest')
+    .reply(200, {contents: manifest})
 
-  pullTest
-    .stub(fs, 'writeFileSync', fsWriteFileSync)
-    .command(['addons:admin:manifest:pull', 'testing-123'])
-    .it('writes to the manifest file', () => {
-      expect(fsWriteFileSync.called).to.eq(true)
-    })
+    await runCommand(Cmd, ['testing-123'])
+
+    // Read the file that was written
+    const written = JSON.parse(readFileSync(join(process.cwd(), 'addon-manifest.json'), 'utf8'))
+    expect(written).to.deep.equal(manifest)
+  })
 })

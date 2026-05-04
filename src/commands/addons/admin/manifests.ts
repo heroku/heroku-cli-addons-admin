@@ -1,14 +1,14 @@
 import {Command} from '@heroku-cli/command'
-import {Args, ux} from '@oclif/core'
-import * as _ from 'lodash'
+import {Args} from '@oclif/core'
+import {printTable} from '@oclif/table'
+import _ from 'lodash'
 
-import Addon from '../../../addon'
+import Addon from '../../../addon.js'
 
 export default class AddonsAdminManifests extends Command {
   static args = {
     slug: Args.string({description: 'slug name of add-on'}),
   }
-
   static description = 'list manifest history'
 
   async run() {
@@ -19,14 +19,15 @@ export default class AddonsAdminManifests extends Command {
     const body = await addon.manifests()
 
     const manifests = _.orderBy(body, 'created_at', 'desc')
-    ux.table(manifests, {
-      Manifest: {
-        get: (row: any) => row.id,
-      },
-      // eslint-disable-next-line perfectionist/sort-objects
-      'Created At': {
-        get: (row: any) => row.created_at,
-      },
+    printTable({
+      columns: [
+        {key: 'Manifest'},
+        {key: 'Created At'},
+      ],
+      data: manifests.map((row: any) => ({
+        'Created At': row.created_at,
+        Manifest: row.id,
+      })),
     })
   }
 }

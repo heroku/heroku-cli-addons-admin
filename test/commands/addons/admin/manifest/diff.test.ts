@@ -1,7 +1,13 @@
 
-import {expect} from '@oclif/test'
+import {expect} from 'chai'
+import nock from 'nock'
+import {stdout} from 'stdout-stderr'
 
-import {host, manifest, test} from '../../../../utils/test'
+import Cmd from '../../../../../src/commands/addons/admin/manifest/diff.js'
+import {runCommand} from '../../../../run-command.js'
+import {
+  createTestManifest, host, manifest,
+} from '../../../../utils/test.js'
 
 // mandatory elements in a single manifest document (refer to /src/utils/manifest.ts)
 const manifestElements: string[] = ['id', 'name', 'api']
@@ -23,60 +29,70 @@ const testManifest = {
 }
 
 describe('addons:admin:manifest:diff', () => {
-  test
-    .nock(host, (api: any) => api
-      .get('/api/v3/addons/testing-123/current_manifest')
-      .reply(200, {contents: manifest})
-    )
-    .stdout()
-    .stderr()
-    .command(['addons:admin:manifest:diff'])
-    .it('contains static stdout', (ctx: any) => {
-      expect(ctx.stdout).to.contain('testing-123')
-    })
+  let originalCwd: string
+  let cleanup: () => void
 
-  test
-    .nock(host, (api: any) => api
-      .get('/api/v3/addons/testing-123/current_manifest')
-      .reply(200, {contents: manifest})
-    )
-    .stdout()
-    .stderr()
-    .command(['addons:admin:manifest:diff'])
-    .it('contains all elements', (ctx: any) => {
-      manifestElements.forEach(val => {
-        expect(ctx.stdout).to.contain(val)
-      })
-      manifestAPIElements.forEach(val => {
-        expect(ctx.stdout).to.contain(val)
-      })
-      otherElements.forEach(val => {
-        expect(ctx.stdout).to.contain(val)
-      })
-    })
+  beforeEach(() => {
+    const {cleanup: cleanupFn, testDir} = createTestManifest()
+    cleanup = cleanupFn
+    originalCwd = process.cwd()
+    process.chdir(testDir)
+  })
 
-  test
-    .nock(host, (api: any) => {
-      api.get('/api/v3/addons/testing-123/current_manifest')
-        .reply(200, {contents: testManifest})
-    })
-    .stdout()
-    .stderr()
-    .command(['addons:admin:manifest:diff'])
-    .it('contains correct test API elements', (ctx: any) => {
-      expect(ctx.stdout).to.contain(`"test": "${testManifest.test}"`)
-    })
+  afterEach(() => {
+    nock.cleanAll()
+    process.chdir(originalCwd)
+    cleanup()
+  })
 
-  test
-    .nock(host, (api: any) => {
-      api.get('/api/v3/addons/testing-123/current_manifest')
-        .replyWithError('test')
+  it('contains static stdout', async () => {
+    nock(host)
+    .get('/api/v3/addons/testing-123/current_manifest')
+    .reply(200, {contents: manifest})
+
+    await runCommand(Cmd)
+
+    expect(stdout.output).to.contain('testing-123')
+  })
+
+  it('contains all elements', async () => {
+    nock(host)
+    .get('/api/v3/addons/testing-123/current_manifest')
+    .reply(200, {contents: manifest})
+
+    await runCommand(Cmd)
+
+    manifestElements.forEach(val => {
+      expect(stdout.output).to.contain(val)
     })
-    .stdout()
-    .stderr()
-    .command(['addons:admin:manifest:diff'])
-    .catch(error => {
+    manifestAPIElements.forEach(val => {
+      expect(stdout.output).to.contain(val)
+    })
+    otherElements.forEach(val => {
+      expect(stdout.output).to.contain(val)
+    })
+  })
+
+  it('contains correct test API elements', async () => {
+    nock(host)
+    .get('/api/v3/addons/testing-123/current_manifest')
+    .reply(200, {contents: testManifest})
+
+    await runCommand(Cmd)
+
+    expect(stdout.output).to.contain(`"test": "${testManifest.test}"`)
+  })
+
+  it('error testing', async () => {
+    nock(host)
+    .get('/api/v3/addons/testing-123/current_manifest')
+    .replyWithError('test')
+
+    try {
+      await runCommand(Cmd)
+      expect.fail('Should have thrown an error')
+    } catch (error) {
       expect(error).to.be.an('error')
-    })
-    .it('error testing')
+    }
+  })
 })

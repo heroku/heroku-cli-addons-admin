@@ -1,10 +1,11 @@
+import colorImport from '@heroku-cli/color'
 import {HTTPError} from '@heroku/http-call'
-import color from '@heroku-cli/color'
-import {ux} from '@oclif/core'
-import {Config} from '@oclif/core'
+import {Config, ux} from '@oclif/core'
 
-import AddonClient from './addon-client'
-import {ManifestInterface, ManifestLocal, ManifestRemote} from './manifest'
+const color = colorImport.default
+
+import AddonClient from './addon-client.js'
+import {ManifestInterface, ManifestLocal, ManifestRemote} from './manifest.js'
 
 export default class Addon {
   readonly argsSlug?: string
@@ -31,26 +32,30 @@ export default class Addon {
   async manifest(uuid: string): Promise<ManifestInterface> {
     const slug = await this.slug()
     ux.action.start(`Fetching add-on manifest for ${color.addon(slug)}`)
-    const body = await this._client.get(`/api/v3/addons/${encodeURIComponent(slug)}/manifests/${encodeURIComponent(uuid)}`)
-    ux.action.stop()
-
-    return body.contents
+    try {
+      const body = await this._client.get(`/api/v3/addons/${encodeURIComponent(slug)}/manifests/${encodeURIComponent(uuid)}`)
+      return body.contents
+    } finally {
+      ux.action.stop()
+    }
   }
 
   async manifests(): Promise<ManifestInterface[]> {
     const slug = await this.slug()
     ux.action.start(`Fetching add-on manifests for ${color.addon(slug)}`)
-    const body = await this._client.get(`/api/v3/addons/${encodeURIComponent(slug)}/manifests`).catch((error: HTTPError) => {
-      const errorBody = error?.body?.error
-      if (errorBody) {
-        ux.error(errorBody)
-      }
+    try {
+      const body = await this._client.get(`/api/v3/addons/${encodeURIComponent(slug)}/manifests`).catch((error: HTTPError) => {
+        const errorBody = error?.body?.error
+        if (errorBody) {
+          ux.error(errorBody)
+        }
 
-      throw error
-    })
-
-    ux.action.stop()
-    return body
+        throw error
+      })
+      return body
+    } finally {
+      ux.action.stop()
+    }
   }
 
   remote(): ManifestRemote {

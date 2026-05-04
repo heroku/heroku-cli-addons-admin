@@ -1,28 +1,28 @@
-import color from '@heroku-cli/color'
-import {Command, flags} from '@heroku-cli/command'
+import colorImport from '@heroku-cli/color'
+import {Command} from '@heroku-cli/command'
 import * as Heroku from '@heroku-cli/schema'
-import {ux} from '@oclif/core'
-import * as fs from 'fs-extra'
-import {prompt} from 'inquirer'
+import {Flags, ux} from '@oclif/core'
+import inquirer from 'inquirer'
+import {writeFile} from 'node:fs'
 import {generate as generateString} from 'randomstring'
 
-import Addon from '../../../../addon'
-import {ManifestInterface} from '../../../../manifest'
+import Addon from '../../../../addon.js'
+import {ManifestInterface} from '../../../../manifest.js'
+
+const color = colorImport.default
 
 export default class Generate extends Command {
   static description = 'generate a manifest template'
-
   static examples = [
     `$ heroku addons:admin:generate
 The file has been saved!`,
   ]
-
   static flags = {
-    addon: flags.string({
+    addon: Flags.string({
       char: 'a',
       description: 'add-on name (name displayed on addon dashboard)',
     }),
-    slug: flags.string({
+    slug: Flags.string({
       char: 's',
       description: 'slugname/manifest id',
     }),
@@ -53,7 +53,7 @@ The file has been saved!`,
 
     // prompts begin here
     this.log(color.green('Input manifest information below: '))
-    const promptAnswers: any = await prompt(questions)
+    const promptAnswers: any = await inquirer.prompt(questions)
     if (promptAnswers.toGenerate) {
       promptAnswers.password = generateString(32)
       promptAnswers.sso_salt = generateString(32)
@@ -69,22 +69,22 @@ The file has been saved!`,
 
   private generate(data: any = {}): ManifestInterface {
     const manifest: ManifestInterface = {
-      id: 'myaddon',
       api: {
-        config_vars_prefix: 'MYADDON',
         config_vars: [
           'MYADDON_URL',
         ],
+        config_vars_prefix: 'MYADDON',
         password: 'CHANGEME',
-        sso_salt: 'CHANGEME',
-        regions: ['us', 'eu'],
-        requires: [],
         production: {
           base_url: 'https://myaddon.com/heroku/resources',
           sso_url: 'https://myaddon.com/sso/login',
         },
+        regions: ['us', 'eu'],
+        requires: [],
+        sso_salt: 'CHANGEME',
         version: '3',
       },
+      id: 'myaddon',
       name: 'MyAddon',
     }
 
@@ -159,7 +159,7 @@ The file has been saved!`,
     // generating manifest
     const manifestObj = JSON.stringify(manifest, null, 2)
     ux.action.start('Generating add-on manifest')
-    await fs.writeFile(filename, manifestObj, err => {
+    await writeFile(filename, manifestObj, err => {
       ux.action.stop(color.green('done'))
       if (err) {
         this.log(`The file ${color.green(filename)} has NOT been saved! \n`, err)

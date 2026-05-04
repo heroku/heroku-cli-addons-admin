@@ -1,10 +1,9 @@
 import {Command} from '@heroku-cli/command'
 
-import Addon from '../../../../addon'
+import Addon from '../../../../addon.js'
 
 export default class Push extends Command {
   static description = 'update remote manifest'
-
   static examples = [
     `$ heroku addons:admin:manifest:push
  ...
@@ -13,7 +12,7 @@ export default class Push extends Command {
   ]
 
   async run() {
-    this.parse(Push)
+    await this.parse(Push)
 
     const addon = new Addon(this.config)
     const manifest = addon.local()

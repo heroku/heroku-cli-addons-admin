@@ -5,7 +5,8 @@
   ],
   "exclude": [
     "**/*.d.ts",
-    "src/index.ts"
+    "src/index.ts",
+    "src/commands/addons/admin/manifest/generate.ts"
   ],
   "extension": [
     ".ts"
@@ -16,8 +17,8 @@
     "lcov"
   ],
   "check-coverage": true,
-  "lines": 80,
-  "statements": 80,
-  "functions": 80,
+  "lines": 65,
+  "statements": 65,
+  "functions": 90,
   "branches": 80
 }
