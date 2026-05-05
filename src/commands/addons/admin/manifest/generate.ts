@@ -2,7 +2,7 @@ import {Command, flags} from '@heroku-cli/command'
 import * as Heroku from '@heroku-cli/schema'
 import {color} from '@heroku/heroku-cli-util'
 import {ux} from '@oclif/core'
-import inquirer from 'inquirer'
+import {createPromptModule} from 'inquirer'
 import {writeFile} from 'node:fs'
 import {generate as generateString} from 'randomstring'
 
@@ -51,7 +51,8 @@ The file has been saved!`,
 
     // prompts begin here
     this.log(color.green('Input manifest information below: '))
-    const promptAnswers: any = await inquirer.prompt(questions)
+    const prompt = createPromptModule()
+    const promptAnswers: any = await prompt(questions)
     if (promptAnswers.toGenerate) {
       promptAnswers.password = generateString(32)
       promptAnswers.sso_salt = generateString(32)
