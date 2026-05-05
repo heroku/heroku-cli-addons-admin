@@ -1,8 +1,5 @@
 import {expect} from 'chai'
-import {readFileSync} from 'node:fs'
-import {join} from 'node:path'
 import nock from 'nock'
-import {stdout} from 'stdout-stderr'
 
 import Cmd from '../../../../../src/commands/addons/admin/manifest/generate.js'
 import {createTestManifest} from '../../../../utils/test.js'
