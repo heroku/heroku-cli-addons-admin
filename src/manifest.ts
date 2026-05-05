@@ -102,10 +102,12 @@ export class ManifestRemote extends Manifest {
   async _get(): Promise<ManifestInterface> {
     const slug = await this.addon.slug()
     ux.action.start(`Fetching add-on manifest for ${color.addon(slug)}`)
-    const body = await this.addon.client().get(`/api/v3/addons/${encodeURIComponent(slug)}/current_manifest`)
-    ux.action.stop()
-
-    return body.contents
+    try {
+      const body = await this.addon.client().get(`/api/v3/addons/${encodeURIComponent(slug)}/current_manifest`)
+      return body.contents
+    } finally {
+      ux.action.stop()
+    }
   }
 
   async _set(manifest: ManifestInterface): Promise<ManifestInterface> {

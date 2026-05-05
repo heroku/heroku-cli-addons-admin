@@ -1,9 +1,8 @@
+import {runCommand} from '@heroku-cli/test-utils'
 import {expect} from 'chai'
 import nock from 'nock'
-import {stdout} from 'stdout-stderr'
 
 import Cmd from '../../../../../src/commands/addons/admin/manifests/info.js'
-import {runCommand} from '../../../../run-command.js'
 import {createTestManifest} from '../../../../utils/test.js'
 
 const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com'
@@ -38,9 +37,9 @@ describe('addons:admin:manifests:info', () => {
     .get('/api/v3/addons/testing-123/manifests/1a2e3c33-c949-4599-97d9-4ed684c35c2f')
     .reply(200, manifest)
 
-    await runCommand(Cmd, ['-m', '1a2e3c33-c949-4599-97d9-4ed684c35c2f'])
+    const {stdout} = await runCommand(Cmd, ['-m', '1a2e3c33-c949-4599-97d9-4ed684c35c2f'])
 
-    expect(stdout.output).to.equal(`{
+    expect(stdout).to.equal(`{
   "foo": "bar"
 }
 `)
@@ -51,9 +50,9 @@ describe('addons:admin:manifests:info', () => {
     .get('/api/v3/addons/testing-123/manifests/1a2e3c33-c949-4599-97d9-4ed684c35c2f')
     .reply(200, manifest)
 
-    await runCommand(Cmd, ['--manifest', '1a2e3c33-c949-4599-97d9-4ed684c35c2f'])
+    const {stdout} = await runCommand(Cmd, ['--manifest', '1a2e3c33-c949-4599-97d9-4ed684c35c2f'])
 
-    expect(stdout.output).to.equal(`{
+    expect(stdout).to.equal(`{
   "foo": "bar"
 }
 `)
@@ -64,9 +63,9 @@ describe('addons:admin:manifests:info', () => {
     .get('/api/v3/addons/arg-slug/manifests/1a2e3c33-c949-4599-97d9-4ed684c35c2f')
     .reply(200, manifest)
 
-    await runCommand(Cmd, ['arg-slug', '-m', '1a2e3c33-c949-4599-97d9-4ed684c35c2f'])
+    const {stdout} = await runCommand(Cmd, ['arg-slug', '-m', '1a2e3c33-c949-4599-97d9-4ed684c35c2f'])
 
-    expect(stdout.output).to.equal(`{
+    expect(stdout).to.equal(`{
   "foo": "bar"
 }
 `)

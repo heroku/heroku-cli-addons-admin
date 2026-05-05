@@ -1,9 +1,8 @@
+import {runCommand} from '@heroku-cli/test-utils'
 import {expect} from 'chai'
 import nock from 'nock'
-import {stdout} from 'stdout-stderr'
 
 import Cmd from '../../../../src/commands/addons/admin/manifests.js'
-import {runCommand} from '../../../run-command.js'
 import {createTestManifest} from '../../../utils/test.js'
 
 const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com'
@@ -49,9 +48,9 @@ describe('addons:admin:manifests', () => {
     .get('/api/v3/addons/testing-123/manifests')
     .reply(200, manifests)
 
-    await runCommand(Cmd)
+    const {stdout} = await runCommand(Cmd, [])
 
-    const actual = removeAllWhitespace(stdout.output)
+    const actual = removeAllWhitespace(stdout)
     const expected = removeAllWhitespace(
       '80d90dfb-049f-436b-9543-24cc7b691352 2017-07-19T21:47:25.894Z\n'
       + '1a2e3c33-c949-4599-97d9-4ed684c35c2f 2017-07-18T21:47:25.894Z\n',
@@ -66,9 +65,9 @@ describe('addons:admin:manifests', () => {
     .get('/api/v3/addons/arg-slug/manifests')
     .reply(200, manifests)
 
-    await runCommand(Cmd, ['arg-slug'])
+    const {stdout} = await runCommand(Cmd, ['arg-slug'])
 
-    const actual = removeAllWhitespace(stdout.output)
+    const actual = removeAllWhitespace(stdout)
     const expected = removeAllWhitespace(
       '80d90dfb-049f-436b-9543-24cc7b691352 2017-07-19T21:47:25.894Z\n'
       + '1a2e3c33-c949-4599-97d9-4ed684c35c2f 2017-07-18T21:47:25.894Z\n',

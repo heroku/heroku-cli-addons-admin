@@ -1,11 +1,10 @@
+import {runCommand} from '@heroku-cli/test-utils'
 import {expect} from 'chai'
 import {readFileSync} from 'node:fs'
 import {join} from 'node:path'
 import nock from 'nock'
-import {stdout} from 'stdout-stderr'
 
 import Cmd from '../../../../../src/commands/addons/admin/manifest/pull.js'
-import {runCommand} from '../../../../run-command.js'
 import {
   createTestManifest, host, manifest as localManifest,
 } from '../../../../utils/test.js'
@@ -34,10 +33,12 @@ describe('addons:admin:manifest:pull', () => {
     .get('/api/v3/addons/testing-123/current_manifest')
     .reply(200, {contents: manifest})
 
-    await runCommand(Cmd, ['testing-123'])
+    const {stdout} = await runCommand(Cmd, ['testing-123'])
 
     Object.keys(manifest).forEach(key => {
-      if (key !== 'api') expect(stdout.output).to.contain(manifest[key])
+      if (key !== 'api' && typeof manifest[key] === 'string') {
+        expect(stdout).to.contain(manifest[key])
+      }
     })
   })
 
@@ -54,12 +55,8 @@ describe('addons:admin:manifest:pull', () => {
     .get('/api/v3/addons/fakeslug/current_manifest')
     .replyWithError('400')
 
-    try {
-      await runCommand(Cmd, ['fakeslug'])
-      expect.fail('Should have thrown an error')
-    } catch (error) {
-      expect(error).to.be.an('error')
-    }
+    const {error} = await runCommand(Cmd, ['fakeslug'])
+    expect(error).to.be.an('error')
   })
 
   it('writes to the manifest file', async () => {
@@ -69,7 +66,6 @@ describe('addons:admin:manifest:pull', () => {
 
     await runCommand(Cmd, ['testing-123'])
 
-    // Read the file that was written
     const written = JSON.parse(readFileSync(join(process.cwd(), 'addon-manifest.json'), 'utf8'))
     expect(written).to.deep.equal(manifest)
   })

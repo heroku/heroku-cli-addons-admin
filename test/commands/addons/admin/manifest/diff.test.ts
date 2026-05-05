@@ -1,10 +1,9 @@
 
+import {runCommand} from '@heroku-cli/test-utils'
 import {expect} from 'chai'
 import nock from 'nock'
-import {stdout} from 'stdout-stderr'
 
 import Cmd from '../../../../../src/commands/addons/admin/manifest/diff.js'
-import {runCommand} from '../../../../run-command.js'
 import {
   createTestManifest, host, manifest,
 } from '../../../../utils/test.js'
@@ -50,9 +49,9 @@ describe('addons:admin:manifest:diff', () => {
     .get('/api/v3/addons/testing-123/current_manifest')
     .reply(200, {contents: manifest})
 
-    await runCommand(Cmd)
+    const {stdout} = await runCommand(Cmd, [])
 
-    expect(stdout.output).to.contain('testing-123')
+    expect(stdout).to.contain('testing-123')
   })
 
   it('contains all elements', async () => {
@@ -60,16 +59,16 @@ describe('addons:admin:manifest:diff', () => {
     .get('/api/v3/addons/testing-123/current_manifest')
     .reply(200, {contents: manifest})
 
-    await runCommand(Cmd)
+    const {stdout} = await runCommand(Cmd, [])
 
     manifestElements.forEach(val => {
-      expect(stdout.output).to.contain(val)
+      expect(stdout).to.contain(val)
     })
     manifestAPIElements.forEach(val => {
-      expect(stdout.output).to.contain(val)
+      expect(stdout).to.contain(val)
     })
     otherElements.forEach(val => {
-      expect(stdout.output).to.contain(val)
+      expect(stdout).to.contain(val)
     })
   })
 
@@ -78,9 +77,9 @@ describe('addons:admin:manifest:diff', () => {
     .get('/api/v3/addons/testing-123/current_manifest')
     .reply(200, {contents: testManifest})
 
-    await runCommand(Cmd)
+    const {stdout} = await runCommand(Cmd, [])
 
-    expect(stdout.output).to.contain(`"test": "${testManifest.test}"`)
+    expect(stdout).to.contain(`"test": "${testManifest.test}"`)
   })
 
   it('error testing', async () => {
@@ -88,11 +87,7 @@ describe('addons:admin:manifest:diff', () => {
     .get('/api/v3/addons/testing-123/current_manifest')
     .replyWithError('test')
 
-    try {
-      await runCommand(Cmd)
-      expect.fail('Should have thrown an error')
-    } catch (error) {
-      expect(error).to.be.an('error')
-    }
+    const {error} = await runCommand(Cmd, [])
+    expect(error).to.be.an('error')
   })
 })

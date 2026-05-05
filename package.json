@@ -8,6 +8,7 @@
   "dependencies": {
     "@heroku-cli/command": "^12.0.0",
     "@heroku-cli/schema": "^1.0.25",
+    "@heroku-cli/test-utils": "^0.2.0",
     "@heroku/heroku-cli-util": "^10.8.0",
     "@heroku/http-call": "5.4.0",
     "@oclif/core": "^4.0.0",
@@ -39,8 +40,7 @@
     "mocha": "^11",
     "nock": "^14.0.1",
     "oclif": "^4.22.81",
-    "sinon": "^18.0.0",
-    "stdout-stderr": "^0.1.13",
+    "sinon": "^21.1.2",
     "ts-node": "^10.9.2",
     "tsheredoc": "^1.0.1",
     "typescript": "5.9.3"

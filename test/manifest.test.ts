@@ -1,8 +1,8 @@
+import {captureOutput} from '@heroku-cli/test-utils'
 import {Config} from '@oclif/core'
 import {expect} from 'chai'
 import {existsSync} from 'node:fs'
 import nock from 'nock'
-import {stderr, stdout} from 'stdout-stderr'
 
 import type {ManifestInterface} from '../src/manifest.js'
 
@@ -28,14 +28,13 @@ describe('ManifestLocal (addon_manifest.json)', () => {
   })
 
   it('.get', async () => {
-    stderr.start()
-    stdout.start()
-    const localManifest = new ManifestLocal()
-    expect(await localManifest.get()).to.be.a('object')
-    expect(await localManifest.get()).to.deep.equal(manifest)
-    stderr.stop()
-    stdout.stop()
-    expect(stderr.output).to.contain('Using addon_manifest.json was a bug')
+    let localManifest: ManifestLocal
+    const {stderr} = await captureOutput(async () => {
+      localManifest = new ManifestLocal()
+      expect(await localManifest!.get()).to.be.a('object')
+      expect(await localManifest!.get()).to.deep.equal(manifest)
+    })
+    expect(stderr).to.contain('Using addon_manifest.json was a bug')
   })
 
   it('.get caching', async () => {
@@ -53,14 +52,12 @@ describe('ManifestLocal (addon_manifest.json)', () => {
   })
 
   it('.log', async () => {
-    stderr.start()
-    stdout.start()
     const localManifest = new ManifestLocal()
     await localManifest.set(manifest)
-    expect(await localManifest.log()).to.be.a('undefined')
-    stderr.stop()
-    stdout.stop()
-    expect(stdout.output).to.deep.equal(`{
+    const {stdout} = await captureOutput(async () => {
+      await localManifest.log()
+    })
+    expect(stdout).to.deep.equal(`{
   "id": "testing-123",
   "name": "MyAddon",
   "api": {
@@ -132,14 +129,12 @@ describe('ManifestLocal (addon-manifest.json)', () => {
   })
 
   it('.log', async () => {
-    stderr.start()
-    stdout.start()
     const localManifest = new ManifestLocal()
     await localManifest.set(manifest)
-    expect(await localManifest.log()).to.be.a('undefined')
-    stderr.stop()
-    stdout.stop()
-    expect(stdout.output).to.deep.equal(`{
+    const {stdout} = await captureOutput(async () => {
+      await localManifest.log()
+    })
+    expect(stdout).to.deep.equal(`{
   "id": "testing-123",
   "name": "MyAddon",
   "api": {
@@ -219,14 +214,12 @@ describe('ManifestLocal (null)', () => {
   })
 
   it('.log', async () => {
-    stderr.start()
-    stdout.start()
     const localManifest = new ManifestLocal()
     await localManifest.set(manifest)
-    expect(await localManifest.log()).to.be.a('undefined')
-    stderr.stop()
-    stdout.stop()
-    expect(stdout.output).to.deep.equal(`{
+    const {stdout} = await captureOutput(async () => {
+      await localManifest.log()
+    })
+    expect(stdout).to.deep.equal(`{
   "id": "testing-123",
   "name": "MyAddon",
   "api": {

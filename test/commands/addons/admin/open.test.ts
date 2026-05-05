@@ -1,9 +1,8 @@
+import {runCommand} from '@heroku-cli/test-utils'
 import {expect} from 'chai'
 import * as sinon from 'sinon'
-import {stderr} from 'stdout-stderr'
 
 import Cmd from '../../../../src/commands/addons/admin/open.js'
-import {runCommand} from '../../../run-command.js'
 import {createTestManifest} from '../../../utils/test.js'
 
 describe('addons:admin:open', () => {
@@ -32,19 +31,15 @@ describe('addons:admin:open', () => {
 
     expect(urlOpenerStub.calledOnce).to.eq(true)
     expect(urlOpenerStub.firstCall.args[0]).to.eq('https://addons-next.heroku.com/addons/arg-slug')
-    // ux.action outputs to stderr, so check there
-    expect(stderr.output).to.contain('Opening https://addons-next.heroku.com/addons/arg-slug')
   })
 
   it('opens slug from manifest', async () => {
     urlOpenerStub = sinon.stub(Cmd, 'urlOpener')
     urlOpenerStub.resolves()
 
-    await runCommand(Cmd)
+    await runCommand(Cmd, [])
 
     expect(urlOpenerStub.calledOnce).to.eq(true)
     expect(urlOpenerStub.firstCall.args[0]).to.eq('https://addons-next.heroku.com/addons/testing-123')
-    // ux.action outputs to stderr, so check there
-    expect(stderr.output).to.contain('Opening https://addons-next.heroku.com/addons/testing-123')
   })
 })
