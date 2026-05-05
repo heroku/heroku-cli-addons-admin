@@ -8,7 +8,6 @@
   "dependencies": {
     "@heroku-cli/command": "^12.0.0",
     "@heroku-cli/schema": "^1.0.25",
-    "@heroku-cli/test-utils": "^0.2.0",
     "@heroku/heroku-cli-util": "^10.8.0",
     "@heroku/http-call": "5.4.0",
     "@oclif/core": "^4.0.0",
@@ -21,6 +20,7 @@
     "tslib": "2.8.1"
   },
   "devDependencies": {
+    "@heroku-cli/test-utils": "^0.2.0",
     "@oclif/plugin-help": "^6",
     "@types/chai": "^4",
     "@types/diff": "^5.2.1",
