@@ -1,7 +1,6 @@
 import {Config} from '@oclif/core'
 import {expect} from 'chai'
 import {existsSync} from 'node:fs'
-import {join} from 'node:path'
 import nock from 'nock'
 import {stderr, stdout} from 'stdout-stderr'
 
