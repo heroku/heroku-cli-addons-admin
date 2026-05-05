@@ -1,18 +1,20 @@
 {
   "compilerOptions": {
     "declaration": true,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "outDir": "./lib",
     "pretty": true,
+    "resolveJsonModule": true,
     "rootDirs": [
       "./src"
     ],
     "skipLibCheck": true,
     "strict": true,
-    "target": "es2017",
+    "target": "ES2022",
     "typeRoots": [
       "./node_modules/@types"
     ]

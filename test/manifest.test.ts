@@ -1,67 +1,66 @@
 import {Config} from '@oclif/core'
-import {expect} from '@oclif/test'
-import * as fs from 'fs-extra'
-import * as sinon from 'sinon'
+import {expect} from 'chai'
+import {existsSync} from 'node:fs'
+import nock from 'nock'
+import {stderr, stdout} from 'stdout-stderr'
 
-import Addon from '../src/addon'
-import {ManifestInterface, ManifestLocal} from '../src/manifest'
-import {host, manifest, test} from './utils/test'
+import type {ManifestInterface} from '../src/manifest.js'
 
-const underExists = sinon.stub()
-underExists.throws('not stubbed')
-underExists.withArgs('addon-manifest.json').returns(false)
-underExists.withArgs('addon_manifest.json').returns(true)
+import Addon from '../src/addon.js'
+import {ManifestLocal} from '../src/manifest.js'
+import {createTestManifest, host, manifest} from './utils/test.js'
 
 describe('ManifestLocal (addon_manifest.json)', () => {
-  const writeManifest = {id: 'slug'} as ManifestInterface
+  let originalCwd: string
+  let cleanup: () => void
 
-  const fsWriteFileSync = sinon.stub()
-  fsWriteFileSync.throws('write not stubbed')
-  fsWriteFileSync.withArgs('addon_manifest.json', JSON.stringify(writeManifest, null, 2)).returns(undefined)
-  fsWriteFileSync.withArgs('addon_manifest.json', JSON.stringify(manifest, null, 2)).returns(undefined)
+  beforeEach(() => {
+    const {cleanup: cleanupFn, testDir} = createTestManifest(manifest, 'addon_manifest.json')
+    cleanup = cleanupFn
+    originalCwd = process.cwd()
+    process.chdir(testDir)
+  })
 
-  const fsReadFileSync = sinon.stub()
-  fsReadFileSync.throws('read not stubbed')
-  fsReadFileSync.withArgs('addon_manifest.json').returns(JSON.stringify(manifest))
+  afterEach(() => {
+    nock.cleanAll()
+    process.chdir(originalCwd)
+    cleanup()
+  })
 
-  const underTest = test
-    .stub(fs, 'readFileSync', fsReadFileSync)
-    .stub(fs, 'writeFileSync', fsWriteFileSync)
-    .stub(fs, 'existsSync', underExists)
-    .stub(fs, 'existsSync', underExists)
+  it('.get', async () => {
+    stderr.start()
+    stdout.start()
+    const localManifest = new ManifestLocal()
+    expect(await localManifest.get()).to.be.a('object')
+    expect(await localManifest.get()).to.deep.equal(manifest)
+    stderr.stop()
+    stdout.stop()
+    expect(stderr.output).to.contain('Using addon_manifest.json was a bug')
+  })
 
-  underTest
-    .stderr()
-    .it('.get', async ctx => {
-      const localManifest = new ManifestLocal()
-      expect(await localManifest.get()).to.be.a('object')
-      expect(await localManifest.get()).to.deep.equal(manifest)
-      expect(ctx.stderr).to.contain('Using addon_manifest.json was a bug')
-    })
+  it('.get caching', async () => {
+    const localManifest = new ManifestLocal()
+    const manifestGet = await localManifest.get()
+    expect(await localManifest.get()).to.equal(manifestGet)
+  })
 
-  underTest
-    .it('.get caching', async () => {
-      const localManifest = new ManifestLocal()
-      const manifestGet = await localManifest.get()
-      expect(await localManifest.get()).to.equal(manifestGet)
-    })
+  it('.set', async () => {
+    const writeManifest = {id: 'slug'} as ManifestInterface
+    const localManifest = new ManifestLocal()
+    expect(await localManifest.set(writeManifest)).to.equal(writeManifest)
+    expect(existsSync('addon_manifest.json')).to.eq(true)
+    expect(await localManifest.get()).to.deep.equal(writeManifest)
+  })
 
-  underTest
-    .stub(fs, 'writeFileSync', fsWriteFileSync)
-    .it('.set', async () => {
-      const localManifest = new ManifestLocal()
-      expect(await localManifest.set(writeManifest)).to.equal(writeManifest)
-      expect(fsWriteFileSync.called).to.eq(true)
-      expect(await localManifest.get()).to.equal(writeManifest)
-    })
-
-  underTest
-    .stdout()
-    .it('.log', async ctx => {
-      const localManifest = new ManifestLocal()
-      await localManifest.set(manifest)
-      expect(await localManifest.log()).to.be.a('undefined')
-      expect(ctx.stdout).to.deep.equal(`{
+  it('.log', async () => {
+    stderr.start()
+    stdout.start()
+    const localManifest = new ManifestLocal()
+    await localManifest.set(manifest)
+    expect(await localManifest.log()).to.be.a('undefined')
+    stderr.stop()
+    stdout.stop()
+    expect(stdout.output).to.deep.equal(`{
   "id": "testing-123",
   "name": "MyAddon",
   "api": {
@@ -88,58 +87,59 @@ describe('ManifestLocal (addon_manifest.json)', () => {
   }
 }
 `)
-    })
+  })
 
-  underTest
-    .it('.filename', async () => {
-      expect(new ManifestLocal().filename()).to.eq('addon_manifest.json')
-    })
+  it('.filename', async () => {
+    expect(new ManifestLocal().filename()).to.eq('addon_manifest.json')
+  })
 })
-
-const dashExists = sinon.stub()
-dashExists.throws('not stubbed')
-dashExists.withArgs('addon_manifest.json').returns(false)
-dashExists.withArgs('addon-manifest.json').returns(true)
 
 describe('ManifestLocal (addon-manifest.json)', () => {
-  const dashTest = test
-    .stub(fs, 'existsSync', dashExists)
+  let originalCwd: string
+  let cleanup: () => void
 
-  dashTest
-    .it('.get', async () => {
-      const localManifest = new ManifestLocal()
-      expect(await localManifest.get()).to.be.a('object')
-      expect(await localManifest.get()).to.deep.equal(manifest)
-    })
-  dashTest
-    .it('.get caching', async () => {
-      const localManifest = new ManifestLocal()
-      const manifestGet = await localManifest.get()
-      expect(await localManifest.get()).to.equal(manifestGet)
-    })
+  beforeEach(() => {
+    const {cleanup: cleanupFn, testDir} = createTestManifest()
+    cleanup = cleanupFn
+    originalCwd = process.cwd()
+    process.chdir(testDir)
+  })
 
-  const writeManifest = {id: 'slug'} as ManifestInterface
+  afterEach(() => {
+    nock.cleanAll()
+    process.chdir(originalCwd)
+    cleanup()
+  })
 
-  const fsWriteFileSync = sinon.stub()
-  fsWriteFileSync.throws('write not stubbed')
-  fsWriteFileSync.withArgs('addon-manifest.json', JSON.stringify(writeManifest, null, 2)).returns(undefined)
+  it('.get', async () => {
+    const localManifest = new ManifestLocal()
+    expect(await localManifest.get()).to.be.a('object')
+    expect(await localManifest.get()).to.deep.equal(manifest)
+  })
 
-  dashTest
-    .stub(fs, 'writeFileSync', fsWriteFileSync)
-    .it('.set', async () => {
-      const localManifest = new ManifestLocal()
-      expect(await localManifest.set(writeManifest)).to.equal(writeManifest)
-      expect(fsWriteFileSync.called).to.eq(true)
-      expect(await localManifest.get()).to.equal(writeManifest)
-    })
+  it('.get caching', async () => {
+    const localManifest = new ManifestLocal()
+    const manifestGet = await localManifest.get()
+    expect(await localManifest.get()).to.equal(manifestGet)
+  })
 
-  dashTest
-    .stdout()
-    .it('.log', async ctx => {
-      const localManifest = new ManifestLocal()
-      await localManifest.set(manifest)
-      expect(await localManifest.log()).to.be.a('undefined')
-      expect(ctx.stdout).to.deep.equal(`{
+  it('.set', async () => {
+    const writeManifest = {id: 'slug'} as ManifestInterface
+    const localManifest = new ManifestLocal()
+    expect(await localManifest.set(writeManifest)).to.equal(writeManifest)
+    expect(existsSync('addon-manifest.json')).to.eq(true)
+    expect(await localManifest.get()).to.deep.equal(writeManifest)
+  })
+
+  it('.log', async () => {
+    stderr.start()
+    stdout.start()
+    const localManifest = new ManifestLocal()
+    await localManifest.set(manifest)
+    expect(await localManifest.log()).to.be.a('undefined')
+    stderr.stop()
+    stdout.stop()
+    expect(stdout.output).to.deep.equal(`{
   "id": "testing-123",
   "name": "MyAddon",
   "api": {
@@ -166,59 +166,67 @@ describe('ManifestLocal (addon-manifest.json)', () => {
   }
 }
 `)
-    })
+  })
 
-  dashTest
-    .it('.filename', async () => {
-      expect(new ManifestLocal().filename()).to.eq('addon-manifest.json')
-    })
+  it('.filename', async () => {
+    expect(new ManifestLocal().filename()).to.eq('addon-manifest.json')
+  })
 })
-
-const noneExist = sinon.stub()
-noneExist.throws('not stubbed')
-noneExist.withArgs('addon_manifest.json').returns(false)
-noneExist.withArgs('addon-manifest.json').returns(false)
 
 describe('ManifestLocal (null)', () => {
-  const noneTest = test
-    .stub(fs, 'existsSync', dashExists)
+  let originalCwd: string
+  let cleanup: () => void
 
-  noneTest
-    .it('.get', async () => {
-      const localManifest = new ManifestLocal()
-      expect(await localManifest.get()).to.be.a('object')
-      expect(await localManifest.get()).to.deep.equal(manifest)
-    })
+  beforeEach(() => {
+    // Create temp dir without any manifest file
+    const {cleanup: cleanupFn, testDir} = createTestManifest(null)
+    cleanup = cleanupFn
+    originalCwd = process.cwd()
+    process.chdir(testDir)
+  })
 
-  noneTest
-    .it('.get caching', async () => {
-      const localManifest = new ManifestLocal()
-      const manifestGet = await localManifest.get()
-      expect(await localManifest.get()).to.equal(manifestGet)
-    })
+  afterEach(() => {
+    nock.cleanAll()
+    process.chdir(originalCwd)
+    cleanup()
+  })
 
-  const writeManifest = {id: 'slug'} as ManifestInterface
+  it('.get throws error when no manifest exists', async () => {
+    const localManifest = new ManifestLocal()
+    try {
+      await localManifest.get()
+      expect.fail('Should have thrown an error')
+    } catch (error: any) {
+      expect(error.message).to.contain('Check if addon-manifest.json exists')
+    }
+  })
 
-  const fsWriteFileSync = sinon.stub()
-  fsWriteFileSync.throws('write not stubbed')
-  fsWriteFileSync.withArgs('addon-manifest.json', JSON.stringify(writeManifest, null, 2)).returns(undefined)
+  it('.get caching', async () => {
+    // Write a manifest first so we can test caching
+    const writeManifest = {id: 'slug'} as ManifestInterface
+    const localManifest = new ManifestLocal()
+    await localManifest.set(writeManifest)
+    const manifestGet = await localManifest.get()
+    expect(await localManifest.get()).to.equal(manifestGet)
+  })
 
-  noneTest
-    .stub(fs, 'writeFileSync', fsWriteFileSync)
-    .it('.set', async () => {
-      const localManifest = new ManifestLocal()
-      expect(await localManifest.set(writeManifest)).to.equal(writeManifest)
-      expect(fsWriteFileSync.called).to.eq(true)
-      expect(await localManifest.get()).to.equal(writeManifest)
-    })
+  it('.set', async () => {
+    const writeManifest = {id: 'slug'} as ManifestInterface
+    const localManifest = new ManifestLocal()
+    expect(await localManifest.set(writeManifest)).to.equal(writeManifest)
+    expect(existsSync('addon-manifest.json')).to.eq(true)
+    expect(await localManifest.get()).to.deep.equal(writeManifest)
+  })
 
-  noneTest
-    .stdout()
-    .it('.log', async ctx => {
-      const localManifest = new ManifestLocal()
-      await localManifest.set(manifest)
-      expect(await localManifest.log()).to.be.a('undefined')
-      expect(ctx.stdout).to.deep.equal(`{
+  it('.log', async () => {
+    stderr.start()
+    stdout.start()
+    const localManifest = new ManifestLocal()
+    await localManifest.set(manifest)
+    expect(await localManifest.log()).to.be.a('undefined')
+    stderr.stop()
+    stdout.stop()
+    expect(stdout.output).to.deep.equal(`{
   "id": "testing-123",
   "name": "MyAddon",
   "api": {
@@ -245,84 +253,98 @@ describe('ManifestLocal (null)', () => {
   }
 }
 `)
-    })
+  })
 
-  noneTest
-    .it('.filename', async () => {
-      expect(new ManifestLocal().filename()).to.eq('addon-manifest.json')
-    })
+  it('.filename', async () => {
+    expect(new ManifestLocal().filename()).to.eq('addon-manifest.json')
+  })
 })
 
-const addon = () => new Addon({} as Config)
+const createAddon = () => new Addon({} as Config)
 
 describe('ManifestRemote', () => {
-  test
-    .nock(host, (api: any) => api
-      .get('/api/v3/addons/testing-123/current_manifest')
-      .reply(200, {contents: {id: 'testing-123'}})
-    )
-    .it('.get() returns the manifest contents', async () => {
-      expect(await addon().remote().get()).to.deep.equal({id: 'testing-123'})
+  let originalCwd: string
+  let cleanup: () => void
+
+  beforeEach(() => {
+    const {cleanup: cleanupFn, testDir} = createTestManifest()
+    cleanup = cleanupFn
+    originalCwd = process.cwd()
+    process.chdir(testDir)
+  })
+
+  afterEach(() => {
+    nock.cleanAll()
+    process.chdir(originalCwd)
+    cleanup()
+  })
+
+  it('.get() returns the manifest contents', async () => {
+    nock(host)
+    .get('/api/v3/addons/testing-123/current_manifest')
+    .reply(200, {contents: {id: 'testing-123'}})
+
+    expect(await createAddon().remote().get()).to.deep.equal({id: 'testing-123'})
+  })
+
+  it('get() throws an error', async () => {
+    nock(host)
+    .get('/api/v3/addons/testing-123/current_manifest')
+    .reply(401, {
+      error: 'Forbidden',
     })
 
-  test
-    .nock(host, (api: any) => api
-      .get('/api/v3/addons/testing-123/current_manifest')
-      .reply(401, {
-        error: 'Forbidden',
-      }))
-    .do(async () => {
-      await addon().remote().get()
-    })
-    .catch(error => {
+    try {
+      await createAddon().remote().get()
+      expect.fail('Should have thrown an error')
+    } catch (error: any) {
       expect(error.message).to.eq('Forbidden')
-    })
-    .it('get() throws an error')
+    }
+  })
 
-  test
-    .nock(host, (api: any) => api
-      .post('/api/v3/addons/testing-123/manifests', {contents: {id: 'testing-123'}})
-      .reply(422, {
-        error: {
-          base: [
-            'A list of supported regions is required, see https://devcenter.heroku.com/articles/add-on-manifest',
-            'Something else failed',
-          ],
-        },
-      })
-    )
-    .do(async () => {
-      await addon().remote().set({id: 'testing-123'} as ManifestInterface)
+  it('.set() throws an error when 422', async () => {
+    nock(host)
+    .post('/api/v3/addons/testing-123/manifests', {contents: {id: 'testing-123'}})
+    .reply(422, {
+      error: {
+        base: [
+          'A list of supported regions is required, see https://devcenter.heroku.com/articles/add-on-manifest',
+          'Something else failed',
+        ],
+      },
     })
-    .catch(error => {
+
+    try {
+      await createAddon().remote().set({id: 'testing-123'} as ManifestInterface)
+      expect.fail('Should have thrown an error')
+    } catch (error: any) {
       expect(error.message).to.eq('A list of supported regions is required, see https://devcenter.heroku.com/articles/add-on-manifest, Something else failed')
-    })
-    .it('.set() throws an error when 422')
+    }
+  })
 
-  test
-    .nock(host, (api: any) => api
-      .post('/api/v3/addons/testing-123/manifests', {contents: {id: 'testing-123'}})
-      .reply(401, {
-        error: 'Forbidden',
-      })
-    )
-    .do(async () => {
-      await addon().remote().set({id: 'testing-123'} as ManifestInterface)
+  it('set() throws an error when 401', async () => {
+    nock(host)
+    .post('/api/v3/addons/testing-123/manifests', {contents: {id: 'testing-123'}})
+    .reply(401, {
+      error: 'Forbidden',
     })
-    .catch(error => {
+
+    try {
+      await createAddon().remote().set({id: 'testing-123'} as ManifestInterface)
+      expect.fail('Should have thrown an error')
+    } catch (error: any) {
       expect(error.message).to.eq('Forbidden')
-    })
-    .it('set() throws an error when 401')
+    }
+  })
 
-  test
-    .nock(host, (api: any) => api
-      .post('/api/v3/addons/testing-123/manifests', {contents: {id: 'testing-123'}})
-      .reply(200, {contents: {$base: 1234, id: 'testing-123'}})
-    )
-    .it('set() pushes the manifest contents', async () => {
-      const remoteManifest = addon().remote()
-      const manifest = await remoteManifest.set({id: 'testing-123'} as ManifestInterface)
-      expect(manifest).to.deep.equal({$base: 1234, id: 'testing-123'})
-      expect(await remoteManifest.get()).to.deep.equal({$base: 1234, id: 'testing-123'})
-    })
+  it('set() pushes the manifest contents', async () => {
+    nock(host)
+    .post('/api/v3/addons/testing-123/manifests', {contents: {id: 'testing-123'}})
+    .reply(200, {contents: {$base: 1234, id: 'testing-123'}})
+
+    const remoteManifest = createAddon().remote()
+    const result = await remoteManifest.set({id: 'testing-123'} as ManifestInterface)
+    expect(result).to.deep.equal({$base: 1234, id: 'testing-123'})
+    expect(await remoteManifest.get()).to.deep.equal({$base: 1234, id: 'testing-123'})
+  })
 })

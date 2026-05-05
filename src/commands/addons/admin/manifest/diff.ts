@@ -1,8 +1,10 @@
-import color from '@heroku-cli/color'
+import colorImport from '@heroku-cli/color'
 import {Command} from '@heroku-cli/command'
 import {diffLines} from 'diff'
 
-import Addon from '../../../../addon'
+import Addon from '../../../../addon.js'
+
+const color = colorImport.default
 
 export default class Diff extends Command {
   static description = 'compares remote manifest to local manifest and finds differences'

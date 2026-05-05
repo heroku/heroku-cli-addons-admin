@@ -1,22 +1,19 @@
 import {Command} from '@heroku-cli/command'
 import {Args, ux} from '@oclif/core'
-import * as open from 'open'
+import open from 'open'
 
-import Addon from '../../../addon'
+import Addon from '../../../addon.js'
 
 export default class Open extends Command {
   static args = {
     slug: Args.string({description: 'slug name of add-on'}),
   }
-
   static description = 'open add-on dashboard'
-
   static examples = [
     `$ heroku addons:admin:open
     Checking addon-manifest.json... done
     Opening https://addons-next.${process.env.HEROKU_HOST || 'heroku.com'}/addons/testing-123... done`,
   ]
-
   static urlOpener: (url: string) => Promise<unknown> = open
 
   async run() {
