@@ -1,10 +1,8 @@
-import colorImport from '@heroku-cli/color'
+import {color} from '@heroku/heroku-cli-util'
 import {ux} from '@oclif/core'
 import {existsSync, readFileSync, writeFileSync} from 'node:fs'
 
 import Addon from './addon.js'
-
-const color = colorImport.default
 
 export interface ManifestInterface {
   $base?: string

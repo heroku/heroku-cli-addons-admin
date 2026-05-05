@@ -1,6 +1,6 @@
 import {Command} from '@heroku-cli/command'
+import {hux} from '@heroku/heroku-cli-util'
 import {Args} from '@oclif/core'
-import {printTable} from '@oclif/table'
 import _ from 'lodash'
 
 import Addon from '../../../addon.js'
@@ -19,15 +19,9 @@ export default class AddonsAdminManifests extends Command {
     const body = await addon.manifests()
 
     const manifests = _.orderBy(body, 'created_at', 'desc')
-    printTable({
-      columns: [
-        {key: 'Manifest'},
-        {key: 'Created At'},
-      ],
-      data: manifests.map((row: any) => ({
-        'Created At': row.created_at,
-        Manifest: row.id,
-      })),
+    hux.table(manifests as unknown as Record<string, unknown>[], {
+      id: {header: 'Manifest'},
+      created_at: {header: 'Created At'},
     })
   }
 }

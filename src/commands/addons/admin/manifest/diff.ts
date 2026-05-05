@@ -1,10 +1,8 @@
-import colorImport from '@heroku-cli/color'
 import {Command} from '@heroku-cli/command'
+import {color} from '@heroku/heroku-cli-util'
 import {diffLines} from 'diff'
 
 import Addon from '../../../../addon.js'
-
-const color = colorImport.default
 
 export default class Diff extends Command {
   static description = 'compares remote manifest to local manifest and finds differences'
@@ -12,7 +10,6 @@ export default class Diff extends Command {
   async run() {
     const addon = new Addon(this.config)
 
-    // reading current manifest
     const body = await addon.remote().get()
 
     const fetchedManifest = JSON.stringify(body, null, 2)
@@ -20,16 +17,13 @@ export default class Diff extends Command {
     const localManifestString = JSON.stringify(localManifest, null, 2)
     const diff = diffLines(fetchedManifest, localManifestString, {ignoreCase: true, newlineIsToken: true})
     diff.forEach((substr: any) => {
-      let outputColor: 'green' | 'red' | 'white' = 'white'
+      let message: string
       if (substr.added) {
-        outputColor = 'green' // this is supposed to be a bold green (chalk.green.bold)
+        message = color.green(color.bold(substr.value))
       } else if (substr.removed) {
-        outputColor = 'red'
-      }
-
-      let message: string = color[outputColor](substr.value)
-      if (outputColor === 'green') {
-        message = color.italic.bold(message)
+        message = color.red(substr.value)
+      } else {
+        message = substr.value
       }
 
       this.log(message)

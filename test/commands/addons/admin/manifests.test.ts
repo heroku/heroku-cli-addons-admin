@@ -8,6 +8,8 @@ import {createTestManifest} from '../../../utils/test.js'
 
 const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com'
 
+const removeAllWhitespace = (str: string) => str.replaceAll(/\s/g, '')
+
 const manifests = [
   {
     contents: {
@@ -28,27 +30,18 @@ const manifests = [
 describe('addons:admin:manifests', () => {
   let originalCwd: string
   let cleanup: () => void
-  let originalEnv: string | undefined
 
   beforeEach(() => {
     const {cleanup: cleanupFn, testDir} = createTestManifest()
     cleanup = cleanupFn
     originalCwd = process.cwd()
     process.chdir(testDir)
-    // Force @oclif/table to use fancy renderer which uses stdout.write instead of console.log
-    originalEnv = process.env.OCLIF_TABLE_SKIP_CI_CHECK
-    process.env.OCLIF_TABLE_SKIP_CI_CHECK = '1'
   })
 
   afterEach(() => {
     nock.cleanAll()
     process.chdir(originalCwd)
     cleanup()
-    if (originalEnv === undefined) {
-      delete process.env.OCLIF_TABLE_SKIP_CI_CHECK
-    } else {
-      process.env.OCLIF_TABLE_SKIP_CI_CHECK = originalEnv
-    }
   })
 
   it('prints a list of manifests', async () => {
@@ -58,16 +51,14 @@ describe('addons:admin:manifests', () => {
 
     await runCommand(Cmd)
 
-    const expected = [
-      '┌──────────────────────────────────────┬──────────────────────────┐',
-      '│ Manifest                             │ Created At               │',
-      '├──────────────────────────────────────┼──────────────────────────┤',
-      '│ 80d90dfb-049f-436b-9543-24cc7b691352 │ 2017-07-19T21:47:25.894Z │',
-      '├──────────────────────────────────────┼──────────────────────────┤',
-      '│ 1a2e3c33-c949-4599-97d9-4ed684c35c2f │ 2017-07-18T21:47:25.894Z │',
-      '└──────────────────────────────────────┴──────────────────────────┘',
-    ].join('\n')
-    expect(stdout.output.trim()).to.eq(expected)
+    const actual = removeAllWhitespace(stdout.output)
+    const expected = removeAllWhitespace(
+      '80d90dfb-049f-436b-9543-24cc7b691352 2017-07-19T21:47:25.894Z\n'
+      + '1a2e3c33-c949-4599-97d9-4ed684c35c2f 2017-07-18T21:47:25.894Z\n',
+    )
+    expect(actual).to.include(removeAllWhitespace('Manifest'))
+    expect(actual).to.include(removeAllWhitespace('CreatedAt'))
+    expect(actual).to.include(expected)
   })
 
   it('prints a list of manifests with arg-slug', async () => {
@@ -77,15 +68,13 @@ describe('addons:admin:manifests', () => {
 
     await runCommand(Cmd, ['arg-slug'])
 
-    const expected = [
-      '┌──────────────────────────────────────┬──────────────────────────┐',
-      '│ Manifest                             │ Created At               │',
-      '├──────────────────────────────────────┼──────────────────────────┤',
-      '│ 80d90dfb-049f-436b-9543-24cc7b691352 │ 2017-07-19T21:47:25.894Z │',
-      '├──────────────────────────────────────┼──────────────────────────┤',
-      '│ 1a2e3c33-c949-4599-97d9-4ed684c35c2f │ 2017-07-18T21:47:25.894Z │',
-      '└──────────────────────────────────────┴──────────────────────────┘',
-    ].join('\n')
-    expect(stdout.output.trim()).to.eq(expected)
+    const actual = removeAllWhitespace(stdout.output)
+    const expected = removeAllWhitespace(
+      '80d90dfb-049f-436b-9543-24cc7b691352 2017-07-19T21:47:25.894Z\n'
+      + '1a2e3c33-c949-4599-97d9-4ed684c35c2f 2017-07-18T21:47:25.894Z\n',
+    )
+    expect(actual).to.include(removeAllWhitespace('Manifest'))
+    expect(actual).to.include(removeAllWhitespace('CreatedAt'))
+    expect(actual).to.include(expected)
   })
 })

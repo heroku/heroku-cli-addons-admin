@@ -1,8 +1,6 @@
-import colorImport from '@heroku-cli/color'
+import {color} from '@heroku/heroku-cli-util'
 import {HTTPError} from '@heroku/http-call'
 import {Config, ux} from '@oclif/core'
-
-const color = colorImport.default
 
 import AddonClient from './addon-client.js'
 import {ManifestInterface, ManifestLocal, ManifestRemote} from './manifest.js'

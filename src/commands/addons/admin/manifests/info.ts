@@ -1,5 +1,5 @@
-import {Command} from '@heroku-cli/command'
-import {Args, Flags} from '@oclif/core'
+import {Command, flags} from '@heroku-cli/command'
+import {Args} from '@oclif/core'
 
 import Addon from '../../../../addon.js'
 
@@ -9,7 +9,7 @@ export default class AddonsAdminManifestsInfo extends Command {
   }
   static description = 'show an individual history manifest'
   static flags = {
-    manifest: Flags.string({
+    manifest: flags.string({
       char: 'm',
       description: 'manifest history id',
       required: true,

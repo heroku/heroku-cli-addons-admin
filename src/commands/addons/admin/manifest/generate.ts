@@ -1,15 +1,13 @@
-import colorImport from '@heroku-cli/color'
-import {Command} from '@heroku-cli/command'
+import {Command, flags} from '@heroku-cli/command'
 import * as Heroku from '@heroku-cli/schema'
-import {Flags, ux} from '@oclif/core'
+import {color} from '@heroku/heroku-cli-util'
+import {ux} from '@oclif/core'
 import inquirer from 'inquirer'
 import {writeFile} from 'node:fs'
 import {generate as generateString} from 'randomstring'
 
 import Addon from '../../../../addon.js'
 import {ManifestInterface} from '../../../../manifest.js'
-
-const color = colorImport.default
 
 export default class Generate extends Command {
   static description = 'generate a manifest template'
@@ -18,11 +16,11 @@ export default class Generate extends Command {
 The file has been saved!`,
   ]
   static flags = {
-    addon: Flags.string({
+    addon: flags.string({
       char: 'a',
       description: 'add-on name (name displayed on addon dashboard)',
     }),
-    slug: Flags.string({
+    slug: flags.string({
       char: 's',
       description: 'slugname/manifest id',
     }),
@@ -60,7 +58,7 @@ The file has been saved!`,
     }
 
     if (!promptAnswers.toWrite) {
-      this.log(`${color.green.italic(filename)} ${color.green('will not be created. Have a good day!')}`)
+      this.log(`${color.green(filename)} ${color.green('will not be created. Have a good day!')}`)
       this.exit()
     }
 
