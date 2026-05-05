@@ -18,9 +18,13 @@ const manifest = JSON.parse(manifestContent)
 const host = (process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com')
 
 // Helper to create a temp directory with a manifest file
-function createTestManifest(manifestData: any = manifest): {cleanup: () => void; testDir: string;} {
+function createTestManifest(manifestData: any = manifest, filename = 'addon-manifest.json'): {cleanup: () => void; testDir: string;} {
   const testDir = mkdtempSync(join(tmpdir(), 'addon-test-'))
-  writeFileSync(join(testDir, 'addon-manifest.json'), JSON.stringify(manifestData))
+  // Only write the manifest if manifestData is not null
+  if (manifestData !== null) {
+    writeFileSync(join(testDir, filename), JSON.stringify(manifestData))
+  }
+
   return {
     cleanup: () => rmSync(testDir, {force: true, recursive: true}),
     testDir,

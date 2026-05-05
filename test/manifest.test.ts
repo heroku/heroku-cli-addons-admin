@@ -1,42 +1,31 @@
 import {Config} from '@oclif/core'
 import {expect} from 'chai'
-import * as fs from 'fs-extra'
+import {existsSync} from 'node:fs'
+import {join} from 'node:path'
 import nock from 'nock'
-import * as sinon from 'sinon'
 import {stderr, stdout} from 'stdout-stderr'
 
 import type {ManifestInterface} from '../src/manifest.js'
 
 import Addon from '../src/addon.js'
 import {ManifestLocal} from '../src/manifest.js'
-import {host, manifest} from './utils/test.js'
+import {createTestManifest, host, manifest} from './utils/test.js'
 
-// TODO: ESM Compatibility - These tests need refactoring for ESM
-// Sinon cannot stub ES modules. These tests should be refactored to use real files
-// (similar to addon.test.ts) or use import mocking strategies compatible with ESM.
-// See: https://github.com/sinonjs/sinon/issues/2377
-describe.skip('ManifestLocal (addon_manifest.json)', () => {
-  let underExists: sinon.SinonStub
-  let fsWriteFileSync: sinon.SinonStub
-  let fsReadFileSync: sinon.SinonStub
+describe('ManifestLocal (addon_manifest.json)', () => {
+  let originalCwd: string
+  let cleanup: () => void
 
   beforeEach(() => {
-    underExists = sinon.stub(fs, 'existsSync')
-    underExists.withArgs('addon-manifest.json').returns(false)
-    underExists.withArgs('addon_manifest.json').returns(true)
-
-    const writeManifest = {id: 'slug'} as ManifestInterface
-    fsWriteFileSync = sinon.stub(fs, 'writeFileSync')
-    fsWriteFileSync.withArgs('addon_manifest.json', JSON.stringify(writeManifest, null, 2)).returns(undefined)
-    fsWriteFileSync.withArgs('addon_manifest.json', JSON.stringify(manifest, null, 2)).returns(undefined)
-
-    fsReadFileSync = sinon.stub(fs, 'readFileSync')
-    fsReadFileSync.withArgs('addon_manifest.json').returns(JSON.stringify(manifest))
+    const {cleanup: cleanupFn, testDir} = createTestManifest(manifest, 'addon_manifest.json')
+    cleanup = cleanupFn
+    originalCwd = process.cwd()
+    process.chdir(testDir)
   })
 
   afterEach(() => {
-    sinon.restore()
     nock.cleanAll()
+    process.chdir(originalCwd)
+    cleanup()
   })
 
   it('.get', async () => {
@@ -60,8 +49,8 @@ describe.skip('ManifestLocal (addon_manifest.json)', () => {
     const writeManifest = {id: 'slug'} as ManifestInterface
     const localManifest = new ManifestLocal()
     expect(await localManifest.set(writeManifest)).to.equal(writeManifest)
-    expect(fsWriteFileSync.called).to.eq(true)
-    expect(await localManifest.get()).to.equal(writeManifest)
+    expect(existsSync('addon_manifest.json')).to.eq(true)
+    expect(await localManifest.get()).to.deep.equal(writeManifest)
   })
 
   it('.log', async () => {
@@ -106,32 +95,21 @@ describe.skip('ManifestLocal (addon_manifest.json)', () => {
   })
 })
 
-// TODO: ESM Compatibility - These tests need refactoring for ESM
-// Sinon cannot stub ES modules. These tests should be refactored to use real files
-// (similar to addon.test.ts) or use import mocking strategies compatible with ESM.
-// See: https://github.com/sinonjs/sinon/issues/2377
-describe.skip('ManifestLocal (addon-manifest.json)', () => {
-  let dashExists: sinon.SinonStub
-  let fsWriteFileSync: sinon.SinonStub
-  let fsReadFileSync: sinon.SinonStub
+describe('ManifestLocal (addon-manifest.json)', () => {
+  let originalCwd: string
+  let cleanup: () => void
 
   beforeEach(() => {
-    dashExists = sinon.stub(fs, 'existsSync')
-    dashExists.withArgs('addon_manifest.json').returns(false)
-    dashExists.withArgs('addon-manifest.json').returns(true)
-
-    const writeManifest = {id: 'slug'} as ManifestInterface
-    fsWriteFileSync = sinon.stub(fs, 'writeFileSync')
-    fsWriteFileSync.withArgs('addon-manifest.json', JSON.stringify(writeManifest, null, 2)).returns(undefined)
-    fsWriteFileSync.withArgs('addon-manifest.json', JSON.stringify(manifest, null, 2)).returns(undefined)
-
-    fsReadFileSync = sinon.stub(fs, 'readFileSync')
-    fsReadFileSync.withArgs('addon-manifest.json').returns(JSON.stringify(manifest))
+    const {cleanup: cleanupFn, testDir} = createTestManifest()
+    cleanup = cleanupFn
+    originalCwd = process.cwd()
+    process.chdir(testDir)
   })
 
   afterEach(() => {
-    sinon.restore()
     nock.cleanAll()
+    process.chdir(originalCwd)
+    cleanup()
   })
 
   it('.get', async () => {
@@ -150,8 +128,8 @@ describe.skip('ManifestLocal (addon-manifest.json)', () => {
     const writeManifest = {id: 'slug'} as ManifestInterface
     const localManifest = new ManifestLocal()
     expect(await localManifest.set(writeManifest)).to.equal(writeManifest)
-    expect(fsWriteFileSync.called).to.eq(true)
-    expect(await localManifest.get()).to.equal(writeManifest)
+    expect(existsSync('addon-manifest.json')).to.eq(true)
+    expect(await localManifest.get()).to.deep.equal(writeManifest)
   })
 
   it('.log', async () => {
@@ -196,42 +174,39 @@ describe.skip('ManifestLocal (addon-manifest.json)', () => {
   })
 })
 
-// TODO: ESM Compatibility - These tests need refactoring for ESM
-// Sinon cannot stub ES modules. These tests should be refactored to use real files
-// (similar to addon.test.ts) or use import mocking strategies compatible with ESM.
-// See: https://github.com/sinonjs/sinon/issues/2377
-describe.skip('ManifestLocal (null)', () => {
-  let noneExist: sinon.SinonStub
-  let fsWriteFileSync: sinon.SinonStub
-  let fsReadFileSync: sinon.SinonStub
+describe('ManifestLocal (null)', () => {
+  let originalCwd: string
+  let cleanup: () => void
 
   beforeEach(() => {
-    noneExist = sinon.stub(fs, 'existsSync')
-    noneExist.withArgs('addon_manifest.json').returns(false)
-    noneExist.withArgs('addon-manifest.json').returns(false)
-
-    const writeManifest = {id: 'slug'} as ManifestInterface
-    fsWriteFileSync = sinon.stub(fs, 'writeFileSync')
-    fsWriteFileSync.withArgs('addon-manifest.json', JSON.stringify(writeManifest, null, 2)).returns(undefined)
-    fsWriteFileSync.withArgs('addon-manifest.json', JSON.stringify(manifest, null, 2)).returns(undefined)
-
-    fsReadFileSync = sinon.stub(fs, 'readFileSync')
-    fsReadFileSync.withArgs('addon-manifest.json').returns(JSON.stringify(manifest))
+    // Create temp dir without any manifest file
+    const {cleanup: cleanupFn, testDir} = createTestManifest(null)
+    cleanup = cleanupFn
+    originalCwd = process.cwd()
+    process.chdir(testDir)
   })
 
   afterEach(() => {
-    sinon.restore()
     nock.cleanAll()
+    process.chdir(originalCwd)
+    cleanup()
   })
 
-  it('.get', async () => {
+  it('.get throws error when no manifest exists', async () => {
     const localManifest = new ManifestLocal()
-    expect(await localManifest.get()).to.be.a('object')
-    expect(await localManifest.get()).to.deep.equal(manifest)
+    try {
+      await localManifest.get()
+      expect.fail('Should have thrown an error')
+    } catch (error: any) {
+      expect(error.message).to.contain('Check if addon-manifest.json exists')
+    }
   })
 
   it('.get caching', async () => {
+    // Write a manifest first so we can test caching
+    const writeManifest = {id: 'slug'} as ManifestInterface
     const localManifest = new ManifestLocal()
+    await localManifest.set(writeManifest)
     const manifestGet = await localManifest.get()
     expect(await localManifest.get()).to.equal(manifestGet)
   })
@@ -240,8 +215,8 @@ describe.skip('ManifestLocal (null)', () => {
     const writeManifest = {id: 'slug'} as ManifestInterface
     const localManifest = new ManifestLocal()
     expect(await localManifest.set(writeManifest)).to.equal(writeManifest)
-    expect(fsWriteFileSync.called).to.eq(true)
-    expect(await localManifest.get()).to.equal(writeManifest)
+    expect(existsSync('addon-manifest.json')).to.eq(true)
+    expect(await localManifest.get()).to.deep.equal(writeManifest)
   })
 
   it('.log', async () => {
@@ -286,23 +261,23 @@ describe.skip('ManifestLocal (null)', () => {
   })
 })
 
-// TODO: ESM Compatibility - These tests need refactoring for ESM
-// Sinon cannot stub ES modules. These tests should be refactored to use real files
-// (similar to addon.test.ts) or use import mocking strategies compatible with ESM.
-// See: https://github.com/sinonjs/sinon/issues/2377
 const createAddon = () => new Addon({} as Config)
 
-describe.skip('ManifestRemote', () => {
-  let fsReadFileSync: sinon.SinonStub
+describe('ManifestRemote', () => {
+  let originalCwd: string
+  let cleanup: () => void
 
   beforeEach(() => {
-    fsReadFileSync = sinon.stub(fs, 'readFileSync')
-    fsReadFileSync.withArgs('addon-manifest.json').returns(JSON.stringify(manifest))
+    const {cleanup: cleanupFn, testDir} = createTestManifest()
+    cleanup = cleanupFn
+    originalCwd = process.cwd()
+    process.chdir(testDir)
   })
 
   afterEach(() => {
-    sinon.restore()
     nock.cleanAll()
+    process.chdir(originalCwd)
+    cleanup()
   })
 
   it('.get() returns the manifest contents', async () => {
