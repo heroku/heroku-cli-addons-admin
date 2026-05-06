@@ -1,9 +1,13 @@
-import {expect} from '@oclif/test'
-import heredoc from 'tsheredoc'
+import {runCommand} from '@heroku-cli/test-utils'
+import {expect} from 'chai'
+import nock from 'nock'
 
-import test from '../../../utils/test'
+import Cmd from '../../../../src/commands/addons/admin/manifests.js'
+import {createTestManifest} from '../../../utils/test.js'
 
 const host = process.env.HEROKU_ADDONS_HOST || 'https://addons.heroku.com'
+
+const removeAllWhitespace = (str: string) => str.replaceAll(/\s/g, '')
 
 const manifests = [
   {
@@ -23,33 +27,53 @@ const manifests = [
 ]
 
 describe('addons:admin:manifests', () => {
-  test
-    .nock(host, (api: any) => api
-      .get('/api/v3/addons/testing-123/manifests')
-      .reply(200, manifests)
-    )
-    .stdout()
-    .command(['addons:admin:manifests'])
-    .it('prints a list of manifests', ctx => {
-      expect(ctx.stdout.trim()).to.eq(heredoc(`
-        Manifest                             Created at               
-         ──────────────────────────────────── ──────────────────────── 
-         80d90dfb-049f-436b-9543-24cc7b691352 2017-07-19T21:47:25.894Z 
-         1a2e3c33-c949-4599-97d9-4ed684c35c2f 2017-07-18T21:47:25.894Z`))
-    })
+  let originalCwd: string
+  let cleanup: () => void
 
-  test
-    .nock(host, (api: any) => api
-      .get('/api/v3/addons/arg-slug/manifests')
-      .reply(200, manifests)
+  beforeEach(() => {
+    const {cleanup: cleanupFn, testDir} = createTestManifest()
+    cleanup = cleanupFn
+    originalCwd = process.cwd()
+    process.chdir(testDir)
+  })
+
+  afterEach(() => {
+    nock.cleanAll()
+    process.chdir(originalCwd)
+    cleanup()
+  })
+
+  it('prints a list of manifests', async () => {
+    nock(host)
+    .get('/api/v3/addons/testing-123/manifests')
+    .reply(200, manifests)
+
+    const {stdout} = await runCommand(Cmd, [])
+
+    const actual = removeAllWhitespace(stdout)
+    const expected = removeAllWhitespace(
+      '80d90dfb-049f-436b-9543-24cc7b691352 2017-07-19T21:47:25.894Z\n'
+      + '1a2e3c33-c949-4599-97d9-4ed684c35c2f 2017-07-18T21:47:25.894Z\n',
     )
-    .stdout()
-    .command(['addons:admin:manifests', 'arg-slug'])
-    .it('prints a list of manifests', ctx => {
-      expect(ctx.stdout.trim()).to.eq(heredoc(`
-        Manifest                             Created at               
-         ──────────────────────────────────── ──────────────────────── 
-         80d90dfb-049f-436b-9543-24cc7b691352 2017-07-19T21:47:25.894Z 
-         1a2e3c33-c949-4599-97d9-4ed684c35c2f 2017-07-18T21:47:25.894Z`))
-    })
+    expect(actual).to.include(removeAllWhitespace('Manifest'))
+    expect(actual).to.include(removeAllWhitespace('CreatedAt'))
+    expect(actual).to.include(expected)
+  })
+
+  it('prints a list of manifests with arg-slug', async () => {
+    nock(host)
+    .get('/api/v3/addons/arg-slug/manifests')
+    .reply(200, manifests)
+
+    const {stdout} = await runCommand(Cmd, ['arg-slug'])
+
+    const actual = removeAllWhitespace(stdout)
+    const expected = removeAllWhitespace(
+      '80d90dfb-049f-436b-9543-24cc7b691352 2017-07-19T21:47:25.894Z\n'
+      + '1a2e3c33-c949-4599-97d9-4ed684c35c2f 2017-07-18T21:47:25.894Z\n',
+    )
+    expect(actual).to.include(removeAllWhitespace('Manifest'))
+    expect(actual).to.include(removeAllWhitespace('CreatedAt'))
+    expect(actual).to.include(expected)
+  })
 })

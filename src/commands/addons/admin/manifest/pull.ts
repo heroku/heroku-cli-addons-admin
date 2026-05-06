@@ -1,7 +1,7 @@
 import {Command} from '@heroku-cli/command'
 import {Args} from '@oclif/core'
 
-import Addon from '../../../../addon'
+import Addon from '../../../../addon.js'
 
 export default class Pull extends Command {
   static args = {
@@ -10,9 +10,7 @@ export default class Pull extends Command {
       required: true,
     }),
   }
-
   static description = 'pull a manifest for a given slug'
-
   static examples = [
     `$ heroku addons:admin:manifest:pull testing-123
  ...

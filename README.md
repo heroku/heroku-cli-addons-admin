@@ -26,7 +26,7 @@ $ npm install -g @heroku-cli/plugin-addons-admin
 $ heroku COMMAND
 running command...
 $ heroku (--version)
-@heroku-cli/plugin-addons-admin/3.0.0 darwin-x64 node-v20.18.2
+@heroku-cli/plugin-addons-admin/3.0.0 darwin-arm64 node-v22.22.2
 $ heroku --help [COMMAND]
 USAGE
   $ heroku COMMAND
@@ -54,7 +54,10 @@ compares remote manifest to local manifest and finds differences
 
 ```
 USAGE
-  $ heroku addons:admin:manifest:diff
+  $ heroku addons:admin:manifest:diff [--prompt]
+
+GLOBAL FLAGS
+  --prompt  interactively prompt for command arguments and flags
 
 DESCRIPTION
   compares remote manifest to local manifest and finds differences
@@ -68,11 +71,14 @@ generate a manifest template
 
 ```
 USAGE
-  $ heroku addons:admin:manifest:generate [-a <value>] [-s <value>]
+  $ heroku addons:admin:manifest:generate [--prompt] [-a <value>] [-s <value>]
 
 FLAGS
   -a, --addon=<value>  add-on name (name displayed on addon dashboard)
   -s, --slug=<value>   slugname/manifest id
+
+GLOBAL FLAGS
+  --prompt  interactively prompt for command arguments and flags
 
 DESCRIPTION
   generate a manifest template
@@ -90,10 +96,13 @@ pull a manifest for a given slug
 
 ```
 USAGE
-  $ heroku addons:admin:manifest:pull SLUG
+  $ heroku addons:admin:manifest:pull SLUG [--prompt]
 
 ARGUMENTS
   SLUG  slug name of add-on
+
+GLOBAL FLAGS
+  --prompt  interactively prompt for command arguments and flags
 
 DESCRIPTION
   pull a manifest for a given slug
@@ -113,7 +122,10 @@ update remote manifest
 
 ```
 USAGE
-  $ heroku addons:admin:manifest:push
+  $ heroku addons:admin:manifest:push [--prompt]
+
+GLOBAL FLAGS
+  --prompt  interactively prompt for command arguments and flags
 
 DESCRIPTION
   update remote manifest
@@ -133,10 +145,13 @@ list manifest history
 
 ```
 USAGE
-  $ heroku addons:admin:manifests [SLUG]
+  $ heroku addons:admin:manifests [SLUG] [--prompt]
 
 ARGUMENTS
-  SLUG  slug name of add-on
+  [SLUG]  slug name of add-on
+
+GLOBAL FLAGS
+  --prompt  interactively prompt for command arguments and flags
 
 DESCRIPTION
   list manifest history
@@ -150,13 +165,16 @@ show an individual history manifest
 
 ```
 USAGE
-  $ heroku addons:admin:manifests:info [SLUG] -m <value>
+  $ heroku addons:admin:manifests:info [SLUG] -m <value> [--prompt]
 
 ARGUMENTS
-  SLUG  slug name of add-on
+  [SLUG]  slug name of add-on
 
 FLAGS
   -m, --manifest=<value>  (required) manifest history id
+
+GLOBAL FLAGS
+  --prompt  interactively prompt for command arguments and flags
 
 DESCRIPTION
   show an individual history manifest
@@ -170,10 +188,13 @@ open add-on dashboard
 
 ```
 USAGE
-  $ heroku addons:admin:open [SLUG]
+  $ heroku addons:admin:open [SLUG] [--prompt]
 
 ARGUMENTS
-  SLUG  slug name of add-on
+  [SLUG]  slug name of add-on
+
+GLOBAL FLAGS
+  --prompt  interactively prompt for command arguments and flags
 
 DESCRIPTION
   open add-on dashboard

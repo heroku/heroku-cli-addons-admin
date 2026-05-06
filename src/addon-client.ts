@@ -1,11 +1,10 @@
-import {HTTPError} from '@heroku/http-call'
 import {APIClient} from '@heroku-cli/command'
+import {HTTPError} from '@heroku/http-call'
 import {ux} from '@oclif/core'
 import {URL} from 'node:url'
 
 export default class AddonClient {
   private readonly client: APIClient
-
   private readonly options: any = {
     headers: {
       Accept: 'application/json',

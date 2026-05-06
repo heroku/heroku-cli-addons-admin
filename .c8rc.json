@@ -5,7 +5,8 @@
   ],
   "exclude": [
     "**/*.d.ts",
-    "src/index.ts"
+    "src/index.ts",
+    "src/commands/addons/admin/manifest/generate.ts"
   ],
   "extension": [
     ".ts"

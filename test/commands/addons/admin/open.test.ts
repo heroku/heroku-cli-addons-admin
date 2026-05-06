@@ -1,29 +1,45 @@
-import {expect} from '@oclif/test'
+import {runCommand} from '@heroku-cli/test-utils'
+import {expect} from 'chai'
 import * as sinon from 'sinon'
 
-import Cmd from '../../../../src/commands/addons/admin/open'
-import {test} from '../../../utils/test'
+import Cmd from '../../../../src/commands/addons/admin/open.js'
+import {createTestManifest} from '../../../utils/test.js'
 
 describe('addons:admin:open', () => {
-  const openArg = sinon.stub()
-  openArg.throws('not stubbed')
-  openArg.withArgs('https://addons-next.heroku.com/addons/arg-slug').returns(undefined)
+  let urlOpenerStub: sinon.SinonStub
+  let originalCwd: string
+  let cleanup: () => void
 
-  test
-    .stub(Cmd, 'urlOpener', openArg)
-    .command(['addons:admin:open', 'arg-slug'])
-    .it('opens slug in args', () => {
-      expect(openArg.called).to.eq(true)
-    })
+  beforeEach(() => {
+    const {cleanup: cleanupFn, testDir} = createTestManifest()
+    cleanup = cleanupFn
+    originalCwd = process.cwd()
+    process.chdir(testDir)
+  })
 
-  const openManifest = sinon.stub()
-  openManifest.throws('not stubbed')
-  openManifest.withArgs('https://addons-next.heroku.com/addons/testing-123').returns(undefined)
+  afterEach(() => {
+    sinon.restore()
+    process.chdir(originalCwd)
+    cleanup()
+  })
 
-  test
-    .stub(Cmd, 'urlOpener', openManifest)
-    .command(['addons:admin:open'])
-    .it('opens slug in args', () => {
-      expect(openManifest.called).to.eq(true)
-    })
+  it('opens slug in args', async () => {
+    urlOpenerStub = sinon.stub(Cmd, 'urlOpener')
+    urlOpenerStub.resolves()
+
+    await runCommand(Cmd, ['arg-slug'])
+
+    expect(urlOpenerStub.calledOnce).to.eq(true)
+    expect(urlOpenerStub.firstCall.args[0]).to.eq('https://addons-next.heroku.com/addons/arg-slug')
+  })
+
+  it('opens slug from manifest', async () => {
+    urlOpenerStub = sinon.stub(Cmd, 'urlOpener')
+    urlOpenerStub.resolves()
+
+    await runCommand(Cmd, [])
+
+    expect(urlOpenerStub.calledOnce).to.eq(true)
+    expect(urlOpenerStub.firstCall.args[0]).to.eq('https://addons-next.heroku.com/addons/testing-123')
+  })
 })

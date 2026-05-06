@@ -1,8 +1,8 @@
-import color from '@heroku-cli/color'
+import {color} from '@heroku/heroku-cli-util'
 import {ux} from '@oclif/core'
-import * as fs from 'fs-extra'
+import {existsSync, readFileSync, writeFileSync} from 'node:fs'
 
-import Addon from './addon'
+import Addon from './addon.js'
 
 export interface ManifestInterface {
   $base?: string
@@ -27,6 +27,11 @@ interface ManifestAPIInterface {
 
 export abstract class Manifest {
   manifest?: ManifestInterface
+
+  abstract _get(): Promise<ManifestInterface>
+
+  abstract _set(manifest: ManifestInterface): Promise<ManifestInterface>
+
   async get(): Promise<ManifestInterface> {
     if (this.manifest) {
       return this.manifest!
@@ -40,10 +45,6 @@ export abstract class Manifest {
     this.manifest = await this._set(manifest)
     return this.manifest
   }
-
-  abstract _get(): Promise<ManifestInterface>
-
-  abstract _set(manifest: ManifestInterface): Promise<ManifestInterface>
 }
 
 export class ManifestLocal extends Manifest {
@@ -51,7 +52,7 @@ export class ManifestLocal extends Manifest {
 
   constructor() {
     super()
-    if (fs.existsSync('addon_manifest.json')) {
+    if (existsSync('addon_manifest.json')) {
       ux.warn('Using addon_manifest.json was a bug, please rename to addon-manifest.json')
       this._filename = 'addon_manifest.json'
     } else {
@@ -59,18 +60,10 @@ export class ManifestLocal extends Manifest {
     }
   }
 
-  filename(): string {
-    return this._filename
-  }
-
-  async log(): Promise<void> {
-    ux.log(color.bold(JSON.stringify(await this.get(), null, 2)))
-  }
-
   async _get(): Promise<ManifestInterface> {
     let manifest
     try {
-      manifest = fs.readFileSync(this.filename(), 'utf8')
+      manifest = readFileSync(this.filename(), 'utf8')
     } catch (error) {
       throw new Error(`Check if ${this.filename()} exists in root. \n ${error}`)
     }
@@ -84,9 +77,17 @@ export class ManifestLocal extends Manifest {
 
   async _set(manifest: ManifestInterface): Promise<ManifestInterface> {
     ux.action.start(`Updating ${color.blue(this.filename())}`)
-    fs.writeFileSync(this.filename(), JSON.stringify(manifest, null, 2))
+    writeFileSync(this.filename(), JSON.stringify(manifest, null, 2))
     ux.action.stop()
     return manifest
+  }
+
+  filename(): string {
+    return this._filename
+  }
+
+  async log(): Promise<void> {
+    ux.stdout(color.bold(JSON.stringify(await this.get(), null, 2)))
   }
 }
 
@@ -101,10 +102,12 @@ export class ManifestRemote extends Manifest {
   async _get(): Promise<ManifestInterface> {
     const slug = await this.addon.slug()
     ux.action.start(`Fetching add-on manifest for ${color.addon(slug)}`)
-    const body = await this.addon.client().get(`/api/v3/addons/${encodeURIComponent(slug)}/current_manifest`)
-    ux.action.stop()
-
-    return body.contents
+    try {
+      const body = await this.addon.client().get(`/api/v3/addons/${encodeURIComponent(slug)}/current_manifest`)
+      return body.contents
+    } finally {
+      ux.action.stop()
+    }
   }
 
   async _set(manifest: ManifestInterface): Promise<ManifestInterface> {
