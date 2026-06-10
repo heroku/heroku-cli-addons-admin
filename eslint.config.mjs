@@ -6,7 +6,7 @@ export default [
   ...vitestEslintConfig,
   {
     ignores: [
-      './lib',
+      './dist',
       'coverage/**/*',
     ],
   },

@@ -6,7 +6,7 @@
     "importHelpers": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "outDir": "./lib",
+    "outDir": "./dist",
     "pretty": true,
     "resolveJsonModule": true,
     "rootDirs": [

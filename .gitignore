@@ -3,7 +3,6 @@
 /.nyc_output
 /coverage
 /dist
-/lib
 /tmp
 node_modules
 oclif.manifest.json

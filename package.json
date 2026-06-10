@@ -38,7 +38,7 @@
     "node": ">= 20.0"
   },
   "files": [
-    "/lib",
+    "/dist",
     "/oclif.manifest.json"
   ],
   "homepage": "https://github.com/heroku/heroku-cli-addons-admin",
@@ -47,7 +47,7 @@
   ],
   "license": "MIT",
   "oclif": {
-    "commands": "./lib/commands",
+    "commands": "./dist/commands",
     "bin": "heroku",
     "devPlugins": [
       "@oclif/plugin-help"
@@ -55,7 +55,7 @@
   },
   "repository": "heroku/heroku-cli-addons-admin",
   "scripts": {
-    "build": "rm -rf lib && tsc",
+    "build": "rm -rf dist && tsc",
     "clean:branch": "./bin/clean-branch.sh",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
