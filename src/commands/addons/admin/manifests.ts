@@ -17,8 +17,8 @@ export default class AddonsAdminManifests extends Command {
 
     const body = await addon.manifests()
 
-    const manifests = [...body as unknown as {created_at: string}[]]
-      .sort((a, b) => b.created_at.localeCompare(a.created_at))
+    const manifests = [...body as unknown as {created_at?: string}[]]
+      .sort((a, b) => (b.created_at ?? '').localeCompare(a.created_at ?? ''))
     /* eslint-disable perfectionist/sort-objects */
     hux.table(manifests as unknown as Record<string, unknown>[], {
       id: {header: 'Manifest'},
