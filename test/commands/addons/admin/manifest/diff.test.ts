@@ -1,7 +1,8 @@
-
 import {runCommand} from '@heroku-cli/test-utils'
-import {expect} from 'chai'
 import nock from 'nock'
+import {
+  afterEach, beforeEach, describe, expect, it,
+} from 'vitest'
 
 import Cmd from '../../../../../src/commands/addons/admin/manifest/diff.js'
 import {
@@ -46,48 +47,50 @@ describe('addons:admin:manifest:diff', () => {
 
   it('contains static stdout', async () => {
     nock(host)
-    .get('/api/v3/addons/testing-123/current_manifest')
-    .reply(200, {contents: manifest})
+      .get('/api/v3/addons/testing-123/current_manifest')
+      .reply(200, {contents: manifest})
 
     const {stdout} = await runCommand(Cmd, [])
 
-    expect(stdout).to.contain('testing-123')
+    expect(stdout).toContain('testing-123')
   })
 
   it('contains all elements', async () => {
     nock(host)
-    .get('/api/v3/addons/testing-123/current_manifest')
-    .reply(200, {contents: manifest})
+      .get('/api/v3/addons/testing-123/current_manifest')
+      .reply(200, {contents: manifest})
 
     const {stdout} = await runCommand(Cmd, [])
 
-    manifestElements.forEach(val => {
-      expect(stdout).to.contain(val)
-    })
-    manifestAPIElements.forEach(val => {
-      expect(stdout).to.contain(val)
-    })
-    otherElements.forEach(val => {
-      expect(stdout).to.contain(val)
-    })
+    for (const val of manifestElements) {
+      expect(stdout).toContain(val)
+    }
+
+    for (const val of manifestAPIElements) {
+      expect(stdout).toContain(val)
+    }
+
+    for (const val of otherElements) {
+      expect(stdout).toContain(val)
+    }
   })
 
   it('contains correct test API elements', async () => {
     nock(host)
-    .get('/api/v3/addons/testing-123/current_manifest')
-    .reply(200, {contents: testManifest})
+      .get('/api/v3/addons/testing-123/current_manifest')
+      .reply(200, {contents: testManifest})
 
     const {stdout} = await runCommand(Cmd, [])
 
-    expect(stdout).to.contain(`"test": "${testManifest.test}"`)
+    expect(stdout).toContain(`"test": "${testManifest.test}"`)
   })
 
   it('error testing', async () => {
     nock(host)
-    .get('/api/v3/addons/testing-123/current_manifest')
-    .replyWithError('test')
+      .get('/api/v3/addons/testing-123/current_manifest')
+      .replyWithError('test')
 
     const {error} = await runCommand(Cmd, [])
-    expect(error).to.be.an('error')
+    expect(error).toBeInstanceOf(Error)
   })
 })

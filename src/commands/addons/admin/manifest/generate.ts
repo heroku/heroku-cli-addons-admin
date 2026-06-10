@@ -144,7 +144,7 @@ The file has been saved!`,
       name: 'id',
       type: 'input',
       validate: (input: any): boolean => {
-        if (input.trim() === '' || !isNaN(input)) {
+        if (input.trim() === '' || !Number.isNaN(Number(input))) {
           this.error('Please use a string as a slug name.')
           return false
         }

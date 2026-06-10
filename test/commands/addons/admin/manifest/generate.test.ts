@@ -1,5 +1,7 @@
-import {expect} from 'chai'
 import nock from 'nock'
+import {
+  afterEach, beforeEach, describe, expect, it,
+} from 'vitest'
 
 import Cmd from '../../../../../src/commands/addons/admin/manifest/generate.js'
 import {createTestManifest} from '../../../../utils/test.js'
@@ -30,31 +32,31 @@ describe('addons:admin:manifest:generate', () => {
       const cmd = new Cmd([], {} as any)
       const manifest = (cmd as any).generate()
 
-      expect(manifest.id).to.eq('myaddon')
-      expect(manifest.name).to.eq('MyAddon')
-      expect(manifest.api.config_vars_prefix).to.eq('MYADDON')
-      expect(manifest.api.config_vars).to.deep.eq(['MYADDON_URL'])
-      expect(manifest.api.password).to.eq('CHANGEME')
-      expect(manifest.api.sso_salt).to.eq('CHANGEME')
-      expect(manifest.api.regions).to.deep.eq(['us', 'eu'])
+      expect(manifest.id).toBe('myaddon')
+      expect(manifest.name).toBe('MyAddon')
+      expect(manifest.api.config_vars_prefix).toBe('MYADDON')
+      expect(manifest.api.config_vars).toEqual(['MYADDON_URL'])
+      expect(manifest.api.password).toBe('CHANGEME')
+      expect(manifest.api.sso_salt).toBe('CHANGEME')
+      expect(manifest.api.regions).toEqual(['us', 'eu'])
     })
 
     it('generates manifest with custom id', () => {
       const cmd = new Cmd([], {} as any)
       const manifest = (cmd as any).generate({id: 'myslug'})
 
-      expect(manifest.id).to.eq('myslug')
-      expect(manifest.api.config_vars_prefix).to.eq('MYSLUG')
-      expect(manifest.api.config_vars).to.deep.eq(['MYSLUG_URL'])
+      expect(manifest.id).toBe('myslug')
+      expect(manifest.api.config_vars_prefix).toBe('MYSLUG')
+      expect(manifest.api.config_vars).toEqual(['MYSLUG_URL'])
     })
 
     it('generates manifest with dashed slug', () => {
       const cmd = new Cmd([], {} as any)
       const manifest = (cmd as any).generate({id: 'slug-with-dash'})
 
-      expect(manifest.id).to.eq('slug-with-dash')
-      expect(manifest.api.config_vars_prefix).to.eq('SLUG_WITH_DASH')
-      expect(manifest.api.config_vars).to.deep.eq(['SLUG_WITH_DASH_URL'])
+      expect(manifest.id).toBe('slug-with-dash')
+      expect(manifest.api.config_vars_prefix).toBe('SLUG_WITH_DASH')
+      expect(manifest.api.config_vars).toEqual(['SLUG_WITH_DASH_URL'])
     })
 
     it('generates manifest with custom password and salt', () => {
@@ -64,8 +66,8 @@ describe('addons:admin:manifest:generate', () => {
         sso_salt: 'custom-salt',
       })
 
-      expect(manifest.api.password).to.eq('custom-password')
-      expect(manifest.api.sso_salt).to.eq('custom-salt')
+      expect(manifest.api.password).toBe('custom-password')
+      expect(manifest.api.sso_salt).toBe('custom-salt')
     })
 
     it('generates manifest with custom regions', () => {
@@ -74,7 +76,7 @@ describe('addons:admin:manifest:generate', () => {
         regions: ['us', 'eu', 'dublin'],
       })
 
-      expect(manifest.api.regions).to.deep.eq(['us', 'eu', 'dublin'])
+      expect(manifest.api.regions).toEqual(['us', 'eu', 'dublin'])
     })
 
     it('generates manifest with custom name', () => {
@@ -84,8 +86,8 @@ describe('addons:admin:manifest:generate', () => {
         name: 'CustomName',
       })
 
-      expect(manifest.id).to.eq('slug')
-      expect(manifest.name).to.eq('CustomName')
+      expect(manifest.id).toBe('slug')
+      expect(manifest.name).toBe('CustomName')
     })
   })
 
@@ -94,24 +96,21 @@ describe('addons:admin:manifest:generate', () => {
       const cmd = new Cmd([], {} as any)
       const manifest = (cmd as any).generate()
 
-      // Check top-level fields
-      expect(manifest).to.have.property('id')
-      expect(manifest).to.have.property('name')
-      expect(manifest).to.have.property('api')
+      expect(manifest).toHaveProperty('id')
+      expect(manifest).toHaveProperty('name')
+      expect(manifest).toHaveProperty('api')
 
-      // Check API fields
-      expect(manifest.api).to.have.property('config_vars')
-      expect(manifest.api).to.have.property('config_vars_prefix')
-      expect(manifest.api).to.have.property('password')
-      expect(manifest.api).to.have.property('sso_salt')
-      expect(manifest.api).to.have.property('regions')
-      expect(manifest.api).to.have.property('requires')
-      expect(manifest.api).to.have.property('production')
-      expect(manifest.api).to.have.property('version')
+      expect(manifest.api).toHaveProperty('config_vars')
+      expect(manifest.api).toHaveProperty('config_vars_prefix')
+      expect(manifest.api).toHaveProperty('password')
+      expect(manifest.api).toHaveProperty('sso_salt')
+      expect(manifest.api).toHaveProperty('regions')
+      expect(manifest.api).toHaveProperty('requires')
+      expect(manifest.api).toHaveProperty('production')
+      expect(manifest.api).toHaveProperty('version')
 
-      // Check production fields
-      expect(manifest.api.production).to.have.property('base_url')
-      expect(manifest.api.production).to.have.property('sso_url')
+      expect(manifest.api.production).toHaveProperty('base_url')
+      expect(manifest.api.production).toHaveProperty('sso_url')
     })
 
     it('generates valid JSON structure', () => {
@@ -123,10 +122,9 @@ describe('addons:admin:manifest:generate', () => {
         regions: ['us'],
       })
 
-      // Should be JSON serializable
       const json = JSON.stringify(manifest)
       const parsed = JSON.parse(json)
-      expect(parsed).to.deep.equal(manifest)
+      expect(parsed).toEqual(manifest)
     })
   })
 })

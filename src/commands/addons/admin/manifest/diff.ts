@@ -15,8 +15,8 @@ export default class Diff extends Command {
     const fetchedManifest = JSON.stringify(body, null, 2)
     const localManifest = await addon.local().get()
     const localManifestString = JSON.stringify(localManifest, null, 2)
-    const diff = diffLines(fetchedManifest, localManifestString, {ignoreCase: true, newlineIsToken: true})
-    diff.forEach((substr: any) => {
+    const diff = diffLines(fetchedManifest, localManifestString, {newlineIsToken: true})
+    for (const substr of diff) {
       let message: string
       if (substr.added) {
         message = color.green(color.bold(substr.value))
@@ -27,6 +27,6 @@ export default class Diff extends Command {
       }
 
       this.log(message)
-    })
+    }
   }
 }

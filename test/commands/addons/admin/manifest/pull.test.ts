@@ -1,8 +1,10 @@
 import {runCommand} from '@heroku-cli/test-utils'
-import {expect} from 'chai'
+import nock from 'nock'
 import {readFileSync} from 'node:fs'
 import {join} from 'node:path'
-import nock from 'nock'
+import {
+  afterEach, beforeEach, describe, expect, it,
+} from 'vitest'
 
 import Cmd from '../../../../../src/commands/addons/admin/manifest/pull.js'
 import {
@@ -30,43 +32,45 @@ describe('addons:admin:manifest:pull', () => {
 
   it('stdout contains manifest elements', async () => {
     nock(host)
-    .get('/api/v3/addons/testing-123/current_manifest')
-    .reply(200, {contents: manifest})
+      .get('/api/v3/addons/testing-123/current_manifest')
+      .reply(200, {contents: manifest})
 
     const {stdout} = await runCommand(Cmd, ['testing-123'])
 
-    Object.keys(manifest).forEach(key => {
+    for (const key of Object.keys(manifest)) {
       if (key !== 'api' && typeof manifest[key] === 'string') {
-        expect(stdout).to.contain(manifest[key])
+        expect(stdout).toContain(manifest[key])
       }
-    })
+    }
   })
 
   it('pull grabs slug from manifest', async () => {
-    nock(host)
-    .get('/api/v3/addons/testing-123/current_manifest')
-    .reply(200, {contents: manifest})
+    const scope = nock(host)
+      .get('/api/v3/addons/testing-123/current_manifest')
+      .reply(200, {contents: manifest})
 
     await runCommand(Cmd, ['testing-123'])
+
+    expect(scope.isDone()).toBe(true)
   })
 
   it('errors for fake slugs', async () => {
     nock(host)
-    .get('/api/v3/addons/fakeslug/current_manifest')
-    .replyWithError('400')
+      .get('/api/v3/addons/fakeslug/current_manifest')
+      .replyWithError('400')
 
     const {error} = await runCommand(Cmd, ['fakeslug'])
-    expect(error).to.be.an('error')
+    expect(error).toBeInstanceOf(Error)
   })
 
   it('writes to the manifest file', async () => {
     nock(host)
-    .get('/api/v3/addons/testing-123/current_manifest')
-    .reply(200, {contents: manifest})
+      .get('/api/v3/addons/testing-123/current_manifest')
+      .reply(200, {contents: manifest})
 
     await runCommand(Cmd, ['testing-123'])
 
     const written = JSON.parse(readFileSync(join(process.cwd(), 'addon-manifest.json'), 'utf8'))
-    expect(written).to.deep.equal(manifest)
+    expect(written).toEqual(manifest)
   })
 })
