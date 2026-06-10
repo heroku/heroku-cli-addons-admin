@@ -1,8 +1,10 @@
 import {captureOutput} from '@heroku-cli/test-utils'
 import {Config} from '@oclif/core'
-import {expect} from 'chai'
-import {existsSync} from 'node:fs'
 import nock from 'nock'
+import {existsSync} from 'node:fs'
+import {
+  afterEach, beforeEach, describe, expect, it,
+} from 'vitest'
 
 import type {ManifestInterface} from '../src/manifest.js'
 
@@ -31,24 +33,24 @@ describe('ManifestLocal (addon_manifest.json)', () => {
     let localManifest: ManifestLocal
     const {stderr} = await captureOutput(async () => {
       localManifest = new ManifestLocal()
-      expect(await localManifest!.get()).to.be.a('object')
-      expect(await localManifest!.get()).to.deep.equal(manifest)
+      expect(await localManifest!.get()).toBeTypeOf('object')
+      expect(await localManifest!.get()).toEqual(manifest)
     })
-    expect(stderr).to.contain('Using addon_manifest.json was a bug')
+    expect(stderr).toContain('Using addon_manifest.json was a bug')
   })
 
   it('.get caching', async () => {
     const localManifest = new ManifestLocal()
     const manifestGet = await localManifest.get()
-    expect(await localManifest.get()).to.equal(manifestGet)
+    expect(await localManifest.get()).toBe(manifestGet)
   })
 
   it('.set', async () => {
     const writeManifest = {id: 'slug'} as ManifestInterface
     const localManifest = new ManifestLocal()
-    expect(await localManifest.set(writeManifest)).to.equal(writeManifest)
-    expect(existsSync('addon_manifest.json')).to.eq(true)
-    expect(await localManifest.get()).to.deep.equal(writeManifest)
+    expect(await localManifest.set(writeManifest)).toBe(writeManifest)
+    expect(existsSync('addon_manifest.json')).toBe(true)
+    expect(await localManifest.get()).toEqual(writeManifest)
   })
 
   it('.log', async () => {
@@ -57,7 +59,7 @@ describe('ManifestLocal (addon_manifest.json)', () => {
     const {stdout} = await captureOutput(async () => {
       await localManifest.log()
     })
-    expect(stdout).to.deep.equal(`{
+    expect(stdout).toEqual(`{
   "id": "testing-123",
   "name": "MyAddon",
   "api": {
@@ -87,7 +89,7 @@ describe('ManifestLocal (addon_manifest.json)', () => {
   })
 
   it('.filename', async () => {
-    expect(new ManifestLocal().filename()).to.eq('addon_manifest.json')
+    expect(new ManifestLocal().filename()).toBe('addon_manifest.json')
   })
 })
 
@@ -110,22 +112,22 @@ describe('ManifestLocal (addon-manifest.json)', () => {
 
   it('.get', async () => {
     const localManifest = new ManifestLocal()
-    expect(await localManifest.get()).to.be.a('object')
-    expect(await localManifest.get()).to.deep.equal(manifest)
+    expect(await localManifest.get()).toBeTypeOf('object')
+    expect(await localManifest.get()).toEqual(manifest)
   })
 
   it('.get caching', async () => {
     const localManifest = new ManifestLocal()
     const manifestGet = await localManifest.get()
-    expect(await localManifest.get()).to.equal(manifestGet)
+    expect(await localManifest.get()).toBe(manifestGet)
   })
 
   it('.set', async () => {
     const writeManifest = {id: 'slug'} as ManifestInterface
     const localManifest = new ManifestLocal()
-    expect(await localManifest.set(writeManifest)).to.equal(writeManifest)
-    expect(existsSync('addon-manifest.json')).to.eq(true)
-    expect(await localManifest.get()).to.deep.equal(writeManifest)
+    expect(await localManifest.set(writeManifest)).toBe(writeManifest)
+    expect(existsSync('addon-manifest.json')).toBe(true)
+    expect(await localManifest.get()).toEqual(writeManifest)
   })
 
   it('.log', async () => {
@@ -134,7 +136,7 @@ describe('ManifestLocal (addon-manifest.json)', () => {
     const {stdout} = await captureOutput(async () => {
       await localManifest.log()
     })
-    expect(stdout).to.deep.equal(`{
+    expect(stdout).toEqual(`{
   "id": "testing-123",
   "name": "MyAddon",
   "api": {
@@ -164,7 +166,7 @@ describe('ManifestLocal (addon-manifest.json)', () => {
   })
 
   it('.filename', async () => {
-    expect(new ManifestLocal().filename()).to.eq('addon-manifest.json')
+    expect(new ManifestLocal().filename()).toBe('addon-manifest.json')
   })
 })
 
@@ -173,7 +175,6 @@ describe('ManifestLocal (null)', () => {
   let cleanup: () => void
 
   beforeEach(() => {
-    // Create temp dir without any manifest file
     const {cleanup: cleanupFn, testDir} = createTestManifest(null)
     cleanup = cleanupFn
     originalCwd = process.cwd()
@@ -188,29 +189,23 @@ describe('ManifestLocal (null)', () => {
 
   it('.get throws error when no manifest exists', async () => {
     const localManifest = new ManifestLocal()
-    try {
-      await localManifest.get()
-      expect.fail('Should have thrown an error')
-    } catch (error: any) {
-      expect(error.message).to.contain('Check if addon-manifest.json exists')
-    }
+    await expect(localManifest.get()).rejects.toThrow(/Check if addon-manifest\.json exists/)
   })
 
   it('.get caching', async () => {
-    // Write a manifest first so we can test caching
     const writeManifest = {id: 'slug'} as ManifestInterface
     const localManifest = new ManifestLocal()
     await localManifest.set(writeManifest)
     const manifestGet = await localManifest.get()
-    expect(await localManifest.get()).to.equal(manifestGet)
+    expect(await localManifest.get()).toBe(manifestGet)
   })
 
   it('.set', async () => {
     const writeManifest = {id: 'slug'} as ManifestInterface
     const localManifest = new ManifestLocal()
-    expect(await localManifest.set(writeManifest)).to.equal(writeManifest)
-    expect(existsSync('addon-manifest.json')).to.eq(true)
-    expect(await localManifest.get()).to.deep.equal(writeManifest)
+    expect(await localManifest.set(writeManifest)).toBe(writeManifest)
+    expect(existsSync('addon-manifest.json')).toBe(true)
+    expect(await localManifest.get()).toEqual(writeManifest)
   })
 
   it('.log', async () => {
@@ -219,7 +214,7 @@ describe('ManifestLocal (null)', () => {
     const {stdout} = await captureOutput(async () => {
       await localManifest.log()
     })
-    expect(stdout).to.deep.equal(`{
+    expect(stdout).toEqual(`{
   "id": "testing-123",
   "name": "MyAddon",
   "api": {
@@ -249,7 +244,7 @@ describe('ManifestLocal (null)', () => {
   })
 
   it('.filename', async () => {
-    expect(new ManifestLocal().filename()).to.eq('addon-manifest.json')
+    expect(new ManifestLocal().filename()).toBe('addon-manifest.json')
   })
 })
 
@@ -274,70 +269,57 @@ describe('ManifestRemote', () => {
 
   it('.get() returns the manifest contents', async () => {
     nock(host)
-    .get('/api/v3/addons/testing-123/current_manifest')
-    .reply(200, {contents: {id: 'testing-123'}})
+      .get('/api/v3/addons/testing-123/current_manifest')
+      .reply(200, {contents: {id: 'testing-123'}})
 
-    expect(await createAddon().remote().get()).to.deep.equal({id: 'testing-123'})
+    expect(await createAddon().remote().get()).toEqual({id: 'testing-123'})
   })
 
   it('get() throws an error', async () => {
     nock(host)
-    .get('/api/v3/addons/testing-123/current_manifest')
-    .reply(401, {
-      error: 'Forbidden',
-    })
+      .get('/api/v3/addons/testing-123/current_manifest')
+      .reply(401, {
+        error: 'Forbidden',
+      })
 
-    try {
-      await createAddon().remote().get()
-      expect.fail('Should have thrown an error')
-    } catch (error: any) {
-      expect(error.message).to.eq('Forbidden')
-    }
+    await expect(createAddon().remote().get()).rejects.toThrow('Forbidden')
   })
 
   it('.set() throws an error when 422', async () => {
     nock(host)
-    .post('/api/v3/addons/testing-123/manifests', {contents: {id: 'testing-123'}})
-    .reply(422, {
-      error: {
-        base: [
-          'A list of supported regions is required, see https://devcenter.heroku.com/articles/add-on-manifest',
-          'Something else failed',
-        ],
-      },
-    })
+      .post('/api/v3/addons/testing-123/manifests', {contents: {id: 'testing-123'}})
+      .reply(422, {
+        error: {
+          base: [
+            'A list of supported regions is required, see https://devcenter.heroku.com/articles/add-on-manifest',
+            'Something else failed',
+          ],
+        },
+      })
 
-    try {
-      await createAddon().remote().set({id: 'testing-123'} as ManifestInterface)
-      expect.fail('Should have thrown an error')
-    } catch (error: any) {
-      expect(error.message).to.eq('A list of supported regions is required, see https://devcenter.heroku.com/articles/add-on-manifest, Something else failed')
-    }
+    await expect(createAddon().remote().set({id: 'testing-123'} as ManifestInterface))
+      .rejects.toThrow('A list of supported regions is required, see https://devcenter.heroku.com/articles/add-on-manifest, Something else failed')
   })
 
   it('set() throws an error when 401', async () => {
     nock(host)
-    .post('/api/v3/addons/testing-123/manifests', {contents: {id: 'testing-123'}})
-    .reply(401, {
-      error: 'Forbidden',
-    })
+      .post('/api/v3/addons/testing-123/manifests', {contents: {id: 'testing-123'}})
+      .reply(401, {
+        error: 'Forbidden',
+      })
 
-    try {
-      await createAddon().remote().set({id: 'testing-123'} as ManifestInterface)
-      expect.fail('Should have thrown an error')
-    } catch (error: any) {
-      expect(error.message).to.eq('Forbidden')
-    }
+    await expect(createAddon().remote().set({id: 'testing-123'} as ManifestInterface))
+      .rejects.toThrow('Forbidden')
   })
 
   it('set() pushes the manifest contents', async () => {
     nock(host)
-    .post('/api/v3/addons/testing-123/manifests', {contents: {id: 'testing-123'}})
-    .reply(200, {contents: {$base: 1234, id: 'testing-123'}})
+      .post('/api/v3/addons/testing-123/manifests', {contents: {id: 'testing-123'}})
+      .reply(200, {contents: {$base: 1234, id: 'testing-123'}})
 
     const remoteManifest = createAddon().remote()
     const result = await remoteManifest.set({id: 'testing-123'} as ManifestInterface)
-    expect(result).to.deep.equal({$base: 1234, id: 'testing-123'})
-    expect(await remoteManifest.get()).to.deep.equal({$base: 1234, id: 'testing-123'})
+    expect(result).toEqual({$base: 1234, id: 'testing-123'})
+    expect(await remoteManifest.get()).toEqual({$base: 1234, id: 'testing-123'})
   })
 })

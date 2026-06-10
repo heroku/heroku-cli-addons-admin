@@ -1,11 +1,13 @@
-import oclif from 'eslint-config-oclif'
+import herokuEslintConfig from '@heroku-cli/test-utils/eslint-config'
+import vitestEslintConfig from '@heroku-cli/test-utils/eslint-config/vitest'
 
 export default [
-  ...oclif,
+  ...herokuEslintConfig,
+  ...vitestEslintConfig,
   {
     ignores: [
-      './lib',
-      '**/*.js',
+      './dist',
+      'coverage/**/*',
     ],
   },
   {
@@ -22,26 +24,7 @@ export default [
       },
     },
     rules: {
-      '@stylistic/comma-dangle': 'warn',
-      '@stylistic/function-paren-newline': 'warn',
-      '@stylistic/indent': 'warn',
-      '@stylistic/lines-between-class-members': 'warn',
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-require-imports': 'warn',
       camelcase: 'off',
-      'import/namespace': 'warn',
-      'mocha/max-top-level-suites': 'warn',
-      'mocha/no-mocha-arrows': 'warn',
-      'n/shebang': 'warn',
-      'node/no-missing-import': 'off',
-      'perfectionist/sort-classes': 'warn',
-      'perfectionist/sort-imports': 'warn',
-      'perfectionist/sort-objects': 'warn',
-      'prefer-arrow-callback': 'warn',
-      'unicorn/no-array-for-each': 'off',
-      'unicorn/no-useless-undefined': 'warn',
-      'unicorn/prefer-node-protocol': 'warn',
-      'unicorn/prefer-number-properties': 'warn',
     },
   },
 ]

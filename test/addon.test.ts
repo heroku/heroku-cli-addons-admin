@@ -1,6 +1,8 @@
 import {Config} from '@oclif/core'
-import {expect} from 'chai'
 import nock from 'nock'
+import {
+  afterEach, beforeEach, describe, expect, it,
+} from 'vitest'
 
 import Addon from '../src/addon.js'
 import {createTestManifest, host} from './utils/test.js'
@@ -25,57 +27,42 @@ describe('Addon', () => {
   })
 
   it('.slug returns the filesystem slug when no arg', async () => {
-    expect(await addon().slug()).to.eq('testing-123')
+    expect(await addon().slug()).toBe('testing-123')
   })
 
   it('.slug returns the arg slug when provided', async () => {
-    expect(await addon('arg').slug()).to.eq('arg')
+    expect(await addon('arg').slug()).toBe('arg')
   })
 
   it('.slug throws error when no slug', async () => {
-    // Create a test manifest without an id field
     const {cleanup: emptyCleanup, testDir: emptyTestDir} = createTestManifest({})
     process.chdir(emptyTestDir)
 
     try {
-      await addon().slug()
-      expect.fail('Should have thrown an error')
-    } catch (error: any) {
-      expect(error.message).to.eq('No slug found in manifest')
+      await expect(addon().slug()).rejects.toThrow('No slug found in manifest')
     } finally {
       process.chdir(originalCwd)
       emptyCleanup()
-      process.chdir(originalCwd)
     }
   })
 
   it('manifests() throws an error', async () => {
     nock(host)
-    .get('/api/v3/addons/testing-123/manifests')
-    .reply(401, {
-      error: 'Forbidden',
-    })
+      .get('/api/v3/addons/testing-123/manifests')
+      .reply(401, {
+        error: 'Forbidden',
+      })
 
-    try {
-      await addon().manifests()
-      expect.fail('Should have thrown an error')
-    } catch (error: any) {
-      expect(error.message).to.eq('Forbidden')
-    }
+    await expect(addon().manifests()).rejects.toThrow('Forbidden')
   })
 
   it('manifest() throws an error', async () => {
     nock(host)
-    .get('/api/v3/addons/testing-123/manifests/uuid')
-    .reply(401, {
-      error: 'Forbidden',
-    })
+      .get('/api/v3/addons/testing-123/manifests/uuid')
+      .reply(401, {
+        error: 'Forbidden',
+      })
 
-    try {
-      await addon().manifest('uuid')
-      expect.fail('Should have thrown an error')
-    } catch (error: any) {
-      expect(error.message).to.eq('Forbidden')
-    }
+    await expect(addon().manifest('uuid')).rejects.toThrow('Forbidden')
   })
 })

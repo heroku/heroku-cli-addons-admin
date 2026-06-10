@@ -1,6 +1,8 @@
 import {runCommand} from '@heroku-cli/test-utils'
-import {expect} from 'chai'
 import nock from 'nock'
+import {
+  afterEach, beforeEach, describe, expect, it,
+} from 'vitest'
 
 import Cmd from '../../../../../src/commands/addons/admin/manifests/info.js'
 import {createTestManifest} from '../../../../utils/test.js'
@@ -34,12 +36,12 @@ describe('addons:admin:manifests:info', () => {
 
   it('prints manifest using -m', async () => {
     nock(host)
-    .get('/api/v3/addons/testing-123/manifests/1a2e3c33-c949-4599-97d9-4ed684c35c2f')
-    .reply(200, manifest)
+      .get('/api/v3/addons/testing-123/manifests/1a2e3c33-c949-4599-97d9-4ed684c35c2f')
+      .reply(200, manifest)
 
     const {stdout} = await runCommand(Cmd, ['-m', '1a2e3c33-c949-4599-97d9-4ed684c35c2f'])
 
-    expect(stdout).to.equal(`{
+    expect(stdout).toBe(`{
   "foo": "bar"
 }
 `)
@@ -47,12 +49,12 @@ describe('addons:admin:manifests:info', () => {
 
   it('prints manifest using --manifest', async () => {
     nock(host)
-    .get('/api/v3/addons/testing-123/manifests/1a2e3c33-c949-4599-97d9-4ed684c35c2f')
-    .reply(200, manifest)
+      .get('/api/v3/addons/testing-123/manifests/1a2e3c33-c949-4599-97d9-4ed684c35c2f')
+      .reply(200, manifest)
 
     const {stdout} = await runCommand(Cmd, ['--manifest', '1a2e3c33-c949-4599-97d9-4ed684c35c2f'])
 
-    expect(stdout).to.equal(`{
+    expect(stdout).toBe(`{
   "foo": "bar"
 }
 `)
@@ -60,12 +62,12 @@ describe('addons:admin:manifests:info', () => {
 
   it('takes an optional add-on slug argument', async () => {
     nock(host)
-    .get('/api/v3/addons/arg-slug/manifests/1a2e3c33-c949-4599-97d9-4ed684c35c2f')
-    .reply(200, manifest)
+      .get('/api/v3/addons/arg-slug/manifests/1a2e3c33-c949-4599-97d9-4ed684c35c2f')
+      .reply(200, manifest)
 
     const {stdout} = await runCommand(Cmd, ['arg-slug', '-m', '1a2e3c33-c949-4599-97d9-4ed684c35c2f'])
 
-    expect(stdout).to.equal(`{
+    expect(stdout).toBe(`{
   "foo": "bar"
 }
 `)

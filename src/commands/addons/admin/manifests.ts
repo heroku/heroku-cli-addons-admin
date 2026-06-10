@@ -1,7 +1,6 @@
 import {Command} from '@heroku-cli/command'
 import {hux} from '@heroku/heroku-cli-util'
 import {Args} from '@oclif/core'
-import _ from 'lodash'
 
 import Addon from '../../../addon.js'
 
@@ -18,10 +17,13 @@ export default class AddonsAdminManifests extends Command {
 
     const body = await addon.manifests()
 
-    const manifests = _.orderBy(body, 'created_at', 'desc')
+    const manifests = [...body as unknown as {created_at?: string}[]]
+      .sort((a, b) => (b.created_at ?? '').localeCompare(a.created_at ?? ''))
+    /* eslint-disable perfectionist/sort-objects */
     hux.table(manifests as unknown as Record<string, unknown>[], {
       id: {header: 'Manifest'},
       created_at: {header: 'Created At'},
     })
+    /* eslint-enable perfectionist/sort-objects */
   }
 }
