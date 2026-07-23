@@ -53,7 +53,7 @@ describe('Addon', () => {
         error: 'Forbidden',
       })
 
-    await expect(addon().manifests()).rejects.toThrow('Forbidden')
+    await expect(addon().manifests()).rejects.toThrow('HEROKU_API_KEY')
   })
 
   it('manifest() throws an error', async () => {
@@ -63,6 +63,6 @@ describe('Addon', () => {
         error: 'Forbidden',
       })
 
-    await expect(addon().manifest('uuid')).rejects.toThrow('Forbidden')
+    await expect(addon().manifest('uuid')).rejects.toThrow('HEROKU_API_KEY')
   })
 })
