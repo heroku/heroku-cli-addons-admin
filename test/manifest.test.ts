@@ -282,7 +282,7 @@ describe('ManifestRemote', () => {
         error: 'Forbidden',
       })
 
-    await expect(createAddon().remote().get()).rejects.toThrow('Forbidden')
+    await expect(createAddon().remote().get()).rejects.toThrow('HEROKU_API_KEY')
   })
 
   it('.set() throws an error when 422', async () => {
@@ -309,7 +309,7 @@ describe('ManifestRemote', () => {
       })
 
     await expect(createAddon().remote().set({id: 'testing-123'} as ManifestInterface))
-      .rejects.toThrow('Forbidden')
+      .rejects.toThrow('HEROKU_API_KEY')
   })
 
   it('set() pushes the manifest contents', async () => {
