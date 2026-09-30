@@ -48,6 +48,7 @@
   ],
   "license": "MIT",
   "oclif": {
+    "repositoryPrefix": "<%- repo %>/blob/plugin-addons-admin-v<%- version %>/<%- commandPath %>",
     "commands": "./dist/commands",
     "bin": "heroku",
     "devPlugins": [
