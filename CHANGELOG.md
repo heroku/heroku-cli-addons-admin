@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.3](https://github.com/heroku/heroku-cli-addons-admin/compare/plugin-addons-admin-v4.0.2...plugin-addons-admin-v4.0.3) (2026-10-29)
+
+
+### Dependencies
+
+* bump @heroku-cli/command from 13.0.1 to 13.2.4 ([#253](https://github.com/heroku/heroku-cli-addons-admin/issues/253)) ([ec2808c](https://github.com/heroku/heroku-cli-addons-admin/commit/ec2808c74cf61f71e7443e0367bdc371aebfc72d))
+
 ## [4.0.2](https://github.com/heroku/heroku-cli-addons-admin/compare/plugin-addons-admin-v4.0.1...plugin-addons-admin-v4.0.2) (2026-10-01)
 
 

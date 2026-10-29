@@ -27,7 +27,7 @@ $ npm install -g @heroku-cli/plugin-addons-admin
 $ heroku COMMAND
 running command...
 $ heroku (--version)
-@heroku-cli/plugin-addons-admin/4.0.2 linux-x64 node-v22.23.2
+@heroku-cli/plugin-addons-admin/4.0.3 linux-x64 node-v22.23.4
 $ heroku --help [COMMAND]
 USAGE
   $ heroku COMMAND
