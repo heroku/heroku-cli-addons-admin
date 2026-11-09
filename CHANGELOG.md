@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.4](https://github.com/heroku/heroku-cli-addons-admin/compare/plugin-addons-admin-v4.0.3...plugin-addons-admin-v4.0.4) (2026-11-09)
+
+
+### Dependencies
+
+* bump @heroku/http-call from 5.4.0 to 5.6.3 ([#262](https://github.com/heroku/heroku-cli-addons-admin/issues/262)) ([ddfe53b](https://github.com/heroku/heroku-cli-addons-admin/commit/ddfe53b683b7f76e5356f91109cbfcfe08944039))
+* bump randomstring from 1.3.1 to 1.3.2 ([#258](https://github.com/heroku/heroku-cli-addons-admin/issues/258)) ([1b1e2ce](https://github.com/heroku/heroku-cli-addons-admin/commit/1b1e2ceb2c6adeb4bd67b7745b982f36029f8e3f))
+
 ## [4.0.3](https://github.com/heroku/heroku-cli-addons-admin/compare/plugin-addons-admin-v4.0.2...plugin-addons-admin-v4.0.3) (2026-10-29)
 
 
